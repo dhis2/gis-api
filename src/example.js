@@ -2,10 +2,22 @@ import L from './index';
 
 L.Icon.Default.imagePath = 'images';
 
-var map = L.map('map').setView([8.577168, -11.871005], 8);
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+let map = L.map('map').setView([8.577168, -11.871005], 8);
+
+let mapquest = L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+    subdomains: "1234",
+    attribution: "&copy; <a href='http://www.openstreetmap.org/'>OpenStreetMap</a> and contributors, under an <a href='http://www.openstreetmap.org/copyright' title='ODbL'>open license</a>. Tiles Courtesy of <a href='http://www.mapquest.com/'>MapQuest</a> <img src='http://developer.mapquest.com/content/osm/mq_logo.png'>"
 }).addTo(map);
+
+let osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+
+let layerControl = L.control.layers({
+    'MapQuest': mapquest,
+    'OpenStreetMap': osm
+}, {}).addTo(map);
+
 
 // http://mts.io/2015/04/08/webpack-shims-polyfills/
 fetch('/data/sierraleone.json')
@@ -16,11 +28,12 @@ fetch('/data/sierraleone.json')
     });
 
 function addCluster(data) {
-    var markers = new L.MarkerClusterGroup();
+    let markers = new L.MarkerClusterGroup();
 
     for (var i = 0; i < data.length; i++) {
         var d = data[i];
         markers.addLayer(L.marker(d.co.reverse()).bindPopup(d.na));
     }
     map.addLayer(markers);
+    layerControl.addOverlay(markers, 'Cluster');
 }
