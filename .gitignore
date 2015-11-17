@@ -2,3 +2,4 @@
 node_modules
 build
 *.iml
+npm-debug.log

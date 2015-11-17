@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "validate": "npm ls --depth 0",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "lint": "./node_modules/eslint/bin/eslint.js src"
   },
   "repository": {
     "type": "git",
