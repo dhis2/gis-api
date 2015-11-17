@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/dhis2/dhis2-gis#readme",
   "dependencies": {
-    "babel": "5.8.34",
     "exports-loader": "0.6.2",
     "imports-loader": "0.6.5",
     "leaflet": "1.0.0-beta.2",
@@ -36,11 +35,12 @@
     "whatwg-fetch": "0.10.1"
   },
   "devDependencies": {
-    "babel": "5.8.34",
-    "babel-core": "5.8.34",
+    "babel": "6.1.18",
+    "babel-core": "6.1.21",
     "babel-eslint": "4.1.1",
-    "babel-loader": "5.4.0",
+    "babel-loader": "6.2.0",
     "babel-preset-es2015": "6.1.18",
+    "babel-preset-stage-2": "6.1.18",
     "chai": "3.4.1",
     "css-loader": "0.18.0",
     "eslint": "1.3.1",

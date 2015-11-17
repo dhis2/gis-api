@@ -39,16 +39,19 @@ module.exports = function karmaConfigHandler(config) {
                             path.resolve('src/'),
                             path.resolve('node_modules/')
                         ],
-                        loader: 'babel'
+                        loader: 'babel',
+                        query: {
+                            presets: ['es2015', 'stage-2'],
+                        },
                     },
                     // transpile and instrument only testing sources with isparta
                     {
                         test: /\.js$/,
                         include: path.resolve('src/'),
-                        loader: 'isparta'
-                    }
-                ]
-            }
+                        loader: 'isparta',
+                    },
+                ],
+            },
         },
 
         webpackServer: {
