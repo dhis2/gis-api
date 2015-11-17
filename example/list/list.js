@@ -10,7 +10,7 @@ function addItem(prop) {
     listElement.appendChild(itemElement);
 }
 
-const leafletProps = Object.keys(L)
+Object.keys(L)
     .sort()
     .map(key => {
         return {

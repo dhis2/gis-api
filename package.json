@@ -6,7 +6,7 @@
   "scripts": {
     "validate": "npm ls --depth 0",
     "start": "webpack-dev-server",
-    "lint": "./node_modules/eslint/bin/eslint.js src"
+    "lint": "./node_modules/eslint/bin/eslint.js src example"
   },
   "repository": {
     "type": "git",

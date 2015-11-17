@@ -71,4 +71,4 @@ fetch('/data/sierraleone.json')
 
         addLayerToMap(clusterLayer);
     })
-    .catch(ex => console.log('parsing failed', ex));
+    .catch(ex => window.console.log('parsing failed', ex));
