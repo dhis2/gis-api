@@ -7,7 +7,7 @@ module.exports = {
     devtool: 'source-map',
     output: {
         path: __dirname + '/build',
-        filename: 'example.js',
+        filename: 'index.js',
     },
     module: {
         loaders: [
