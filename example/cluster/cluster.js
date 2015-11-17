@@ -1,6 +1,6 @@
 import L from '../../src';
 
-L.Icon.Default.imagePath = 'images';
+L.Icon.Default.imagePath = '/images';
 
 let map = L.map('map').setView([8.577168, -11.871005], 8);
 
