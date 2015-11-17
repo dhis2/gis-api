@@ -3,11 +3,15 @@ var path = require('path');
 
 module.exports = {
     context: __dirname,
-    entry: './src/example.js',
+    entry: {
+        cluster: './example/cluster/cluster.js',
+        'cluster-functional': './example/cluster-functional/cluster-functional.js',
+        list: './example/list/list.js',
+    },
     devtool: 'source-map',
     output: {
         path: __dirname + '/build',
-        filename: 'example.js',
+        filename: '[name]/[name].js',
     },
     module: {
         loaders: [
@@ -34,10 +38,4 @@ module.exports = {
             'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
         })
     ],
-    resolve: {
-        alias: {
-            react: path.resolve('./node_modules/react'),
-            'material-ui': path.resolve('./node_modules/material-ui'),
-        },
-    },
 };
