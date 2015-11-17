@@ -1,12 +1,13 @@
+var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
     context: __dirname,
-    entry: './src/settings-app.js',
+    entry: './src/example.js',
     devtool: 'source-map',
     output: {
         path: __dirname + '/build',
-        filename: 'settings-app.js',
+        filename: 'example.js',
     },
     module: {
         loaders: [
@@ -28,6 +29,11 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new webpack.ProvidePlugin({
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        })
+    ],
     resolve: {
         alias: {
             react: path.resolve('./node_modules/react'),

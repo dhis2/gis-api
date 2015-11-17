@@ -1,8 +1,8 @@
 {
   "name": "dhis2-gis",
   "version": "0.0.1",
-  "description": "GIS component for  DHIS2",
-  "main": "index.js",
+  "description": "GIS component for DHIS2",
+  "main": "lib/index.js",
   "scripts": {
     "validate": "npm ls --depth 0",
     "start": "webpack-dev-server"
@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/dhis2/dhis2-gis#readme",
   "dependencies": {
-    "leaflet": "^1.0.0-beta.2"
+    "exports-loader": "^0.6.2",
+    "imports-loader": "^0.6.5",
+    "leaflet": "^1.0.0-beta.2",
+    "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
+    "whatwg-fetch": "^0.10.1"
   },
   "devDependencies": {
     "babel": "5.8.23",
