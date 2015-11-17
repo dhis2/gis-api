@@ -1,5 +1,7 @@
 import L from './index';
 
+L.Icon.Default.imagePath = 'images';
+
 var map = L.map('map').setView([8.577168, -11.871005], 8);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
