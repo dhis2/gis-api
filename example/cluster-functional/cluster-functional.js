@@ -1,6 +1,7 @@
+/*
 import L from '../../src';
 
-/*
+
 function map() {
     if (!map.map) {
         L.Icon.Default.imagePath = '/images';

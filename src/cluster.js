@@ -10,12 +10,12 @@ import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is
 export const Cluster = L.MarkerClusterGroup.extend({
 
     options: {
-        zoomToClusterBounds: true
+        zoomToClusterBounds: true,
     },
 
-    initialize: function (data, options) {
-        options = L.setOptions(this, options);
-        L.MarkerClusterGroup.prototype.initialize.call(this, options);
+    initialize(data, options) {
+        const mapOptions = L.setOptions(this, options);
+        L.MarkerClusterGroup.prototype.initialize.call(this, mapOptions);
 
         if (typeof data === 'string') { // URL
             this.loadData(data);
@@ -25,19 +25,17 @@ export const Cluster = L.MarkerClusterGroup.extend({
     },
 
     // Load DHIS2 data
-    loadData: function (url) {
+    loadData(url) {
         fetch(url) // http://mts.io/2015/04/08/webpack-shims-polyfills/
-            .then(function(response) {
-                return response.json()
-            }).then(this.addData.bind(this)).catch(function(ex) {
-                console.log('parsing failed', ex)
-            });
+            .then(response => response.json())
+            .then(this.addData.bind(this))
+            .catch(ex => window.console.log('parsing failed', ex));
     },
 
     // Add DHIS2 data
-    addData: function (data) {
+    addData(data) {
         if (data) { // Create markers from data
-            this.addLayers(data.map(function createMarker(d){
+            this.addLayers(data.map(function createMarker(d) {
                 return L.marker(d.co.reverse()).bindPopup(d.na);
             }));
         }
@@ -47,4 +45,4 @@ export const Cluster = L.MarkerClusterGroup.extend({
 
 export default function cluster(data, options) {
     return new Cluster(data, options);
-};
+}

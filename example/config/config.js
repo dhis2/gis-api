@@ -1,6 +1,7 @@
+/*
 import L from '../../src';
 
-/*
+
 L.Icon.Default.imagePath = '/images';
 
 const mapConfig = {

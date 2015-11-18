@@ -1,6 +1,6 @@
+/*
 import L from 'leaflet';
 
-/*
 const listElement = document.getElementById('leafletProps');
 
 function addItem(prop) {
