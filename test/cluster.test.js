@@ -1,4 +1,3 @@
-//import './googlemapsapi.js';
 import L from 'leaflet';
 import {Cluster} from '../src/cluster';
 

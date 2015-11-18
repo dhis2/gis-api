@@ -14,6 +14,7 @@ module.exports = function karmaConfigHandler(config) {
         ],
         files: [
             '../node_modules/phantomjs-polyfill/bind-polyfill.js',
+            './googlemapsapi.js',
             'tests.webpack.js', // just load this file
         ],
         preprocessors: {

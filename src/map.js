@@ -1,5 +1,5 @@
 import L from 'leaflet';
-//import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
+import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
 import cluster from './cluster';
 
 export const Map = L.Map.extend({
@@ -11,7 +11,7 @@ export const Map = L.Map.extend({
                 subdomains: '1234',
                 attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, under an <a href="http://www.openstreetmap.org/copyright" title="ODbL">open license</a>. Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
             }),
-            //'Google Roads': new L.Google('ROADMAP'),
+            'Google Roads': new L.Google('ROADMAP'),
         },
         showLayersControl: true
     },
