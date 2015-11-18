@@ -1,8 +1,7 @@
 import L from 'leaflet';
 import {Map} from '../src/map';
 
-/*
-describe('DHIS2 GIS', () => {
+describe('DHIS2 map', () => {
     let mapDiv;
     let map;
 
@@ -18,20 +17,22 @@ describe('DHIS2 GIS', () => {
 
     it('should export the Leaflet instance', () => {
         map = new Map('map');
-
         expect(map).to.be.instanceOf(L.Map);
     });
 
-    it('should have a setBasemap method', () => {
-        map = new Map('map');
 
-        expect(map.setBasemap).to.be.a('function');
+    it('should have a setBaseLayer method', () => {
+        map = new Map('map');
+        expect(map.setBaseLayer).to.be.a('function');
     });
 
+    /*
     it('should have set the basemap layer', () => {
         map = new Map('map', {basemap: 'mapquest'});
 
         expect(map.hasLayer('mapquest')).to.be.true;
     });
+    */
+
 });
-*/
+
