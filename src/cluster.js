@@ -35,9 +35,7 @@ export const Cluster = L.MarkerClusterGroup.extend({
     // Add DHIS2 data
     addData(data) {
         if (data) { // Create markers from data
-            this.addLayers(data.map(function createMarker(d) {
-                return L.marker(d.co.reverse()).bindPopup(d.na);
-            }));
+            this.addLayers(data.map(d => L.marker(d.co.reverse()).bindPopup(d.na)));
         }
     },
 
