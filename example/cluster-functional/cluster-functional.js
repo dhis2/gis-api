@@ -1,5 +1,6 @@
 import L from '../../src';
 
+/*
 function map() {
     if (!map.map) {
         L.Icon.Default.imagePath = '/images';
@@ -72,3 +73,4 @@ fetch('/data/sierraleone.json')
         addLayerToMap(clusterLayer);
     })
     .catch(ex => window.console.log('parsing failed', ex));
+*/

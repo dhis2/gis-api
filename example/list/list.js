@@ -1,5 +1,6 @@
 import L from 'leaflet';
 
+/*
 const listElement = document.getElementById('leafletProps');
 
 function addItem(prop) {
@@ -20,4 +21,5 @@ Object.keys(L)
     })
     .forEach(addItem);
 
+*/
 

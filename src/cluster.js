@@ -7,11 +7,14 @@ import L from 'leaflet';
 // import 'leaflet.markercluster';
 import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
 
-L.dhis2 = L.dhis2 || {};
+export const Cluster = L.MarkerClusterGroup.extend({
 
-L.dhis2.Cluster = L.MarkerClusterGroup.extend({
+    options: {
+        zoomToClusterBounds: true
+    },
 
     initialize: function (data, options) {
+        options = L.setOptions(this, options);
         L.MarkerClusterGroup.prototype.initialize.call(this, options);
 
         if (typeof data === 'string') { // URL
@@ -26,7 +29,7 @@ L.dhis2.Cluster = L.MarkerClusterGroup.extend({
         fetch(url) // http://mts.io/2015/04/08/webpack-shims-polyfills/
             .then(function(response) {
                 return response.json()
-            }).then(L.bind(this.addData, this)).catch(function(ex) {
+            }).then(this.addData.bind(this)).catch(function(ex) {
                 console.log('parsing failed', ex)
             });
     },
@@ -42,6 +45,6 @@ L.dhis2.Cluster = L.MarkerClusterGroup.extend({
 
 });
 
-L.dhis2.cluster = function (data, options) {
-    return new L.dhis2.Cluster(data, options);
+export default function cluster(data, options) {
+    return new Cluster(data, options);
 };
