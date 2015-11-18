@@ -15,27 +15,12 @@ let osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 let google = new L.Google('ROADMAP');
 
+let cluster = L.dhis2.cluster('/data/sierraleone.json').addTo(map);
+
 let layerControl = L.control.layers({
     'MapQuest': mapquest,
     'OpenStreetMap': osm,
     'Google Maps': google,
+}, {
+    'Cluster': cluster,
 }).addTo(map);
-
-// http://mts.io/2015/04/08/webpack-shims-polyfills/
-fetch('/data/sierraleone.json')
-    .then(function(response) {
-        return response.json()
-    }).then(addCluster).catch(function(ex) {
-        console.log('parsing failed', ex)
-    });
-
-function addCluster(data) {
-    let markers = new L.MarkerClusterGroup();
-
-    for (var i = 0; i < data.length; i++) {
-        var d = data[i];
-        markers.addLayer(L.marker(d.co.reverse()).bindPopup(d.na));
-    }
-    map.addLayer(markers);
-    layerControl.addOverlay(markers, 'Cluster');
-}

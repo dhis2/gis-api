@@ -4,6 +4,7 @@ var path = require('path');
 module.exports = {
     context: __dirname,
     entry: {
+        config: './example/config/config.js',
         cluster: './example/cluster/cluster.js',
         'cluster-functional': './example/cluster-functional/cluster-functional.js',
         list: './example/list/list.js',

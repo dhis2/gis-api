@@ -1,6 +1,6 @@
 import L from 'leaflet' ;
-// import 'leaflet.markercluster';
-import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo compatible with Leaflet 1.0
-import '../temp/Google';
+import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
+import './map';
+import './cluster';
 
 export default L;
