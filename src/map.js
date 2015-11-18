@@ -10,7 +10,7 @@ export const Map = L.Map.extend({
             'OpenStreetMap': L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
                 subdomains: '1234',
                 attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, under an <a href="http://www.openstreetmap.org/copyright" title="ODbL">open license</a>. Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
-            })//,
+            }),
             //'Google Roads': new L.Google('ROADMAP'),
         },
         showLayersControl: true

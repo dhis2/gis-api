@@ -1,3 +1,4 @@
+//import './googlemapsapi.js';
 import L from 'leaflet';
 import {Map} from '../src/map';
 
