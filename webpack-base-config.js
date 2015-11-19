@@ -4,9 +4,9 @@ var path = require('path');
 module.exports = {
     context: __dirname,
     entry: {
-        config: './example/config/config.js',
+        choropleth: './example/choropleth/choropleth.js',
         cluster: './example/cluster/cluster.js',
-        'cluster-functional': './example/cluster-functional/cluster-functional.js',
+        earthengine: './example/earthengine/earthengine.js',
         list: './example/list/list.js',
     },
     devtool: 'source-map',

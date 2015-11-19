@@ -1,0 +1,140 @@
+{
+  "headers": [
+    {
+      "name": "dx",
+      "column": "Data",
+      "type": "java.lang.String",
+      "hidden": false,
+      "meta": true
+    },
+    {
+      "name": "ou",
+      "column": "Organisation unit",
+      "type": "java.lang.String",
+      "hidden": false,
+      "meta": true
+    },
+    {
+      "name": "value",
+      "column": "Value",
+      "type": "java.lang.Double",
+      "hidden": false,
+      "meta": false
+    }
+  ],
+  "metaData": {
+    "names": {
+      "201501": "January 2015",
+      "jUb8gELQApl": "Kailahun",
+      "TEQlaapDQoK": "Port Loko",
+      "eIQbndfxQMb": "Tonkolili",
+      "Vth0fbpFcsO": "Kono",
+      "PMa2VCrupOd": "Kambia",
+      "ou": "Organisation unit",
+      "O6uvpzGd5pu": "Bo",
+      "bL4ooGhyHRQ": "Pujehun",
+      "kJq2mPyFEHo": "Kenema",
+      "fdc6uOvgoji": "Bombali",
+      "HNpTGwPnpry": "Country",
+      "at6UHUQatSo": "Western Area",
+      "dx": "Data",
+      "pe": "Period",
+      "Uvn6LCg7dVU": "ANC 1 Coverage",
+      "lc3eMKXaEfw": "Bonthe",
+      "qhqAxPSTUXp": "Koinadugu",
+      "jmIPBj66vD6": "Moyamba"
+    },
+    "dx": [
+      "Uvn6LCg7dVU"
+    ],
+    "pe": [
+      "201501"
+    ],
+    "ou": [
+      "O6uvpzGd5pu",
+      "fdc6uOvgoji",
+      "lc3eMKXaEfw",
+      "HNpTGwPnpry",
+      "jUb8gELQApl",
+      "PMa2VCrupOd",
+      "kJq2mPyFEHo",
+      "qhqAxPSTUXp",
+      "Vth0fbpFcsO",
+      "jmIPBj66vD6",
+      "TEQlaapDQoK",
+      "bL4ooGhyHRQ",
+      "eIQbndfxQMb",
+      "at6UHUQatSo"
+    ],
+    "co": []
+  },
+  "rows": [
+    [
+      "Uvn6LCg7dVU",
+      "O6uvpzGd5pu",
+      "129.6"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "fdc6uOvgoji",
+      "88.3"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "lc3eMKXaEfw",
+      "99.5"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "jUb8gELQApl",
+      "78.9"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "PMa2VCrupOd",
+      "117.2"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "kJq2mPyFEHo",
+      "91.1"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "qhqAxPSTUXp",
+      "74.3"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "Vth0fbpFcsO",
+      "50.7"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "jmIPBj66vD6",
+      "126.7"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "TEQlaapDQoK",
+      "101.3"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "bL4ooGhyHRQ",
+      "124.1"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "eIQbndfxQMb",
+      "91.2"
+    ],
+    [
+      "Uvn6LCg7dVU",
+      "at6UHUQatSo",
+      "94.5"
+    ]
+  ],
+  "width": 3,
+  "height": 13
+}

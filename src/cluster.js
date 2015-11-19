@@ -1,8 +1,3 @@
-/*
- Extending Leaflet.markercluster to support DHIS 2 data
- https://github.com/Leaflet/Leaflet.markercluster
- */
-
 import L from 'leaflet';
 // import 'leaflet.markercluster';
 import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0

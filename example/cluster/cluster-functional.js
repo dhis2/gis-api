@@ -1,6 +1,4 @@
-/*
 import L from '../../src';
-
 
 function map() {
     if (!map.map) {
@@ -74,4 +72,3 @@ fetch('/data/sierraleone.json')
         addLayerToMap(clusterLayer);
     })
     .catch(ex => window.console.log('parsing failed', ex));
-*/

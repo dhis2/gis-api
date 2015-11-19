@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
 import cluster from './cluster';
+import earthEngine from './earthengine';
 
 export const Map = L.Map.extend({
 
@@ -30,6 +31,10 @@ export const Map = L.Map.extend({
             this.setBaseLayer(mapOptions.baseLayer);
         }
 
+        if (mapOptions.earthEngine) {
+            this.addEarthEngine(mapOptions.earthEngine);
+        }
+
         if (mapOptions.cluster) {
             this.addCluster(mapOptions.cluster);
         }
@@ -57,6 +62,10 @@ export const Map = L.Map.extend({
      */
     addCluster(source) {
         return cluster(source).addTo(this);
+    },
+
+    addEarthEngine(mapId) {
+        return earthEngine(mapId).addTo(this);
     },
 
 });
