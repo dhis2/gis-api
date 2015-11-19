@@ -49,8 +49,14 @@ export const Map = L.Map.extend({
         this._layersControl = L.control.layers(baseLayers, overlays).addTo(this);
     },
 
+    /**
+     * addCluster() adds and returns a new cluster
+     *
+     * @param {String|Object} source
+     * @return {Cluster} cluster
+     */
     addCluster(source) {
-        cluster(source).addTo(this);
+        return cluster(source).addTo(this);
     },
 
 });

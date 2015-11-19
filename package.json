@@ -46,6 +46,8 @@
     "eslint-config-dhis2": "0.0.5",
     "eslint-plugin-react": "3.3.1",
     "exports-loader": "0.6.2",
+    "file-loader": "^0.8.4",
+    "image-webpack-loader": "^1.6.2",
     "imports-loader": "0.6.5",
     "isparta-loader": "1.0.0",
     "karma": "0.13.15",
