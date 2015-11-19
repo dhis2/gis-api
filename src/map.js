@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
+import choropleth from './choropleth';
 import cluster from './cluster';
 import earthEngine from './earthengine';
 
@@ -35,6 +36,10 @@ export const Map = L.Map.extend({
             this.addEarthEngine(mapOptions.earthEngine);
         }
 
+        if (mapOptions.choropleth) {
+            this.addChoropleth(mapOptions.choropleth);
+        }
+
         if (mapOptions.cluster) {
             this.addCluster(mapOptions.cluster);
         }
@@ -52,6 +57,10 @@ export const Map = L.Map.extend({
 
     addLayersControl(baseLayers, overlays) {
         this._layersControl = L.control.layers(baseLayers, overlays).addTo(this);
+    },
+
+    addChoropleth(source) {
+        return choropleth(source).addTo(this);
     },
 
     /**

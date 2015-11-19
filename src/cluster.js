@@ -21,7 +21,7 @@ export const Cluster = L.MarkerClusterGroup.extend({
 
     // Load DHIS2 data
     loadData(url) {
-        fetch(url) // http://mts.io/2015/04/08/webpack-shims-polyfills/
+        fetch(url)
             .then(response => response.json())
             .then(this.addData.bind(this))
             .catch(ex => window.console.log('parsing failed', ex));
