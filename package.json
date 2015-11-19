@@ -28,10 +28,9 @@
   },
   "homepage": "https://github.com/dhis2/dhis2-gis#readme",
   "dependencies": {
-    "exports-loader": "0.6.2",
-    "imports-loader": "0.6.5",
     "leaflet": "1.0.0-beta.2",
     "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
+    "topojson": "^1.6.19",
     "whatwg-fetch": "0.10.1"
   },
   "devDependencies": {
@@ -46,6 +45,8 @@
     "eslint": "1.3.1",
     "eslint-config-dhis2": "0.0.5",
     "eslint-plugin-react": "3.3.1",
+    "exports-loader": "0.6.2",
+    "imports-loader": "0.6.5",
     "isparta-loader": "1.0.0",
     "karma": "0.13.15",
     "karma-chai": "0.1.0",
