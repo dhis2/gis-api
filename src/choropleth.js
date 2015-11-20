@@ -5,41 +5,49 @@ import {linear} from 'd3-scale';
 export const Choropleth = L.GeoJSON.extend({
 
     options: {
-
+        colorRange: ['#FFEDA0', '#800026'],
     },
 
-    initialize(options) {
+    initialize(options = {}) {
         L.setOptions(this, options);
         this._layers = {};
-
-        if (typeof options.features === 'string') {
-            this.loadFeatures(options.features);
-        } else {
-            this.addFeatures(options.features);
-        }
-
-        if (typeof options.analytics === 'string') {
-            this.loadAnalytics(options.analytics);
-        } else {
-            this.addAnalytics(options.analytics);
-        }
-
-        if (options.onLeftClick) {
-            this.on('click', this.onClick, this);
-        }
+        this.setFeatures(options.features);
+        this.setFeatureData(options.data);
+        this.on('click', this.onClick, this);
     },
 
     onClick(evt) {
-        this.options.onLeftClick(evt.layer.feature, content => {
-            evt.layer.label.close();
-            L.popup()
-                .setLatLng(evt.latlng)
-                .setContent(content)
-                .openOn(this._map);
-        });
+        const layer = evt.layer;
+        const popupFunc = this.options.popup;
+
+        if (popupFunc) {
+            layer.label.close(); // Hide label
+
+            if (popupFunc.length < 2) { // Sync
+                this.addPopup(evt.latlng, popupFunc(layer.feature));
+            } else { // Async if callback function
+                popupFunc(layer.feature, content => {
+                    this.addPopup(evt.latlng, content);
+                });
+            }
+        }
     },
 
-    // Load DHIS 2 features
+    addPopup(latlng, content) {
+        L.popup()
+            .setLatLng(latlng)
+            .setContent(content)
+            .openOn(this._map);
+    },
+
+    setFeatures(features) {
+        if (typeof features === 'string') { // URL
+            this.loadFeatures(features);
+        } else if (typeof features === 'object') {
+            this.addFeatures(features);
+        }
+    },
+
     loadFeatures(url) {
         fetch(url)
             .then(response => response.json())
@@ -48,60 +56,72 @@ export const Choropleth = L.GeoJSON.extend({
     },
 
     addFeatures(features) {
-        this._geojson = features;
+        if (features) {
+            this._geojson = features;
 
-        if (Array.isArray(features)) {
-            this._geojson = this._dhis2geojson(features);
+            if (Array.isArray(features)) {
+                this._geojson = this._dhis2geojson(features);
+            }
+
+            this.addData(this._geojson);
+            this.addFeatureData(this._data);
         }
-
-        this.addData(this._geojson);
-        this.addAnalytics(this._analytics);
     },
 
-    loadAnalytics(url) {
+    setFeatureData(data) {
+        if (typeof data === 'string') { // URL
+            this.loadFeatureData(data);
+        } else if (typeof features === 'object') {
+            this.addFeatureData(data);
+        }
+    },
+
+    loadFeatureData(url) {
         fetch(url)
             .then(response => response.json())
-            .then(this.addAnalytics.bind(this))
+            .then(this.addFeatureData.bind(this))
             .catch(ex => window.console.log('parsing failed', ex));
     },
 
-    addAnalytics(data) {
-        this._analytics = data;
+    addFeatureData(data) {
+        if (data) {
+            this._data = data;
 
-        if (data && this._geojson) {
-            this._analytics = this._parseAnalytics(data);
+            if (data && this._geojson) {
+                this._data = this._parseData(data);
 
-            this.eachLayer(layer => {
-                layer.bindLabel(layer.feature.properties.na + ' ' + this._analytics[layer.feature.id], {
-                    direction: 'auto',
+                this.eachLayer(layer => {
+                    layer.bindLabel(layer.feature.properties.na + ' ' + this._data[layer.feature.id], {
+                        direction: 'auto',
+                    });
                 });
-            });
 
-            this.setStyle(feature => ({
-                color: '#333',
-                weight: 1,
-                fillColor: this._scale(this._analytics[feature.id]),
-                fillOpacity: 0.8,
-            }));
+                this.setStyle(feature => ({
+                    color: '#333',
+                    weight: 1,
+                    fillColor: this._scale(this._data[feature.id]),
+                    fillOpacity: 0.8,
+                }));
+            }
         }
     },
 
-    _parseAnalytics(analytics) {
-        const data = {};
+    _parseData(data) {
+        const dataObj = {};
         const values = [];
         let value;
 
-        analytics.rows.forEach(d => {
+        data.rows.forEach(d => {
             value = Number(d[2]);
             values.push(value);
-            data[d[1]] = value;
+            dataObj[d[1]] = value;
         });
 
         values.sort((a, b) => a - b);
 
-        this._scale = linear().domain([values[0], values[values.length - 1]]).range(['#FFEDA0', '#800026']);
+        this._scale = linear().domain([values[0], values[values.length - 1]]).range(this.options.colorRange);
 
-        return data;
+        return dataObj;
     },
 
     _dhis2geojson(features) {
