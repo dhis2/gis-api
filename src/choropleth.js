@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import '../temp/leaflet.label-src';
 import {linear} from 'd3-scale';
 
 export const Choropleth = L.GeoJSON.extend({
@@ -22,6 +23,20 @@ export const Choropleth = L.GeoJSON.extend({
         } else {
             this.addAnalytics(options.analytics);
         }
+
+        if (options.onLeftClick) {
+            this.on('click', this.onClick, this);
+        }
+    },
+
+    onClick(evt) {
+        this.options.onLeftClick(evt.layer.feature, content => {
+            evt.layer.label.close();
+            L.popup()
+                .setLatLng(evt.latlng)
+                .setContent(content)
+                .openOn(this._map);
+        });
     },
 
     // Load DHIS 2 features
@@ -56,7 +71,11 @@ export const Choropleth = L.GeoJSON.extend({
         if (data && this._geojson) {
             this._analytics = this._parseAnalytics(data);
 
-            this.eachLayer(layer => layer.bindPopup(layer.feature.properties.na));
+            this.eachLayer(layer => {
+                layer.bindLabel(layer.feature.properties.na + ' ' + this._analytics[layer.feature.id], {
+                    direction: 'auto',
+                });
+            });
 
             this.setStyle(feature => ({
                 color: '#333',

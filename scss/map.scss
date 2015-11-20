@@ -1,0 +1,14 @@
+.leaflet-dhis2 {
+
+    .leaflet-bar {
+        border-radius: 0;
+
+        a:first-child, a:last-child {
+            border-radius: 0;
+        }
+    }
+
+    .leaflet-control-layers {
+        border-radius: 0;
+    }
+}

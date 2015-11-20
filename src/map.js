@@ -7,6 +7,7 @@ import earthEngine from './earthengine';
 export const Map = L.Map.extend({
 
     options: {
+        className: 'leaflet-dhis2',
         baseLayer: 'OpenStreetMap', // Default base layer
         baseLayers: {
             'OpenStreetMap': L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
@@ -18,34 +19,36 @@ export const Map = L.Map.extend({
         showLayersControl: true,
     },
 
-    initialize(id, options) {
-        const mapOptions = L.setOptions(this, options);
+    initialize(id, mapOptions) {
         L.Map.prototype.initialize.call(this, id, mapOptions);
+        const options = this.options;
+
+        L.DomUtil.addClass(this.getContainer(), options.className);
 
         L.Icon.Default.imagePath = '/images';
 
-        if (mapOptions.showLayersControl) {
-            this.addLayersControl(mapOptions.baseLayers);
+        if (options.showLayersControl) {
+            this.addLayersControl(options.baseLayers);
         }
 
-        if (mapOptions.baseLayer) {
-            this.setBaseLayer(mapOptions.baseLayer);
+        if (options.baseLayer) {
+            this.setBaseLayer(options.baseLayer);
         }
 
-        if (mapOptions.earthEngine) {
-            this.addEarthEngine(mapOptions.earthEngine);
+        if (options.earthEngine) {
+            this.addEarthEngine(options.earthEngine);
         }
 
-        if (mapOptions.choropleth) {
-            this.addChoropleth(mapOptions.choropleth);
+        if (options.choropleth) {
+            this.addChoropleth(options.choropleth);
         }
 
-        if (mapOptions.cluster) {
-            this.addCluster(mapOptions.cluster);
+        if (options.cluster) {
+            this.addCluster(options.cluster);
         }
 
-        if (mapOptions.bounds) {
-            this.fitBounds(mapOptions.bounds);
+        if (options.bounds) {
+            this.fitBounds(options.bounds);
         }
     },
 
