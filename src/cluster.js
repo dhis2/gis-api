@@ -6,6 +6,9 @@ export const Cluster = L.MarkerClusterGroup.extend({
 
     options: {
         zoomToClusterBounds: true,
+        polygonOptions: {
+            weight: 1,
+        },
     },
 
     initialize(data, options) {
