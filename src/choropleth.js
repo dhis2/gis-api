@@ -8,8 +8,8 @@ export const Choropleth = L.GeoJSON.extend({
         colorRange: ['#FFEDA0', '#800026'],
     },
 
-    initialize(options = {}) {
-        L.setOptions(this, options);
+    initialize(opts = {}) {
+        const options = L.setOptions(this, opts);
         this._layers = {};
         this.setFeatures(options.features);
         this.setFeatureData(options.data);

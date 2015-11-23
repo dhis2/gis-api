@@ -11,14 +11,14 @@ export const Cluster = L.MarkerClusterGroup.extend({
         },
     },
 
-    initialize(data, options) {
-        const mapOptions = L.setOptions(this, options);
-        L.MarkerClusterGroup.prototype.initialize.call(this, mapOptions);
+    initialize(opts) {
+        const options = L.setOptions(this, opts);
+        L.MarkerClusterGroup.prototype.initialize.call(this, options);
 
-        if (typeof data === 'string') { // URL
-            this.loadData(data);
+        if (typeof options.data === 'string') { // URL
+            this.loadData(options.data);
         } else {
-            this.addData(data);
+            this.addData(options.data);
         }
     },
 
@@ -39,6 +39,6 @@ export const Cluster = L.MarkerClusterGroup.extend({
 
 });
 
-export default function cluster(data, options) {
-    return new Cluster(data, options);
+export default function cluster(options) {
+    return new Cluster(options);
 }

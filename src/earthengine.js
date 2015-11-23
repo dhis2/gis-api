@@ -5,19 +5,16 @@ export const EarthEngine = L.TileLayer.extend({
     options: {
         url: 'https://earthengine.googleapis.com/map/{mapId}/{z}/{x}/{y}?token={token}',
         // view-source:http://server-auth-dot-ee-demos.appspot.com/
-        token: '6c2f0b280c3bd1244dbeda7811915b68',
-        opacity: 0.5,
+        token: '3fbfb376d0a18ba4b4a4848cb0396f34',
     },
 
-    initialize(mapId, options = {}) {
-        options.mapId = mapId;
-        this._url = this.options.url;
-        L.TileLayer.prototype.initialize.call(this, this._url, options);
-        this._url = this.options.url;
+    initialize(opts = {}) {
+        const options = L.setOptions(this, opts);
+        L.TileLayer.prototype.initialize.call(this, options.url, options);
     },
 
 });
 
-export default function earthEngine(mapId, options) {
-    return new EarthEngine(mapId, options);
+export default function earthEngine(options) {
+    return new EarthEngine(options);
 }

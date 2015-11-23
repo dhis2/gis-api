@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {Cluster} from '../src/cluster';
+import {Cluster} from '../src/Cluster';
 
 describe('DHIS2 marker cluster', () => {
 

@@ -1,83 +1,57 @@
 import L from 'leaflet';
-import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
-import choropleth from './choropleth';
-import cluster from './cluster';
-import earthEngine from './earthengine';
+import google from './Google';
+import mapQuest from './MapQuest';
+import choropleth from './Choropleth';
+import cluster from './Cluster';
+import earthEngine from './EarthEngine';
 
+
+/**
+ * Creates a map instance.
+ * @class Map
+ * @param {string|Element} id HTML element to initialize the map in (or element id as string)
+ * @param {Object} options
+ * @param {number} [options.minZoom=0] Minimum zoom of the map
+ * @param {number} [options.maxZoom=20] Maximum zoom of the map
+ * @example
+ * map('mapDiv', {
+ *   bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
+ * });
+ */
 export const Map = L.Map.extend({
-
     options: {
         className: 'leaflet-dhis2',
-        baseLayer: 'OpenStreetMap', // Default base layer
-        baseLayers: {
-            'OpenStreetMap': L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-                subdomains: '1234',
-                attribution: '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> and contributors, under an <a href="http://www.openstreetmap.org/copyright" title="ODbL">open license</a>. Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
-            }),
-            'Google Roads': new L.Google('ROADMAP'),
+        layerTypes: {
+            mapQuest,
+            google,
+            choropleth,
+            cluster,
+            earthEngine,
         },
-        showLayersControl: true,
     },
 
-    initialize(id, mapOptions) {
-        L.Map.prototype.initialize.call(this, id, mapOptions);
+    initialize(id, opts) {
+        L.Map.prototype.initialize.call(this, id, opts);
         const options = this.options;
 
         L.DomUtil.addClass(this.getContainer(), options.className);
 
         L.Icon.Default.imagePath = '/images';
 
-        if (options.showLayersControl) {
-            this.addLayersControl(options.baseLayers);
-        }
-
-        if (options.baseLayer) {
-            this.setBaseLayer(options.baseLayer);
-        }
-
-        if (options.earthEngine) {
-            this.addEarthEngine(options.earthEngine);
-        }
-
-        if (options.choropleth) {
-            this.addChoropleth(options.choropleth);
-        }
-
-        if (options.cluster) {
-            this.addCluster(options.cluster);
-        }
-
         if (options.bounds) {
             this.fitBounds(options.bounds);
         }
     },
 
-    setBaseLayer(layerName) {
-        if (this.options.baseLayers[layerName]) {
-            this.options.baseLayers[layerName].addTo(this);
+    addLayer(layer) {
+        const layerTypes = this.options.layerTypes;
+        let newLayer = layer;
+
+        if (layer.type && layerTypes[layer.type]) {
+            newLayer = layerTypes[layer.type](layer);
         }
-    },
 
-    addLayersControl(baseLayers, overlays) {
-        this._layersControl = L.control.layers(baseLayers, overlays).addTo(this);
-    },
-
-    addChoropleth(source) {
-        return choropleth(source).addTo(this);
-    },
-
-    /**
-     * addCluster() adds and returns a new cluster
-     *
-     * @param {String|Object} source
-     * @return {Cluster} cluster
-     */
-    addCluster(source) {
-        return cluster(source).addTo(this);
-    },
-
-    addEarthEngine(mapId) {
-        return earthEngine(mapId).addTo(this);
+        L.Map.prototype.addLayer.call(this, newLayer);
     },
 
 });

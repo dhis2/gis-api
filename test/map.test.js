@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {Map} from '../src/map';
+import {Map} from '../src/Map';
 
 describe('DHIS2 map', () => {
     let mapDiv;
@@ -20,11 +20,12 @@ describe('DHIS2 map', () => {
         expect(map).to.be.instanceOf(L.Map);
     });
 
-
+    /*
     it('should have a setBaseLayer method', () => {
         map = new Map('map');
         expect(map.setBaseLayer).to.be.a('function');
     });
+    */
 
     /*
     it('should have set the basemap layer', () => {
