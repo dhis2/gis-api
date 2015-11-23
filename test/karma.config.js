@@ -33,7 +33,7 @@ module.exports = function karmaConfigHandler(config) {
             devtool: 'inline-source-map', // just do inline source maps instead of the default
             module: {
                 preLoaders: [
-                    // transpile all files except testing sources with babel as usual
+                    // transpile layers files except testing sources with babel as usual
                     {
                         test: /\.js$/,
                         exclude: [

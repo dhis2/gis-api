@@ -4,6 +4,7 @@ import '../../scss/dhis2-gis.scss';
 map('map', {
     layers: [{
         type: 'mapQuest',
+        name: 'OpenStreetMap',
     }, {
         type: 'cluster',
         data: '/data/sierraleone.json',

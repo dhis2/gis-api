@@ -31,8 +31,11 @@ export const Map = L.Map.extend({
     },
 
     initialize(id, opts) {
-        L.Map.prototype.initialize.call(this, id, opts);
-        const options = this.options;
+        const options = L.setOptions(this, opts);
+        const baseLayers = this._baseLayers = {};
+        const overlays = this._overlays = {};
+
+        L.Map.prototype.initialize.call(this, id, options);
 
         L.DomUtil.addClass(this.getContainer(), options.className);
 
@@ -40,6 +43,10 @@ export const Map = L.Map.extend({
 
         if (options.bounds) {
             this.fitBounds(options.bounds);
+        }
+
+        if (Object.keys(baseLayers).length || Object.keys(overlays).length) {
+            L.control.layers(baseLayers, overlays).addTo(this);
         }
     },
 
@@ -49,6 +56,16 @@ export const Map = L.Map.extend({
 
         if (layer.type && layerTypes[layer.type]) {
             newLayer = layerTypes[layer.type](layer);
+
+            if (layer.baseLayer === true) {
+                this._baseLayers[layer.name] = newLayer;
+            } else if (layer.overlay === true) {
+                this._overlays[layer.name] = newLayer;
+            }
+
+            if (layer.visible === false) {
+                return;
+            }
         }
 
         L.Map.prototype.addLayer.call(this, newLayer);

@@ -4,12 +4,12 @@ import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leafle
 export const Google = L.Google.extend({
 
     options: {
-        type: 'ROADMAP',
+        style: 'ROADMAP',
     },
 
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
-        L.Google.prototype.initialize.call(this, options.type, options);
+        L.Google.prototype.initialize.call(this, options.style, options);
     },
 
 });

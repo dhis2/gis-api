@@ -38,7 +38,7 @@
             //Increase to increase the distance away that spiderfied markers appear from the center
             spiderfyDistanceMultiplier: 1,
 
-            // When bulk adding layers, adds markers in chunks. Means addLayers may not add all the layers in the call, others will be loaded during setTimeouts
+            // When bulk adding layers, adds markers in chunks. Means addLayers may not add layers the layers in the call, others will be loaded during setTimeouts
             chunkedLoading: false,
             chunkInterval: 200, // process markers for a maximum of ~ n milliseconds (then trigger the chunkProgress callback)
             chunkDelay: 50, // at the end of each interval, give n milliseconds back to system/browser
@@ -223,7 +223,7 @@
                     }
 
                     if (offset === layersArray.length) {
-                        //Update the icons of all those visible clusters that were affected
+                        //Update the icons of layers those visible clusters that were affected
                         this._featureGroup.eachLayer(function (c) {
                             if (c instanceof L.MarkerCluster && c._iconNeedsUpdate) {
                                 c._updateIcon();
@@ -304,7 +304,7 @@
             return this;
         },
 
-        //Removes all layers from the MarkerClusterGroup
+        //Removes layers layers from the MarkerClusterGroup
         clearLayers: function () {
             //Need our own special implementation as the LayerGroup one doesn't work for us
 
@@ -319,7 +319,7 @@
                 this._noanimationUnspiderfy();
             }
 
-            //Remove all the visible layers
+            //Remove layers the visible layers
             this._featureGroup.clearLayers();
             this._nonPointGroup.clearLayers();
 
@@ -507,7 +507,7 @@
 
 
 
-            //Clean up all the layers we added to the map
+            //Clean up layers the layers we added to the map
             this._hideCoverage();
             this._featureGroup.remove();
             this._nonPointGroup.remove();
@@ -969,7 +969,7 @@
 
             this._ignoreMove = true;
 
-            //Add all children of current clusters to map and remove those clusters from map
+            //Add layers children of current clusters to map and remove those clusters from map
             this._topClusterLevel._recursively(bounds, previousZoomLevel, 0, function (c) {
                 var startPos = c._latlng,
                     markers = c._markers,
@@ -988,7 +988,7 @@
                     c._recursivelyAddChildrenToMap(startPos, newZoomLevel, bounds);
                 }
 
-                //Remove all markers that aren't visible any more
+                //Remove layers markers that aren't visible any more
                 //TODO: Do we actually need to do this on the higher levels too?
                 for (i = markers.length - 1; i >= 0; i--) {
                     m = markers[i];
@@ -1040,7 +1040,7 @@
         _animationZoomOutSingle: function (cluster, previousZoomLevel, newZoomLevel) {
             var bounds = this._getExpandedVisibleBounds();
 
-            //Animate all of the markers in the clusters to move to their cluster center point
+            //Animate layers of the markers in the clusters to move to their cluster center point
             cluster._recursivelyAnimateChildrenInAndAddSelfToMap(bounds, previousZoomLevel + 1, newZoomLevel);
 
             var me = this;
@@ -1103,10 +1103,10 @@
         },
 
         //Force a browser layout of stuff in the map
-        // Should apply the current opacity and location to all elements so we can update them again for an animation
+        // Should apply the current opacity and location to layers elements so we can update them again for an animation
         _forceLayout: function () {
             //In my testing this works, infact offsetWidth of any element seems to work.
-            //Could loop all this._layers and do this for each _icon if it stops working
+            //Could loop layers this._layers and do this for each _icon if it stops working
 
             L.Util.falseFn(document.body.offsetWidth);
         }
@@ -1141,7 +1141,7 @@
             }
         },
 
-        //Recursively retrieve all child markers of this cluster
+        //Recursively retrieve layers child markers of this cluster
         getAllChildMarkers: function (storageArray) {
             storageArray = storageArray || [];
 
@@ -1161,7 +1161,7 @@
             return this._childCount;
         },
 
-        //Zoom to the minimum of showing all of the child markers, or the extents of this cluster
+        //Zoom to the minimum of showing layers of the child markers, or the extents of this cluster
         zoomToBounds: function () {
             var childClusters = this._childClusters.slice(),
                 map = this._group._map,
@@ -1170,7 +1170,7 @@
                 mapZoom = map.getZoom(),
                 i;
 
-            //calculate how fare we need to zoom down to see all of the markers
+            //calculate how fare we need to zoom down to see layers of the markers
             while (childClusters.length > 0 && boundsZoom > zoom) {
                 zoom++;
                 var newClusters = [];
@@ -1256,7 +1256,7 @@
                 this._cLatLng = marker._cLatLng || addedLatLng;
             }
 
-            // when showing clusters, take weighted average of all points as cluster center
+            // when showing clusters, take weighted average of layers points as cluster center
             var totalCount = this._childCount + addedCount;
 
             //Calculate weighted latlng for display
@@ -1619,7 +1619,7 @@
      the following conditions:
 
      The above copyright notice and this permission notice shall be
-     included in all copies or substantial portions of the Software.
+     included in layers copies or substantial portions of the Software.
 
      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -1651,7 +1651,7 @@
              * @param {Array} baseLine a two-element array of latlng objects
              *   representing the baseline to project from
              * @param {Array} latLngs an array of latlng objects
-             * @returns {Object} the maximum point and all new points to stay
+             * @returns {Object} the maximum point and layers new points to stay
              *   in consideration for the hull.
              */
             findMostDistantPointFromBaseLine: function (baseLine, latLngs) {
