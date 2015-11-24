@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import google from './Google';
 import mapQuest from './MapQuest';
+import districts from './Districts';
 import choropleth from './Choropleth';
 import cluster from './Cluster';
 import earthEngine from './EarthEngine';
@@ -24,6 +25,7 @@ export const Map = L.Map.extend({
         layerTypes: {
             mapQuest,
             google,
+            districts,
             choropleth,
             cluster,
             earthEngine,

@@ -32,18 +32,36 @@ map('map', {
         visible: false,
     }, {
         type: 'earthEngine',
+        name: 'Landcover',
+        overlay: true,
+        visible: false,
+        mapId: 'dee79d266742c143cae42c376483acf8',
+        token: 'ef067f8e3e931a5e97a7880f20b5ea7e',
+        opacity: 0.5,
+    }, {
+        type: 'earthEngine',
         name: 'Elevation',
         overlay: true,
         visible: false,
         mapId: '0f129e4e9edd5e503dc63bbef38fbcf7',
+        token: '3fbfb376d0a18ba4b4a4848cb0396f34',
         opacity: 0.5,
     }, {
         type: 'choropleth',
         name: 'Choropleth',
         overlay: true,
-        visible: true,
+        visible: false,
         features: '/data/geofeatures.json',
         data: '/data/analytics.json',
+        popup(feature) {
+            return 'Popup content for ' + feature.properties.na;
+        },
+    }, {
+        type: 'districts',
+        name: 'Districts',
+        overlay: true,
+        visible: true,
+        features: '/data/geofeatures.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
@@ -51,10 +69,8 @@ map('map', {
         type: 'cluster',
         name: 'Cluster',
         overlay: true,
-        visible: false,
+        visible: true,
         data: '/data/sierraleone.json',
     }],
     bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
 });
-
-

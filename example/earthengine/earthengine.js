@@ -3,7 +3,7 @@ import '../../scss/dhis2-gis.scss';
 
 map('map', {
     layers: [{
-        type: 'google',
+        type: 'mapQuest',
     }, {
         type: 'earthEngine',
         mapId: '0f129e4e9edd5e503dc63bbef38fbcf7',
