@@ -3,6 +3,7 @@ import google from './Google';
 import mapQuest from './MapQuest';
 import districts from './Districts';
 import choropleth from './Choropleth';
+import markers from './Markers';
 import cluster from './Cluster';
 import earthEngine from './EarthEngine';
 
@@ -27,6 +28,7 @@ export const Map = L.Map.extend({
             google,
             districts,
             choropleth,
+            markers,
             cluster,
             earthEngine,
         },

@@ -50,7 +50,7 @@ map('map', {
         type: 'choropleth',
         name: 'Choropleth',
         overlay: true,
-        visible: true,
+        visible: false,
         features: '/data/geofeatures.json',
         data: '/data/analytics.json',
         popup(feature) {
@@ -60,16 +60,22 @@ map('map', {
         type: 'districts',
         name: 'Districts',
         overlay: true,
-        visible: false,
+        visible: true,
         features: '/data/geofeatures.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
     }, {
+        type: 'markers',
+        name: 'Facility',
+        overlay: true,
+        visible: true,
+        data: '/data/sierraleone.json',
+    }, {
         type: 'cluster',
         name: 'Cluster',
         overlay: true,
-        visible: true,
+        visible: false,
         data: '/data/sierraleone.json',
     }],
     bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
