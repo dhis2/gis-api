@@ -50,7 +50,7 @@ map('map', {
         type: 'choropleth',
         name: 'Choropleth',
         overlay: true,
-        visible: false,
+        visible: true,
         features: '/data/geofeatures.json',
         data: '/data/analytics.json',
         popup(feature) {
@@ -60,7 +60,7 @@ map('map', {
         type: 'districts',
         name: 'Districts',
         overlay: true,
-        visible: true,
+        visible: false,
         features: '/data/geofeatures.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;

@@ -9,6 +9,11 @@ export const Districts = L.GeoJSON.extend({
             weight: 2,
             fillOpacity: 0,
         },
+        highlightStyle: {
+            color: '#333',
+            weight: 3,
+        },
+        highlight: false,
         labelTemplate: '{na}',
     },
 
@@ -16,7 +21,14 @@ export const Districts = L.GeoJSON.extend({
         const options = L.setOptions(this, opts);
         this._layers = {};
         this.setFeatures(options.features);
+
+        // Events
         this.on('click', this.onClick, this);
+
+        if (options.highlight) {
+            this.on('mouseover', this.onMouseOver, this);
+            this.on('mouseout', this.onMouseOut, this);
+        }
     },
 
     onClick(evt) {
@@ -34,6 +46,18 @@ export const Districts = L.GeoJSON.extend({
                 });
             }
         }
+    },
+
+    onMouseOver(evt) {
+        evt.layer.setStyle(this.options.highlightStyle);
+
+        if (!L.Browser.ie && !L.Browser.opera) {
+            evt.layer.bringToFront();
+        }
+    },
+
+    onMouseOut(evt) {
+        this.resetStyle(evt.layer);
     },
 
     setFeatures(features) {

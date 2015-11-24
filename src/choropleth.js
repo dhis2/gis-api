@@ -9,6 +9,7 @@ export const Choropleth = Districts.extend({
             weight: 1,
             fillOpacity: 0.8,
         },
+        highlight: true,
         colorRange: ['#FFEDA0', '#800026'],
     },
 
