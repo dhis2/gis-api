@@ -20,12 +20,9 @@ export const Features = L.GeoJSON.extend({
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
         this._layers = {};
-        this.setFeatures(options.features);
 
-        if (options.data) {
-            this.setFeatureData(options.data);
-            this._featureData = true;
-        }
+        this.setFeatures(options.features);
+        this.setData(options.data);
 
         // Events
         this.on('click', this.onClick, this);
@@ -65,80 +62,48 @@ export const Features = L.GeoJSON.extend({
         this.resetStyle(evt.layer);
     },
 
-    setFeatures(features) {
-        if (typeof features === 'string') { // URL
-            this.loadFeatures(features);
-        } else if (typeof features === 'object') {
-            this.addFeatures(features);
+    setFeatures(geoFeatures) {
+        if (typeof geoFeatures === 'string') { // URL
+            this.loadFeatures(geoFeatures);
+        } else if (typeof geoFeatures === 'object') {
+            this.onLoad(geoFeatures, this._data);
         }
     },
 
     loadFeatures(url) {
         fetch(url)
             .then(response => response.json())
-            .then(this.addFeatures.bind(this))
+            .then(geoFeatures => this.onLoad(geoFeatures, this._data))
             .catch(ex => window.console.log('parsing failed', ex));
     },
 
-    addFeatures(features) {
-        //this._geojson = this._dhis2geojson(features);
-        this.addData(this._dhis2geojson(features));
+    onLoad(geoFeatures, data) {
+        this._features = geoFeatures;
+        this._data = data;
+
+        if (geoFeatures && data) {
+            this.addFeatures(this._dhis2geojson(geoFeatures, this._parseData(data)));
+        }
+    },
+
+    addFeatures(geojson) {
+        this.addData(geojson);
         this.addLabels(this.options.labelTemplate);
-        /*
-        if (features) {
-            this._geojson = features;
-
-            if (Array.isArray(features)) {
-                this._geojson = this._dhis2geojson(features);
-            }
-
-            this.addData(this._geojson);
-            this.addLabels(this.options.labelTemplate);
-        }
-        */
     },
 
-    setFeatureData(data) {
+    setData(data) {
         if (typeof data === 'string') { // URL
-            this.loadFeatureData(data);
-        } else if (typeof features === 'object') {
-            this.addFeatureData(data);
+            this.loadData(data);
+        } else if (typeof data === 'object') {
+            this.onLoad(this._features, data);
         }
     },
 
-    loadFeatureData(url) {
+    loadData(url) {
         fetch(url)
             .then(response => response.json())
-            .then(this.addFeatureData.bind(this))
+            .then(data => this.onLoad(this._features, data))
             .catch(ex => window.console.log('parsing failed', ex));
-    },
-
-    addFeatureData(data) {
-        if (this._geojson && data) {
-            //this._data = this.parseFeatureData(data);
-
-            console.log("addFeatureData", this._geojson, data);
-        }
-    },
-
-    // Convert array to object for easier lookup
-    parseFeatureData(data) {
-        const dataObj = {};
-        const values = [];
-        let value;
-
-        data.rows.forEach(d => {
-            value = Number(d[2]);
-            values.push(value);
-            dataObj[d[1]] = value;
-        });
-
-        values.sort((a, b) => a - b);
-
-        this._min = values[0];
-        this._max = values[values.length - 1];
-
-        return dataObj;
     },
 
     addPopup(latlng, content) {
@@ -154,10 +119,10 @@ export const Features = L.GeoJSON.extend({
         });
     },
 
-    _dhis2geojson(features, data) {
+    _dhis2geojson(geoFeatures, data) {
         return {
             type: 'FeatureCollection',
-            features: features.map(d => {
+            features: geoFeatures.map(d => {
                 const feature = {
                     type: 'Feature',
                     id: d.id,
@@ -176,9 +141,32 @@ export const Features = L.GeoJSON.extend({
                     };
                 }
 
+                if (data && data[d.id] !== undefined) {
+                    feature.properties.value = data[d.id];
+                }
+
                 return feature;
             }),
         };
+    },
+
+    _parseData(data) {
+        const dataObj = {};
+        const values = [];
+        let value;
+
+        data.rows.forEach(d => {
+            value = Number(d[2]);
+            values.push(value);
+            dataObj[d[1]] = value;
+        });
+
+        values.sort((a, b) => a - b);
+
+        this._min = values[0];
+        this._max = values[values.length - 1];
+
+        return dataObj;
     },
 
 });

@@ -56,7 +56,7 @@ export const Map = L.Map.extend({
 
         if (options.scaleControl) {
             L.control.scale({
-                imperial: false
+                imperial: false,
             }).addTo(this);
         }
     },
