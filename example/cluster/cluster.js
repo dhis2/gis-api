@@ -7,7 +7,7 @@ map('map', {
         name: 'OpenStreetMap',
     }, {
         type: 'cluster',
-        data: '/data/sierraleone.json',
+        data: '/data/facilities-features.json',
     }],
     bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
 });

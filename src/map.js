@@ -1,10 +1,10 @@
 import L from 'leaflet';
 import google from './Google';
 import mapQuest from './MapQuest';
-import districts from './Districts';
+import features from './Features';
 import choropleth from './Choropleth';
-import markers from './Markers';
 import cluster from './Cluster';
+import circleMarkers from './CircleMarkers';
 import earthEngine from './EarthEngine';
 
 
@@ -26,12 +26,13 @@ export const Map = L.Map.extend({
         layerTypes: {
             mapQuest,
             google,
-            districts,
+            features,
             choropleth,
-            markers,
             cluster,
+            circleMarkers,
             earthEngine,
         },
+        scaleControl: true,
     },
 
     initialize(id, opts) {
@@ -51,6 +52,12 @@ export const Map = L.Map.extend({
 
         if (Object.keys(baseLayers).length || Object.keys(overlays).length) {
             L.control.layers(baseLayers, overlays).addTo(this);
+        }
+
+        if (options.scaleControl) {
+            L.control.scale({
+                imperial: false
+            }).addTo(this);
         }
     },
 

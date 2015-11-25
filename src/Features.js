@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import '../temp/leaflet.label-src';
 
-export const Districts = L.GeoJSON.extend({
+export const Features = L.GeoJSON.extend({
 
     options: {
         style: {
@@ -21,6 +21,11 @@ export const Districts = L.GeoJSON.extend({
         const options = L.setOptions(this, opts);
         this._layers = {};
         this.setFeatures(options.features);
+
+        if (options.data) {
+            this.setFeatureData(options.data);
+            this._featureData = true;
+        }
 
         // Events
         this.on('click', this.onClick, this);
@@ -76,6 +81,10 @@ export const Districts = L.GeoJSON.extend({
     },
 
     addFeatures(features) {
+        //this._geojson = this._dhis2geojson(features);
+        this.addData(this._dhis2geojson(features));
+        this.addLabels(this.options.labelTemplate);
+        /*
         if (features) {
             this._geojson = features;
 
@@ -86,6 +95,50 @@ export const Districts = L.GeoJSON.extend({
             this.addData(this._geojson);
             this.addLabels(this.options.labelTemplate);
         }
+        */
+    },
+
+    setFeatureData(data) {
+        if (typeof data === 'string') { // URL
+            this.loadFeatureData(data);
+        } else if (typeof features === 'object') {
+            this.addFeatureData(data);
+        }
+    },
+
+    loadFeatureData(url) {
+        fetch(url)
+            .then(response => response.json())
+            .then(this.addFeatureData.bind(this))
+            .catch(ex => window.console.log('parsing failed', ex));
+    },
+
+    addFeatureData(data) {
+        if (this._geojson && data) {
+            //this._data = this.parseFeatureData(data);
+
+            console.log("addFeatureData", this._geojson, data);
+        }
+    },
+
+    // Convert array to object for easier lookup
+    parseFeatureData(data) {
+        const dataObj = {};
+        const values = [];
+        let value;
+
+        data.rows.forEach(d => {
+            value = Number(d[2]);
+            values.push(value);
+            dataObj[d[1]] = value;
+        });
+
+        values.sort((a, b) => a - b);
+
+        this._min = values[0];
+        this._max = values[values.length - 1];
+
+        return dataObj;
     },
 
     addPopup(latlng, content) {
@@ -101,23 +154,35 @@ export const Districts = L.GeoJSON.extend({
         });
     },
 
-    _dhis2geojson(features) {
+    _dhis2geojson(features, data) {
         return {
             type: 'FeatureCollection',
-            features: features.map(f => ({
-                type: 'Feature',
-                id: f.id,
-                geometry: {
-                    type: 'MultiPolygon',
-                    coordinates: JSON.parse(f.co),
-                },
-                properties: f,
-            })),
+            features: features.map(d => {
+                const feature = {
+                    type: 'Feature',
+                    id: d.id,
+                    properties: d,
+                };
+
+                if (d.ty === 1) {
+                    feature.geometry = {
+                        type: 'Point',
+                        coordinates: d.co,
+                    };
+                } else if (d.ty === 2) {
+                    feature.geometry = {
+                        type: 'MultiPolygon',
+                        coordinates: JSON.parse(d.co),
+                    };
+                }
+
+                return feature;
+            }),
         };
     },
 
 });
 
-export default function districts(options) {
-    return new Districts(options);
+export default function features(options) {
+    return new Features(options);
 }

@@ -1,7 +1,7 @@
-import {Districts} from './Districts';
+import {Features} from './Features';
 import {linear} from 'd3-scale';
 
-export const Choropleth = Districts.extend({
+export const Choropleth = Features.extend({
 
     options: {
         style: {
@@ -14,12 +14,12 @@ export const Choropleth = Districts.extend({
     },
 
     initialize(options = {}) {
-        Districts.prototype.initialize.call(this, options);
+        Features.prototype.initialize.call(this, options);
         this.setFeatureData(options.data);
     },
 
     addFeatures(features) {
-        Districts.prototype.addFeatures.call(this, features);
+        Features.prototype.addFeatures.call(this, features);
         this.addFeatureData(this._data);
     },
 

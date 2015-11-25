@@ -51,32 +51,43 @@ map('map', {
         name: 'Choropleth',
         overlay: true,
         visible: false,
-        features: '/data/geofeatures.json',
-        data: '/data/analytics.json',
+        features: '/data/districts-features.json',
+        data: '/data/districts-data.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
     }, {
-        type: 'districts',
+        type: 'features',
         name: 'Districts',
         overlay: true,
-        visible: true,
-        features: '/data/geofeatures.json',
+        visible: false,
+        features: '/data/districts-features.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
     }, {
-        type: 'markers',
-        name: 'Facility',
+        type: 'features',
+        name: 'Facilities',
         overlay: true,
-        visible: true,
-        data: '/data/sierraleone.json',
+        visible: false,
+        features: '/data/facilities-features.json',
+        popup(feature) {
+            return 'Popup content for ' + feature.properties.na;
+        },
     }, {
         type: 'cluster',
         name: 'Cluster',
         overlay: true,
         visible: false,
-        data: '/data/sierraleone.json',
-    }],
+        data: '/data/facilities-features.json',
+    }, {
+        type: 'circleMarkers',
+        name: 'Proportional symbols',
+        overlay: true,
+        visible: true,
+        features: '/data/facilities-features.json',
+        data: '/data/facilities-data.json',
+    },
+    ],
     bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
 });

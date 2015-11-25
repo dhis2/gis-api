@@ -6,8 +6,8 @@ map('map', {
         type: 'mapQuest',
     }, {
         type: 'choropleth',
-        features: '/data/geofeatures.json',
-        data: '/data/analytics.json',
+        features: '/data/districts-features.json',
+        data: '/data/districts-data.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
