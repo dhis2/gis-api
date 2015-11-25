@@ -60,7 +60,7 @@ map('map', {
         type: 'features',
         name: 'Districts',
         overlay: true,
-        visible: false,
+        visible: true,
         features: '/data/districts-features.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
@@ -84,7 +84,7 @@ map('map', {
         type: 'circleMarkers',
         name: 'Proportional symbols',
         overlay: true,
-        visible: true,
+        visible: false,
         features: '/data/facilities-features.json',
         data: '/data/facilities-data.json',
     },

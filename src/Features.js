@@ -83,6 +83,8 @@ export const Features = L.GeoJSON.extend({
 
         if (geoFeatures && data) {
             this.addFeatures(this._dhis2geojson(geoFeatures, this._parseData(data)));
+        } else if (geoFeatures && !this.options.data) {
+            this.addFeatures(this._dhis2geojson(geoFeatures));
         }
     },
 
