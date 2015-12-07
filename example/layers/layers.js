@@ -30,21 +30,21 @@ map('map', {
         style: 'HYBRID',
         baseLayer: true,
         visible: false,
-    }, {
+    }, /* {
         type: 'earthEngine',
         name: 'Landcover',
         overlay: true,
         visible: false,
         mapId: 'dee79d266742c143cae42c376483acf8',
-        token: 'ef067f8e3e931a5e97a7880f20b5ea7e',
+        token: '219946e0faa093860209f17a5cc1222f',
         opacity: 0.5,
-    }, {
+    },*/ {
         type: 'earthEngine',
         name: 'Elevation',
         overlay: true,
         visible: false,
         mapId: '0f129e4e9edd5e503dc63bbef38fbcf7',
-        token: '3fbfb376d0a18ba4b4a4848cb0396f34',
+        token: '219946e0faa093860209f17a5cc1222f',
         opacity: 0.5,
     }, {
         type: 'choropleth',
