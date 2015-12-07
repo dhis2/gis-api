@@ -3,6 +3,7 @@ import google from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
 import choropleth from './Choropleth';
+import heat from './Heat';
 import cluster from './Cluster';
 import circleMarkers from './CircleMarkers';
 import earthEngine from './EarthEngine';
@@ -28,6 +29,7 @@ export const Map = L.Map.extend({
             google,
             features,
             choropleth,
+            heat,
             cluster,
             circleMarkers,
             earthEngine,

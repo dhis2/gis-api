@@ -60,7 +60,7 @@ map('map', {
         type: 'features',
         name: 'Districts',
         overlay: true,
-        visible: true,
+        visible: false,
         features: '/data/districts-features.json',
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
@@ -74,6 +74,12 @@ map('map', {
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
+    }, {
+        type: 'heat',
+        name: 'Heat',
+        overlay: true,
+        visible: true,
+        data: '/data/facilities-features.json',
     }, {
         type: 'cluster',
         name: 'Cluster',
