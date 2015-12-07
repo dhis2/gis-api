@@ -4,6 +4,7 @@ import mapQuest from './MapQuest';
 import features from './Features';
 import choropleth from './Choropleth';
 import heat from './Heat';
+import grid from './Grid';
 import cluster from './Cluster';
 import circleMarkers from './CircleMarkers';
 import earthEngine from './EarthEngine';
@@ -30,6 +31,7 @@ export const Map = L.Map.extend({
             features,
             choropleth,
             heat,
+            grid,
             cluster,
             circleMarkers,
             earthEngine,

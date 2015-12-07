@@ -78,7 +78,7 @@ map('map', {
         type: 'heat',
         name: 'Heat',
         overlay: true,
-        visible: true,
+        visible: false,
         data: '/data/facilities-features.json',
     }, {
         type: 'cluster',
@@ -86,6 +86,14 @@ map('map', {
         overlay: true,
         visible: false,
         data: '/data/facilities-features.json',
+    }, {
+        type: 'grid',
+        name: 'Grid',
+        overlay: true,
+        visible: true,
+        data: '/data/facilities-features.json',
+        bbox: [-13.3035, 6.9176, -10.2658, 10.0004],
+        cellWidth: 25,
     }, {
         type: 'circleMarkers',
         name: 'Proportional symbols',
