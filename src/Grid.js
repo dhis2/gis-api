@@ -15,8 +15,7 @@ export const Grid = Choropleth.extend({
 
         this._layers = {};
         this._features = turf[options.gridType + 'Grid'](options.bbox, options.cellWidth, options.units);
-
-        this.setData(options.data);
+        this.setData(this.options.data);
     },
 
     onLoad(features, data) {

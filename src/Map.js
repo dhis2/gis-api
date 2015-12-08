@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import tileLayer from './TileLayer';
 import google from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
@@ -26,6 +27,7 @@ export const Map = L.Map.extend({
     options: {
         className: 'leaflet-dhis2',
         layerTypes: {
+            tileLayer,
             mapQuest,
             google,
             features,

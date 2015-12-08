@@ -6,6 +6,13 @@ map('map', {
         type: 'mapQuest',
         name: 'OpenStreetMap',
         baseLayer: true,
+        visible: false,
+    }, {
+        type: 'tileLayer',
+        url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        name: 'Light',
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        baseLayer: true,
         visible: true,
     }, {
         type: 'google',
@@ -104,6 +111,13 @@ map('map', {
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
+    }, {
+        type: 'tileLayer',
+        url: 'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
+        name: 'Labels',
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        overlay: false,
+        visible: true,
     },
     ],
     bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
