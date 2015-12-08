@@ -7,13 +7,14 @@ export const Grid = Choropleth.extend({
     options: {
         units: 'kilometers',
         labelTemplate: '{value}',
+        gridType: 'hex',
     },
 
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
 
         this._layers = {};
-        this._features = turf.hexGrid(options.bbox, options.cellWidth, options.units);
+        this._features = turf[options.gridType + 'Grid'](options.bbox, options.cellWidth, options.units);
 
         this.setData(options.data);
     },
