@@ -26,6 +26,12 @@ export const ServerCluster = L.GridLayer.extend({
 
     loadClusterTile(coords) {
         const tileId = this.getClusterTileId(coords);
+
+        if (this._clusterCache[tileId]) {
+            this.addClusters(this._clusterCache[tileId]);
+            return;
+        }
+
         const tileBounds = this._tileCoordsToBounds(coords).toBBoxString();
         const clusterSize = this.getResolution(coords.z) * this.options.clusterSize;
         const query = `SELECT COUNT(the_geom) AS count, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
@@ -37,6 +43,8 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     onClusterTileLoad(tileId, data) {
+        this._clusterCache[tileId] = data.rows;
+
         if (data.rows.length) {
             this.addClusters(data.rows);
         }
