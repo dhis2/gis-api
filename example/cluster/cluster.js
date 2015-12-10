@@ -6,8 +6,10 @@ map('map', {
         type: 'mapQuest',
         name: 'OpenStreetMap',
     }, {
-        type: 'cluster',
-        data: '/data/facilities-features.json',
+        type: 'serverCluster',
+        name: 'Server Cluster',
+        overlay: true,
+        visible: true,
     }],
-    bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
+    bounds: [[58.787, 4.712], [59.669, 7.458]],
 });

@@ -3,11 +3,12 @@ import tileLayer from './TileLayer';
 import google from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
+import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import heat from './Heat';
 import grid from './Grid';
 import cluster from './Cluster';
-import circleMarkers from './CircleMarkers';
+import serverCluster from './ServerCluster';
 import earthEngine from './EarthEngine';
 
 
@@ -31,11 +32,12 @@ export const Map = L.Map.extend({
             mapQuest,
             google,
             features,
+            circleMarkers,
             choropleth,
             heat,
             grid,
             cluster,
-            circleMarkers,
+            serverCluster,
             earthEngine,
         },
         scaleControl: true,
