@@ -8,23 +8,18 @@ export const ServerCluster = L.GridLayer.extend({
 
     initialize(options) {
         L.setOptions(this, options);
-        // this._clusters = L.featureGroup();
-        this._clusters = L.layerGroup();
+        this._clusters = L.featureGroup();
+        this._clusterCache = {};
     },
 
     onAdd(map) {
         L.GridLayer.prototype.onAdd.call(this);
         this._clusters.addTo(map);
-
-        // this._clusters.addLayer(L.marker([59.337414, 5.968329]));
         map.on('zoomstart', this.onZoomStart, this);
     },
 
     createTile(coords) {
         const div = L.DomUtil.create('div', 'leaflet-tile-cluster');
-        // div.innerHTML = 'Bounds:<br>' + tileBounds.toBBoxString().replace(/\,/g, ',<br>');
-        // console.log("create tile", this.getClusterTileId(coords), tileBounds.toBBoxString());
-
         this.loadClusterTile(coords);
         return div;
     },
@@ -34,12 +29,6 @@ export const ServerCluster = L.GridLayer.extend({
         const tileBounds = this._tileCoordsToBounds(coords).toBBoxString();
         const clusterSize = this.getResolution(coords.z) * this.options.clusterSize;
         const query = `SELECT COUNT(the_geom) AS count, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
-
-
-        // const scale = 1 / (234.375 / Math.pow(2, zoom));
-        // return 1 / (234.375 / Math.pow(2, zoom));
-
-        // console.log('load', tileId, clusterSize);
 
         fetch(`http://turban.cartodb.com/api/v2/sql?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
@@ -98,7 +87,6 @@ export const ServerCluster = L.GridLayer.extend({
     getResolution(zoom) {
         return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
     },
-
 
 });
 
