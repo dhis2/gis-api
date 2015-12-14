@@ -4,7 +4,7 @@ import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is
 export const ServerCluster = L.GridLayer.extend({
     options: {
         tileSize: 512,
-        clusterSize: 125,
+        clusterSize: 110,
     },
 
     initialize(options) {
