@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/dhis2/dhis2-gis#readme",
   "dependencies": {
-    "d3-scale": "^0.1.5",
+    "d3-scale": "^0.2.0",
     "leaflet": "1.0.0-beta.2",
     "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
     "topojson": "^1.6.19",
@@ -36,11 +36,11 @@
     "whatwg-fetch": "0.10.1"
   },
   "devDependencies": {
-    "babel": "5.8.34",
-    "babel-core": "5.8.34",
-    "babel-eslint": "4.1.1",
-    "babel-loader": "5.4.0",
+    "babel-core": "^6.3.13",
+    "babel-eslint": "5.0.0-beta6",
+    "babel-loader": "^6.2.0",
     "babel-preset-es2015": "6.1.18",
+    "babel-preset-react": "^6.3.13",
     "babel-preset-stage-2": "6.1.18",
     "chai": "3.4.1",
     "css-loader": "0.18.0",
@@ -64,7 +64,7 @@
     "karma-sourcemap-loader": "0.3.6",
     "karma-webpack": "1.7.0",
     "mocha": "2.3.4",
-    "node-sass": "3.3.2",
+    "node-sass": "3.4.2",
     "phantomjs": "1.9.18",
     "phantomjs-polyfill": "0.0.1",
     "precommit-hook": "3.0.0",
@@ -73,8 +73,8 @@
     "sinon-chai": "2.8.0",
     "style-loader": "0.12.3",
     "susy": "2.2.5",
-    "webpack": "1.12.6",
-    "webpack-dev-server": "1.10.1"
+    "webpack": "1.12.9",
+    "webpack-dev-server": "1.14.0"
   },
   "pre-commit": [
     "test",
