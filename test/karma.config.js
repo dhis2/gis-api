@@ -42,7 +42,8 @@ module.exports = function karmaConfigHandler(config) {
                         ],
                         loader: 'babel',
                         query: {
-                            stage: 2,
+                            cacheDirectory: true,
+                            presets: ['es2015', 'stage-2'],
                         },
                     },
                     // transpile and instrument only testing sources with isparta
