@@ -1,7 +1,7 @@
 {
-  "name": "dhis2-gis",
+  "name": "dhis2-gis-api",
   "version": "0.0.1",
-  "description": "GIS component for DHIS2",
+  "description": "GIS API for DHIS 2 based on Leaflet",
   "main": "lib/index.js",
   "scripts": {
     "validate": "npm ls --depth 0",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhis2/dhis2-gis.git"
+    "url": "git+https://github.com/dhis2/dhis2-gis-api.git"
   },
   "keywords": [
     "DHIS2",
@@ -24,9 +24,9 @@
   "author": "Bjørn Sandvik",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/dhis2/dhis2-gis/issues"
+    "url": "https://github.com/dhis2/dhis2-gis-api/issues"
   },
-  "homepage": "https://github.com/dhis2/dhis2-gis#readme",
+  "homepage": "https://github.com/dhis2/dhis2-gis-api#readme",
   "dependencies": {
     "d3-scale": "^0.2.0",
     "leaflet": "1.0.0-beta.2",
