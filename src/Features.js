@@ -6,7 +6,7 @@ export const Features = L.GeoJSON.extend({
     options: {
         style: {
             color: '#555',
-            weight: 2,
+            weight: 1,
             fillOpacity: 0,
         },
         highlightStyle: {

@@ -46,13 +46,16 @@ map('map', {
         token: '219946e0faa093860209f17a5cc1222f',
         opacity: 0.5,
     },*/ {
+        // https://code.earthengine.google.com/d09f38a4d065b54eea18d5fcc9189ad2
         type: 'earthEngine',
         name: 'Elevation',
         overlay: true,
         visible: false,
-        mapId: '0f129e4e9edd5e503dc63bbef38fbcf7',
-        token: '219946e0faa093860209f17a5cc1222f',
-        opacity: 0.5,
+        // mapId: '0f129e4e9edd5e503dc63bbef38fbcf7',
+        // token: 'bb1bda722c87c56c2420669af1ddebff',
+        mapId: '73044e67e4abbd57d7ae4eb7ed37ca94',
+        token: 'f53b1cdeb07ab5f21f5d196aa4d6a9e0',
+        opacity: 0.8,
     }, {
         type: 'choropleth',
         name: 'Choropleth',
@@ -100,7 +103,7 @@ map('map', {
         visible: false,
         data: '/data/facilities-features.json',
         bbox: [-13.3035, 6.9176, -10.2658, 10.0004],
-        cellWidth: 25,
+        cellWidth: 20,
     }, {
         type: 'circleMarkers',
         name: 'Proportional symbols',
@@ -116,7 +119,7 @@ map('map', {
         url: 'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
         name: 'Labels',
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-        overlay: false,
+        overlay: true,
         visible: false,
     },
     ],
