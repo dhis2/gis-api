@@ -3,6 +3,7 @@ import tileLayer from './TileLayer';
 import google from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
+import points from './Points';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import heat from './Heat';
@@ -32,6 +33,7 @@ export const Map = L.Map.extend({
             mapQuest,
             google,
             features,
+            points,
             circleMarkers,
             choropleth,
             heat,
@@ -83,11 +85,13 @@ export const Map = L.Map.extend({
             }
 
             if (layer.visible === false) {
-                return;
+                // return; // TODO
             }
         }
 
         L.Map.prototype.addLayer.call(this, newLayer);
+
+        return newLayer;
     },
 
 });
