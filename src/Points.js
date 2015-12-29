@@ -15,14 +15,15 @@ export const Points = L.GeoJSON.extend({
             weight: 2,
         },
         highlight: true,
-
-        pointToLayer(geojson, latlng) {
-            return L.circleMarker(latlng);
-        },
     },
 
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
+
+        if (!options.pointToLayer) {
+            options.pointToLayer = this.pointToLayer.bind(this);
+        }
+
         this._layers = {};
 
         if (options.data) {
@@ -30,16 +31,19 @@ export const Points = L.GeoJSON.extend({
         }
     },
 
-    addLayer(layer) {
-        L.GeoJSON.prototype.addLayer.call(this, layer);
+    pointToLayer(feature, latlng) {
+        const options = this.options;
+        const point = L.circleMarker(latlng);
 
-        if (this.options.label) {
-            layer.bindLabel(L.Util.template(this.options.label, layer.feature.properties));
+        if (options.label) {
+            point.bindLabel(L.Util.template(options.label, feature.properties));
         }
 
-        if (this.options.popup) {
-            layer.bindPopup(L.Util.template(this.options.popup, layer.feature.properties));
+        if (options.popup) {
+            point.bindPopup(L.Util.template(options.popup, feature.properties));
         }
+
+        return point;
     },
 
     onAdd(map) {

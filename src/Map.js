@@ -4,6 +4,7 @@ import google from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
 import points from './Points';
+import markers from './Markers';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import heat from './Heat';
@@ -34,6 +35,7 @@ export const Map = L.Map.extend({
             google,
             features,
             points,
+            markers,
             circleMarkers,
             choropleth,
             heat,
