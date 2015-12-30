@@ -17,6 +17,21 @@ export const Markers = L.GeoJSON.extend({
         }
     },
 
+    addLayer(layer) {
+        const options = this.options;
+        const feature = layer.feature;
+
+        if (options.label) {
+            layer.bindLabel(L.Util.template(options.label, feature.properties));
+        }
+
+        if (options.popup) {
+            layer.bindPopup(L.Util.template(options.popup, feature.properties));
+        }
+
+        L.GeoJSON.prototype.addLayer.call(this, layer);
+    },
+
     pointToLayer(feature, latlng) {
         const options = this.options;
 
@@ -26,17 +41,7 @@ export const Markers = L.GeoJSON.extend({
             markerOptions.icon = L.icon(options.icon); // TODO: Reuse icons?
         }
 
-        const marker = L.marker(latlng, markerOptions);
-
-        if (options.label) {
-            marker.bindLabel(L.Util.template(options.label, feature.properties));
-        }
-
-        if (options.popup) {
-            marker.bindPopup(L.Util.template(options.popup, feature.properties));
-        }
-
-        return marker;
+        return L.marker(latlng, markerOptions);
     },
 
 });

@@ -31,19 +31,23 @@ export const Points = L.GeoJSON.extend({
         }
     },
 
-    pointToLayer(feature, latlng) {
+    addLayer(layer) {
         const options = this.options;
-        const point = L.circleMarker(latlng);
+        const feature = layer.feature;
 
         if (options.label) {
-            point.bindLabel(L.Util.template(options.label, feature.properties));
+            layer.bindLabel(L.Util.template(options.label, feature.properties));
         }
 
         if (options.popup) {
-            point.bindPopup(L.Util.template(options.popup, feature.properties));
+            layer.bindPopup(L.Util.template(options.popup, feature.properties));
         }
 
-        return point;
+        L.GeoJSON.prototype.addLayer.call(this, layer);
+    },
+
+    pointToLayer(feature, latlng) {
+        return L.circleMarker(latlng);
     },
 
     onAdd(map) {
