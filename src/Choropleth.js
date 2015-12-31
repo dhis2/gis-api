@@ -9,20 +9,52 @@ export const Choropleth = Features.extend({
             weight: 1,
             fillOpacity: 0.8,
         },
-        highlight: true,
+        highlightStyle: {
+            weight: 3,
+        },
         colorRange: ['#FFEDA0', '#800026'],
-        labelTemplate: '{na} {value}',
+        valueKey: 'value',
+        noDataValue: -9999,
     },
 
+    onAdd(map) {
+        this._minValue = null;
+        this._maxValue = null;
+
+        Features.prototype.onAdd.call(this, map);
+    },
+
+    // Change min and max values on layer add
+    addLayer(layer) {
+        const options = this.options;
+        const value = layer.feature.properties[options.valueKey];
+
+        if (value !== options.noDataValue) {
+            if (this._minValue === null || value < this._minValue) {
+                this._minValue = value;
+            }
+
+            if (this._maxValue === null || value > this._maxValue) {
+                this._maxValue = value;
+            }
+        }
+
+        Features.prototype.addLayer.call(this, layer);
+    },
+
+    // Add features and set styles
     addFeatures(geojson) {
-        const scale = linear().domain([this._min, this._max]).range(this.options.colorRange);
+        Features.prototype.addFeatures.call(this, geojson);
 
-        this.addData(geojson);
-        this.addLabels(this.options.labelTemplate);
+        if (this._minValue !== null && this._maxValue !== null) {
+            const scale = linear().domain([this._minValue, this._maxValue]).range(this.options.colorRange);
 
-        this.setStyle(feature => ({
-            fillColor: scale(feature.properties.value),
-        }));
+            this.setStyle(feature => {
+                return {
+                    fillColor: scale(feature.properties.value),
+                };
+            });
+        }
     },
 
 });

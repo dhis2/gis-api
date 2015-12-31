@@ -21,7 +21,7 @@ export const Features = L.GeoJSON.extend({
         this._layers = {};
 
         if (options.data) {
-            this.addData(options.data);
+            this.addFeatures(options.data);
         }
     },
 
@@ -38,6 +38,10 @@ export const Features = L.GeoJSON.extend({
         }
 
         L.GeoJSON.prototype.addLayer.call(this, layer);
+    },
+
+    addFeatures(geojson) {
+        this.addData(geojson);
     },
 
     onAdd(map) {
