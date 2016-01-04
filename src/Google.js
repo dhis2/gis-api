@@ -12,8 +12,7 @@ export const GoogleLayer = L.Google.extend({
 
         this._type = options.style;
 
-        // Check if Google Maps API is loaded
-        if (google && google.maps) {
+        if (this.googleMapsApiLoaded()) {
             this._ready = google.maps.Map !== undefined;
             if (!this._ready) L.Google.asyncWait.push(this);
         } else {
@@ -26,9 +25,14 @@ export const GoogleLayer = L.Google.extend({
         this._insertAtTheBottom = insertAtTheBottom;
 
         // Add to map if Google Maps API is loaded
-        if (google && google.maps) {
+        if (this.googleMapsApiLoaded()) {
             L.Google.prototype.onAdd.call(this, map, insertAtTheBottom);
         }
+    },
+
+    // Check if Google Maps API is loaded
+    googleMapsApiLoaded() {
+        return (typeof google !== 'undefined' && typeof google.maps !== 'undefined');
     },
 
     // Async loading of Google Maps API
