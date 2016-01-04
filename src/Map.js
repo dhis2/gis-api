@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import tileLayer from './TileLayer';
-import google from './Google';
+import googleLayer from './Google';
 import mapQuest from './MapQuest';
 import features from './Features';
 import points from './Points';
@@ -32,7 +32,7 @@ export const Map = L.Map.extend({
         layerTypes: {
             tileLayer,
             mapQuest,
-            google,
+            googleLayer,
             features,
             points,
             markers,
