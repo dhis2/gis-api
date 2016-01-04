@@ -34,7 +34,7 @@ export const GoogleLayer = L.Google.extend({
     // Async loading of Google Maps API
     loadGoogleMapsApi() {
         // Create random callback function
-        const callbackFunc = 'onGoogleMapsApiRready_' + (Math.random() + 1).toString(36).substring(7);
+        const callbackFunc = 'onGoogleMapsApiReady_' + (Math.random() + 1).toString(36).substring(7);
 
         // Bind global callback to this instance
         window[callbackFunc] = this.onGoogleMapsApiLoad.bind(this);
