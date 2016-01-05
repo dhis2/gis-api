@@ -59,9 +59,6 @@ export const GoogleLayer = L.Google.extend({
 
 });
 
-
 export default function googleLayer(options) {
     return new GoogleLayer(options);
 }
-
-
