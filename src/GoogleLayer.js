@@ -4,8 +4,8 @@ import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leafle
 export const GoogleLayer = L.Google.extend({
 
     options: {
-        style: 'ROADMAP',
-        version: '3.22', // Google Maps API version
+        style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
+        version: '3.22',  // Google Maps API version
     },
 
     initialize(opts = {}) {

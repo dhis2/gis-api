@@ -1,7 +1,6 @@
-import L from 'leaflet';
-import '../temp/leaflet.label-src';
+import {GeoJSON} from './GeoJSON';
 
-export const Markers = L.GeoJSON.extend({
+export const Markers = GeoJSON.extend({
 
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
