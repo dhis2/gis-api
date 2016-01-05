@@ -5,6 +5,7 @@ export const GoogleLayer = L.Google.extend({
 
     options: {
         style: 'ROADMAP',
+        version: '3.22', // Google Maps API version
     },
 
     initialize(opts = {}) {
@@ -44,7 +45,7 @@ export const GoogleLayer = L.Google.extend({
         window[callbackFunc] = this.onGoogleMapsApiLoad.bind(this);
 
         const script = document.createElement('script');
-        script.src = 'http://maps.googleapis.com/maps/api/js?callback=' + callbackFunc;
+        script.src = `//maps.googleapis.com/maps/api/js?v=${this.options.version}&callback=${callbackFunc}`;
         document.getElementsByTagName('head')[0].appendChild(script);
     },
 

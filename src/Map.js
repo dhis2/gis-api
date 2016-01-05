@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import tileLayer from './TileLayer';
-import googleLayer from './Google';
+import googleLayer from './GoogleLayer';
 import mapQuest from './MapQuest';
 import features from './Features';
 import points from './Points';
