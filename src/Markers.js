@@ -1,4 +1,5 @@
 import {GeoJSON} from './GeoJSON';
+import marker from './Marker';
 
 export const Markers = GeoJSON.extend({
 
@@ -47,7 +48,7 @@ export const Markers = GeoJSON.extend({
             markerOptions.icon = L.icon(feature.properties[iconProperty]);
         }
 
-        return L.marker(latlng, markerOptions);
+        return marker(latlng, markerOptions);
     },
 
 });
