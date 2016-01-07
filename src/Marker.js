@@ -17,6 +17,10 @@ export const Marker = L.Marker.extend({
             L.DomUtil.addClass(label, 'leaflet-marker-label');
             L.DomUtil.addClass(label, classToAdd);
 
+            if (this.options.labelStyle) {
+                L.extend(label.style, this.options.labelStyle);
+            }
+
             this.getPane().appendChild(label);
         }
 

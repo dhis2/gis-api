@@ -18,31 +18,20 @@ export const Markers = GeoJSON.extend({
         }
 
         this._layers = {};
-        this._icons = {};
 
         if (options.data) {
             this.addData(options.data);
         }
     },
 
-    addLayer(layer) {
-        const options = this.options;
-        const feature = layer.feature;
-
-        if (options.label) {
-            layer.bindLabel(L.Util.template(options.label, feature.properties));
-        }
-
-        if (options.popup) {
-            layer.bindPopup(L.Util.template(options.popup, feature.properties));
-        }
-
-        L.GeoJSON.prototype.addLayer.call(this, layer);
-    },
-
     pointToLayer(feature, latlng) {
         const iconProperty = this.options.iconProperty;
         const markerOptions = L.extend({}, this.options.markerOptions);
+
+        if (this.options.label) {
+            markerOptions.label = L.Util.template(this.options.label, feature.properties);
+            markerOptions.labelStyle = this.options.labelStyle;
+        }
 
         if (iconProperty && feature.properties[iconProperty]) {
             markerOptions.icon = L.icon(feature.properties[iconProperty]);

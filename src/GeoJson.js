@@ -13,8 +13,8 @@ export const GeoJSON = L.GeoJSON.extend({
         const options = this.options;
         const feature = layer.feature;
 
-        if (options.label) {
-            layer.bindLabel(L.Util.template(options.label, feature.properties));
+        if (options.hoverLabel || options.label) {
+            layer.bindLabel(L.Util.template(options.hoverLabel || options.label, feature.properties));
         }
 
         if (options.popup) {
