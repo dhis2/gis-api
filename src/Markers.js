@@ -2,6 +2,13 @@ import {GeoJSON} from './GeoJSON';
 
 export const Markers = GeoJSON.extend({
 
+    options: {
+        highlightStyle: false,
+        markerOptions: {
+            riseOnHover: true,
+        },
+    },
+
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
 
@@ -10,6 +17,7 @@ export const Markers = GeoJSON.extend({
         }
 
         this._layers = {};
+        this._icons = {};
 
         if (options.data) {
             this.addData(options.data);
@@ -32,12 +40,11 @@ export const Markers = GeoJSON.extend({
     },
 
     pointToLayer(feature, latlng) {
-        const options = this.options;
+        const iconProperty = this.options.iconProperty;
+        const markerOptions = L.extend({}, this.options.markerOptions);
 
-        const markerOptions = {};
-
-        if (options.icon) {
-            markerOptions.icon = L.icon(options.icon); // TODO: Reuse icons?
+        if (iconProperty && feature.properties[iconProperty]) {
+            markerOptions.icon = L.icon(feature.properties[iconProperty]);
         }
 
         return L.marker(latlng, markerOptions);
