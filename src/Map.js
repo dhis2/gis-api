@@ -4,6 +4,7 @@ import googleLayer from './GoogleLayer';
 import mapQuest from './MapQuest';
 import features from './Features';
 import points from './Points';
+import circles from './Circles';
 import markers from './Markers';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
@@ -35,6 +36,7 @@ export const Map = L.Map.extend({
             googleLayer,
             features,
             points,
+            circles,
             markers,
             circleMarkers,
             choropleth,
@@ -78,7 +80,7 @@ export const Map = L.Map.extend({
         let newLayer = layer;
 
         if (layer.type && layerTypes[layer.type]) {
-            newLayer = layerTypes[layer.type](layer);
+            newLayer = this.createLayer(layer);
 
             if (layer.baseLayer === true) {
                 this._baseLayers[layer.name] = newLayer;
@@ -94,6 +96,10 @@ export const Map = L.Map.extend({
         L.Map.prototype.addLayer.call(this, newLayer);
 
         return newLayer;
+    },
+
+    createLayer(layer) {
+        return this.options.layerTypes[layer.type](layer);
     },
 
 });
