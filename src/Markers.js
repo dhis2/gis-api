@@ -40,6 +40,29 @@ export const Markers = GeoJSON.extend({
         return marker(latlng, markerOptions);
     },
 
+    highlight(id) {
+        const layer = this.findById(id);
+
+        this.removeHighlight();
+
+        if (layer) {
+            this._highlight = L.circleMarker(layer.getLatLng(), {
+                radius: 5,
+                color: 'orange',
+                fillOpacity: 0,
+                className: 'leaflet-marker-highlight',
+            }).addTo(this._map);
+
+            return layer;
+        }
+    },
+
+    removeHighlight() {
+        if (this._highlight) {
+            this._map.removeLayer(this._highlight);
+        }
+    },
+
 });
 
 export default function markers(options) {

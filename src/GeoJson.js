@@ -31,6 +31,16 @@ export const GeoJSON = L.GeoJSON.extend({
         });
     },
 
+    findById(id) {
+        for (const i in this._layers) {
+            if (this._layers[i].feature.id === id) {
+                return this._layers[i];
+            }
+        }
+
+        return null;
+    },
+
     onAdd(map) {
         L.GeoJSON.prototype.onAdd.call(this, map);
 
