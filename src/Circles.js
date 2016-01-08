@@ -1,4 +1,4 @@
-import {GeoJSON} from './GeoJSON';
+import {GeoJSON} from './GeoJson';
 
 export const Circles = GeoJSON.extend({
 

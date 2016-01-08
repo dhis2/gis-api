@@ -1,4 +1,4 @@
-import {GeoJSON} from './GeoJSON';
+import {GeoJSON} from './GeoJson';
 import marker from './Marker';
 
 export const Markers = GeoJSON.extend({
