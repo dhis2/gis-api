@@ -1,7 +1,7 @@
-import {GeoJSON} from './GeoJson';
+import {GeoJson} from './GeoJson';
 import marker from './Marker';
 
-export const Markers = GeoJSON.extend({
+export const Markers = GeoJson.extend({
 
     options: {
         highlightStyle: false,
@@ -10,18 +10,12 @@ export const Markers = GeoJSON.extend({
         },
     },
 
-    initialize(opts = {}) {
-        const options = L.setOptions(this, opts);
-
+    initialize(options = {}) {
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
 
-        this._layers = {};
-
-        if (options.data) {
-            this.addData(options.data);
-        }
+        GeoJson.prototype.initialize.call(this, options);
     },
 
     pointToLayer(feature, latlng) {

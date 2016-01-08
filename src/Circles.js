@@ -1,6 +1,6 @@
-import {GeoJSON} from './GeoJson';
+import {GeoJson} from './GeoJson';
 
-export const Circles = GeoJSON.extend({
+export const Circles = GeoJson.extend({
 
     options: {
         radius: 1000,
@@ -15,7 +15,7 @@ export const Circles = GeoJSON.extend({
             options.pointToLayer = this.pointToLayer.bind(this);
         }
 
-        GeoJSON.prototype.initialize.call(this, options.data, options);
+        GeoJson.prototype.initialize.call(this, options);
     },
 
     pointToLayer(feature, latlng) {

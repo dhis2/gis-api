@@ -1,6 +1,6 @@
-import {GeoJSON} from './GeoJson';
+import {GeoJson} from './GeoJson';
 
-export const Points = GeoJSON.extend({
+export const Points = GeoJson.extend({
 
     options: {
         style: {
@@ -17,7 +17,7 @@ export const Points = GeoJSON.extend({
             options.pointToLayer = this.pointToLayer.bind(this);
         }
 
-        GeoJSON.prototype.initialize.call(this, options.data, options);
+        GeoJson.prototype.initialize.call(this, options);
     },
 
     pointToLayer(feature, latlng) {

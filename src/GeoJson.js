@@ -1,12 +1,16 @@
 import L from 'leaflet';
 import '../temp/leaflet.label-src';
 
-export const GeoJSON = L.GeoJSON.extend({
+export const GeoJson = L.GeoJSON.extend({
 
     options: {
         highlightStyle: {
             weight: 2,
         },
+    },
+
+    initialize(options = {}) {
+        L.GeoJSON.prototype.initialize.call(this, options.data, options);
     },
 
     addLayer(layer) {
@@ -83,6 +87,6 @@ export const GeoJSON = L.GeoJSON.extend({
 
 });
 
-export default function points(options) {
-    return new Points(options);
+export default function geoJson(options) {
+    return new GeoJson(options);
 }

@@ -1,6 +1,6 @@
-import {GeoJSON} from './GeoJson';
+import {GeoJson} from './GeoJson';
 
-export const Features = GeoJSON.extend({
+export const Features = GeoJson.extend({
 
     options: {
         style: {

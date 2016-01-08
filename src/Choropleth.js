@@ -1,60 +1,30 @@
-import {Features} from './Features';
-import {linear} from 'd3-scale';
+import {GeoJson} from './GeoJson';
 
-export const Choropleth = Features.extend({
+export const Choropleth = GeoJson.extend({
 
     options: {
         style: {
-            color: '#333',
+            color: '#FFF',
             weight: 1,
             fillOpacity: 0.8,
         },
         highlightStyle: {
-            weight: 3,
+            weight: 2,
         },
-        colorRange: ['#FFEDA0', '#800026'],
         valueKey: 'value',
-        noDataValue: -9999,
+        colorKey: 'color',
     },
 
-    onAdd(map) {
-        this._minValue = null;
-        this._maxValue = null;
-
-        Features.prototype.onAdd.call(this, map);
-    },
-
-    // Change min and max values on layer add
     addLayer(layer) {
-        const options = this.options;
-        const value = layer.feature.properties[options.valueKey];
+        const color = layer.feature.properties[this.options.colorKey];
 
-        if (value !== options.noDataValue) {
-            if (this._minValue === null || value < this._minValue) {
-                this._minValue = value;
-            }
-
-            if (this._maxValue === null || value > this._maxValue) {
-                this._maxValue = value;
-            }
-        }
-
-        Features.prototype.addLayer.call(this, layer);
-    },
-
-    // Add features and set styles
-    addFeatures(geojson) {
-        Features.prototype.addFeatures.call(this, geojson);
-
-        if (this._minValue !== null && this._maxValue !== null) {
-            const scale = linear().domain([this._minValue, this._maxValue]).range(this.options.colorRange);
-
-            this.setStyle(feature => {
-                return {
-                    fillColor: scale(feature.properties.value),
-                };
+        if (color) {
+            layer.setStyle({
+                fillColor: color,
             });
         }
+
+        GeoJson.prototype.addLayer.call(this, layer);
     },
 
 });
