@@ -7,6 +7,12 @@
         text-align: center;
     }
 
+    .leaflet-div-label {
+        margin-left: -80px;
+        text-align: center;
+
+    }
+
     .leaflet-marker-highlight {
         -webkit-animation: pulse 2s ease-out;
         animation: pulse 2s ease-out;

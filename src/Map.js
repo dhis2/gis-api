@@ -2,7 +2,7 @@ import L from 'leaflet';
 import tileLayer from './TileLayer';
 import googleLayer from './GoogleLayer';
 import mapQuest from './MapQuest';
-import features from './Features';
+import boundary from './Boundary';
 import points from './Points';
 import circles from './Circles';
 import markers from './Markers';
@@ -34,7 +34,7 @@ export const Map = L.Map.extend({
             tileLayer,
             mapQuest,
             googleLayer,
-            features,
+            boundary,
             points,
             circles,
             markers,

@@ -1,7 +1,7 @@
-import {Features} from './Features';
+import {GeoJson} from './GeoJson';
 import {linear} from 'd3-scale';
 
-export const CircleMarkers = Features.extend({
+export const CircleMarkers = GeoJson.extend({
 
     options: {
         style: {

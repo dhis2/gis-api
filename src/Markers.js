@@ -8,6 +8,7 @@ export const Markers = GeoJson.extend({
         markerOptions: {
             riseOnHover: true,
         },
+        iconProperty: 'icon',
     },
 
     initialize(options = {}) {
