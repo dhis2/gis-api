@@ -1,6 +1,7 @@
 import {GeoJson} from './GeoJson';
 import marker from './Marker';
 
+// Markers with label support
 export const Markers = GeoJson.extend({
 
     options: {
@@ -35,6 +36,7 @@ export const Markers = GeoJson.extend({
         return marker(latlng, markerOptions);
     },
 
+    // Higlight marker with pulsing circle
     highlight(id) {
         const layer = this.findById(id);
 
@@ -52,6 +54,7 @@ export const Markers = GeoJson.extend({
         }
     },
 
+    // Remove highlight behind marker
     removeHighlight() {
         if (this._highlight) {
             this._map.removeLayer(this._highlight);

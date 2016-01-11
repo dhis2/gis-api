@@ -1,5 +1,6 @@
 import {GeoJson} from './GeoJson';
 
+// Layer of circle markers
 export const Points = GeoJson.extend({
 
     options: {

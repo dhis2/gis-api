@@ -29,6 +29,7 @@ export const Boundary = GeoJson.extend({
             layer.setStyle(prop.style);
         }
 
+        // Add text label
         if (this.options.label) {
             const labelStyle = L.extend(prop.labelStyle || {}, this.options.labelStyle);
             const latlng = (layer.getBounds ? layer.getBounds().getCenter() : layer.getLatLng());
@@ -48,16 +49,19 @@ export const Boundary = GeoJson.extend({
         GeoJson.prototype.addLayer.call(this, layer);
     },
 
+    // Set opacity for all features
     setOpacity(opacity) {
         this.setStyle({
             opacity: opacity,
         });
     },
 
+    // Use circle markers for point features
     pointToLayer(geojson, latlng) {
         return new L.CircleMarker(latlng, this.options.style);
     },
 
+    // Higlight feature based on id
     highlight(id) {
         const layer = this.findById(id);
 
@@ -71,6 +75,7 @@ export const Boundary = GeoJson.extend({
         }
     },
 
+    // Remove highlight from feature
     removeHighlight() {
         if (this._highlight) {
             this._highlight.setStyle({
@@ -79,11 +84,13 @@ export const Boundary = GeoJson.extend({
         }
     },
 
+    // Add labels
     onAdd(map) {
         map.addLayer(this._labels);
         GeoJson.prototype.onAdd.call(this, map);
     },
 
+    // Roemove labels
     onRemove(map) {
         map.removeLayer(this._labels);
         GeoJson.prototype.onRemove.call(this, map);
