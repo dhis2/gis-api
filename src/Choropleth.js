@@ -13,18 +13,36 @@ export const Choropleth = GeoJson.extend({
         },
         valueKey: 'value',
         colorKey: 'color',
+        radiusKey: 'radius',
+    },
+
+    initialize(options = {}) {
+        if (!options.pointToLayer) {
+            options.pointToLayer = this.pointToLayer.bind(this);
+        }
+
+        GeoJson.prototype.initialize.call(this, options);
     },
 
     addLayer(layer) {
         const color = layer.feature.properties[this.options.colorKey];
+        const radius = layer.feature.properties[this.options.radiusKey];
 
-        if (color) {
+        if (color && layer.setStyle) {
             layer.setStyle({
                 fillColor: color,
             });
         }
 
+        if (radius && layer.setRadius) {
+            layer.setRadius(radius);
+        }
+
         GeoJson.prototype.addLayer.call(this, layer);
+    },
+
+    pointToLayer(feature, latlng) {
+        return L.circleMarker(latlng);
     },
 
 });

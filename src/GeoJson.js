@@ -75,9 +75,11 @@ export const GeoJson = L.GeoJSON.extend({
     onMouseOver(evt) {
         evt.layer.setStyle(this.options.highlightStyle);
 
+        /*
         if (!L.Browser.ie && !L.Browser.opera) {
             evt.layer.bringToFront();
         }
+        */
     },
 
     // Reset style
