@@ -105,7 +105,7 @@ export const Map = L.Map.extend({
     },
 
     // Returns combined bounds for non-tile layers
-    getLayerBounds() {
+    getLayersBounds() {
         const bounds = new L.LatLngBounds();
 
         this.eachLayer(layer => {
