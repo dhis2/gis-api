@@ -56,6 +56,8 @@ export const Map = L.Map.extend({
 
         L.Map.prototype.initialize.call(this, id, options);
 
+        this.attributionControl.setPrefix('');
+
         L.DomUtil.addClass(this.getContainer(), options.className);
 
         L.Icon.Default.imagePath = '/images';
@@ -100,6 +102,19 @@ export const Map = L.Map.extend({
 
     createLayer(layer) {
         return this.options.layerTypes[layer.type](layer);
+    },
+
+    // Returns combined bounds for non-tile layers
+    getLayerBounds() {
+        const bounds = new L.LatLngBounds();
+
+        this.eachLayer(layer => {
+            if (layer.getBounds || layer.getLatLng) {
+                bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+            }
+        });
+
+        return bounds;
     },
 
 });
