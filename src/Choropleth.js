@@ -41,6 +41,31 @@ export const Choropleth = GeoJson.extend({
         GeoJson.prototype.addLayer.call(this, layer);
     },
 
+    // Higlight feature based on id
+    highlight(id) {
+        const layer = this.findById(id);
+
+        this.removeHighlight();
+
+        if (layer) {
+            this._highlight = layer.setStyle({
+                weight: 3,
+                fillOpacity: 1,
+            });
+            return layer;
+        }
+    },
+
+    // Remove highlight from feature
+    removeHighlight() {
+        if (this._highlight) {
+            this._highlight.setStyle({
+                weight: 1,
+                fillOpacity: 0.8,
+            });
+        }
+    },
+
     pointToLayer(feature, latlng) {
         return L.circleMarker(latlng);
     },
