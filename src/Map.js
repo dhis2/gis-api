@@ -8,6 +8,7 @@ import circles from './Circles';
 import markers from './Markers';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
+import fitBoundsControl from './FitBounds';
 import heat from './Heat';
 import grid from './Grid';
 import cluster from './Cluster';
@@ -46,6 +47,7 @@ export const Map = L.Map.extend({
             earthEngine,
         },
         scaleControl: true,
+        fitBoundsControl: true,
     },
 
     initialize(id, opts) {
@@ -74,6 +76,10 @@ export const Map = L.Map.extend({
                 imperial: false,
             }).addTo(this);
         }
+
+        if (options.fitBoundsControl) {
+            fitBoundsControl().addTo(this);
+        }
     },
 
     addLayer(layer) {
@@ -87,10 +93,6 @@ export const Map = L.Map.extend({
                 this._baseLayers[layer.name] = newLayer;
             } else if (layer.overlay === true) {
                 this._overlays[layer.name] = newLayer;
-            }
-
-            if (layer.visible === false) {
-                // return; // TODO
             }
         }
 
