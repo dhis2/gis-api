@@ -1,4 +1,5 @@
 import {GeoJson} from './GeoJson';
+import label from './Label';
 
 export const Choropleth = GeoJson.extend({
 
@@ -20,13 +21,14 @@ export const Choropleth = GeoJson.extend({
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
-
+        this._labels = L.layerGroup();
         GeoJson.prototype.initialize.call(this, options);
     },
 
     addLayer(layer) {
-        const color = layer.feature.properties[this.options.colorKey];
-        const radius = layer.feature.properties[this.options.radiusKey];
+        const prop = layer.feature.properties;
+        const color = prop[this.options.colorKey];
+        const radius = prop[this.options.radiusKey];
 
         if (color && layer.setStyle) {
             layer.setStyle({
@@ -36,6 +38,19 @@ export const Choropleth = GeoJson.extend({
 
         if (radius && layer.setRadius) {
             layer.setRadius(radius);
+        }
+
+        // Add text label
+        if (this.options.label) {
+            const labelStyle = L.extend(prop.labelStyle || {}, this.options.labelStyle);
+            const latlng = (layer.getBounds ? layer.getBounds().getCenter() : layer.getLatLng());
+
+            layer._label = label(latlng, {
+                html: L.Util.template(this.options.label, prop),
+                labelStyle: labelStyle,
+            });
+
+            this._labels.addLayer(layer._label);
         }
 
         GeoJson.prototype.addLayer.call(this, layer);
@@ -68,6 +83,18 @@ export const Choropleth = GeoJson.extend({
 
     pointToLayer(feature, latlng) {
         return L.circleMarker(latlng);
+    },
+
+    // Add labels
+    onAdd(map) {
+        map.addLayer(this._labels);
+        GeoJson.prototype.onAdd.call(this, map);
+    },
+
+    // Roemove labels
+    onRemove(map) {
+        map.removeLayer(this._labels);
+        GeoJson.prototype.onRemove.call(this, map);
     },
 
 });
