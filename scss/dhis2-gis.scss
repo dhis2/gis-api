@@ -1,7 +1,9 @@
 @import "../node_modules/leaflet/dist/leaflet.css";
 @import "../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
+@import "../temp/leaflet.measure/leaflet-measure.css";
 @import "./map.scss";
 @import "./marker.scss";
 @import "./popup.scss";
 @import "./label.scss";
 @import "./cluster.scss";
+@import "./measure.scss";

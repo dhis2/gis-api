@@ -14,6 +14,7 @@ import cluster from './Cluster';
 import serverCluster from './ServerCluster';
 import earthEngine from './EarthEngine';
 
+// import '../temp/leaflet.measure/leaflet-measure';
 
 /**
  * Creates a map instance.
