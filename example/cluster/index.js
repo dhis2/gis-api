@@ -1,5 +1,4 @@
 import map from '../../src/';
-// import '../../scss/dhis2-gis.scss';
 
 map('map', {
     layers: [{
