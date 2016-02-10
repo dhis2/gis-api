@@ -16,7 +16,7 @@ module.exports = {
     output: {
         path: __dirname + '/lib',
         filename: '[name]/index.js',
-        libraryTarget: 'commonjs2',
+        libraryTarget: 'var',
     },
     module: {
         loaders: [
