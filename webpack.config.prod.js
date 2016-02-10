@@ -3,6 +3,7 @@ var webpackBaseConfig = require('./webpack-base-config');
 
 webpackBaseConfig.plugins = [
     // Replace any occurance of process.env.NODE_ENV with the string 'production'
+
     new webpack.DefinePlugin({
         'process.env': {
             NODE_ENV: '\'production\'',
@@ -14,6 +15,7 @@ webpackBaseConfig.plugins = [
         minimize: true,
         sourceMap: true,
     }),
+
 ];
 
 module.exports = webpackBaseConfig;

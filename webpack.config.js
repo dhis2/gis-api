@@ -5,7 +5,7 @@ webpackBaseConfig.devServer = {
     contentBase: './example/',
     progress: true,
     colors: true,
-    port: 8081,
+    port: 8083,
     inline: true,
     devtool: 'source-map',
 };
