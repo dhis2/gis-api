@@ -10,6 +10,7 @@ export const FitBounds = L.Control.extend({
     onAdd(map) {
         this._map = map;
         this._initLayout();
+        this._toggleControl(map.getLayersBounds().isValid());
 
         map.on('layeradd', this._onLayerChange, this);
         map.on('layerremove', this._onLayerChange, this);
@@ -44,8 +45,10 @@ export const FitBounds = L.Control.extend({
         }
     },
 
-    _onLayerChange() {
-        this._toggleControl(this._map.getLayersBounds().isValid());
+    _onLayerChange(evt) {
+        if (evt.layer instanceof L.FeatureGroup) {
+            this._toggleControl(this._map.getLayersBounds().isValid());
+        }
     },
 
     _toggleControl(isValidBounds) {

@@ -5,7 +5,7 @@ export const Circles = GeoJson.extend({
     options: {
         radius: 1000,
         style: {
-            color: 'orange',
+            color: '#95c8fb',
             weight: 1,
         },
     },

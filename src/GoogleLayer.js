@@ -29,6 +29,13 @@ export const GoogleLayer = L.Google.extend({
         if (this.googleMapsApiLoaded()) {
             L.Google.prototype.onAdd.call(this, map, insertAtTheBottom);
         }
+
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-google');
+    },
+
+    onRemove: function(map) {
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-google');
+        L.Google.prototype.onRemove.call(this, map);
     },
 
     // Check if Google Maps API is loaded
