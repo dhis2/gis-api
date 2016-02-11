@@ -10,7 +10,17 @@ export const FitBounds = L.Control.extend({
     onAdd(map) {
         this._map = map;
         this._initLayout();
+
+        map.on('layeradd', this._onLayerChange, this);
+        map.on('layerremove', this._onLayerChange, this);
+
         return this._container;
+    },
+
+    onRemove(map) {
+        map.off('layeradd', this._onLayerChange, this);
+        map.off('layerremove', this._onLayerChange, this);
+        L.Control.prototype.onRemove.call(this, map);
     },
 
     _initLayout() {
@@ -31,6 +41,18 @@ export const FitBounds = L.Control.extend({
 
         if (bounds.isValid()) {
             this._map.fitBounds(bounds);
+        }
+    },
+
+    _onLayerChange() {
+        this._toggleControl(this._map.getLayersBounds().isValid());
+    },
+
+    _toggleControl(isValidBounds) {
+        if (isValidBounds) {
+            this._container.style.display = 'block';
+        } else {
+            this._container.style.display = 'none';
         }
     },
 
