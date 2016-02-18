@@ -10,8 +10,11 @@
         }
     }
 
-    .leaflet-control-attribution img {
-        vertical-align: middle;
+    .leaflet-control-attribution {
+        font-size: 9px;
+        a {
+            color: #333;
+        }
     }
 
     .leaflet-control-layers {

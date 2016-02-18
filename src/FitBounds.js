@@ -61,6 +61,12 @@ export const FitBounds = L.Control.extend({
 
 });
 
+L.Map.addInitHook(() => {
+    if (this.options.fitBoundsControl) {
+        this.fitBoundsControl = (new FitBounds()).addTo(this);
+    }
+});
+
 export default function fitBounds(options) {
     return new FitBounds(options);
 }

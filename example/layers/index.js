@@ -6,7 +6,7 @@ map('map', {
         name: 'OpenStreetMap',
         baseLayer: true,
         visible: false,
-    }, {
+    }, /* {
         type: 'tileLayer',
         url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
         name: 'Light',
@@ -18,7 +18,7 @@ map('map', {
         name: 'Google Streets',
         baseLayer: true,
         visible: false,
-    }, /* {
+    },  {
         type: 'googleLayer',
         name: 'Google Terrain',
         style: 'TERRAIN',
@@ -36,7 +36,7 @@ map('map', {
         style: 'HYBRID',
         baseLayer: true,
         visible: false,
-    }*/ {
+    } {
         // https://code.earthengine.google.com/d09f38a4d065b54eea18d5fcc9189ad2
         type: 'earthEngine',
         name: 'Landcover',
@@ -45,7 +45,7 @@ map('map', {
         mapId: 'bcdef31a55df98d51f0c9f9b76406b70',
         token: 'e4c55f500e1952bc68b6d6ea692224ef',
         opacity: 0.8,
-    },/* {
+    }, {
         // https://code.earthengine.google.com/d09f38a4d065b54eea18d5fcc9189ad2
         type: 'earthEngine',
         name: 'Elevation',

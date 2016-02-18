@@ -43,15 +43,11 @@ module.exports = {
                     'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
                 ]
             },
-            {
-                test: /\.(png|jpg)$/,
-                loader: 'url?limit=250000'
-            }
         ],
     },
     plugins: [
         new webpack.ProvidePlugin({
             'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-        })
+        }),
     ],
 };

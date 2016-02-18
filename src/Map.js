@@ -9,6 +9,7 @@ import markers from './Markers';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import fitBoundsControl from './FitBounds';
+import legendControl from './Legend';
 import heat from './Heat';
 import grid from './Grid';
 import cluster from './Cluster';
@@ -46,8 +47,10 @@ export const Map = L.Map.extend({
             serverCluster,
             earthEngine,
         },
-        scaleControl: true,
-        fitBoundsControl: true,
+        controlTypes: {
+            legendControl,
+            fitBoundsControl,
+        },
     },
 
     initialize(id, opts) {
@@ -75,10 +78,6 @@ export const Map = L.Map.extend({
             L.control.scale({
                 imperial: false,
             }).addTo(this);
-        }
-
-        if (options.fitBoundsControl) {
-            fitBoundsControl().addTo(this);
         }
     },
 

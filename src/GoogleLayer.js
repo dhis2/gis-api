@@ -33,7 +33,7 @@ export const GoogleLayer = L.Google.extend({
         L.DomUtil.addClass(map.getContainer(), 'leaflet-google');
     },
 
-    onRemove: function(map) {
+    onRemove(map) {
         L.DomUtil.removeClass(map.getContainer(), 'leaflet-google');
         L.Google.prototype.onRemove.call(this, map);
     },
