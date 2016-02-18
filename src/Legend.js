@@ -76,12 +76,6 @@ export const Legend = L.Control.extend({
 
 });
 
-L.Map.addInitHook(() => {
-    if (this.options.legendControl) {
-        this.legendControl = (new Legend()).addTo(this);
-    }
-});
-
 export default function legend(content, options) {
     return new Legend(content, options);
 }

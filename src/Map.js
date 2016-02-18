@@ -75,9 +75,17 @@ export const Map = L.Map.extend({
         }
 
         if (options.scaleControl) {
-            L.control.scale({
+            this.scaleControl = L.control.scale({
                 imperial: false,
             }).addTo(this);
+        }
+
+        if (options.fitBoundsControl) {
+            this.fitBoundsControl = fitBoundsControl().addTo(this);
+        }
+
+        if (options.legendControl) {
+            this.legendControl = legendControl().addTo(this);
         }
     },
 

@@ -13,15 +13,13 @@ describe('DHIS2 map', () => {
 
     afterEach(function () {
         document.body.removeChild(mapDiv);
-    })
+    });
 
-    /*
     it('should export the Leaflet instance', () => {
         map = new Map('map');
         expect(map).to.be.instanceOf(L.Map);
     });
-    */
-
+    
     /*
     it('should have a setBaseLayer method', () => {
         map = new Map('map');
