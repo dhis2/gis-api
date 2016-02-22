@@ -19,7 +19,7 @@ describe('DHIS2 map', () => {
         map = new Map('map');
         expect(map).to.be.instanceOf(L.Map);
     });
-    
+
     /*
     it('should have a setBaseLayer method', () => {
         map = new Map('map');
