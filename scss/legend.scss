@@ -24,6 +24,8 @@
   }
 
   .leaflet-control-legend-expanded {
+    overflow-y: auto;
+    max-height: 260px;
     padding: 6px 10px 6px 6px;
     color: #333;
 
@@ -33,6 +35,7 @@
 
     .leaflet-control-legend-content {
       display: block;
+
     }
 
   }

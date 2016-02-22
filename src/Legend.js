@@ -4,7 +4,7 @@ import L from 'leaflet';
 export const Legend = L.Control.extend({
 
     options: {
-        position: 'topleft',
+        position: 'topright',
         collapsed: true,
     },
 
@@ -23,6 +23,11 @@ export const Legend = L.Control.extend({
 
     setContent(content) {
         this._legend.innerHTML = content;
+        this._content = content;
+    },
+
+    getContent() {
+        return this._content;
     },
 
     _initLayout() {

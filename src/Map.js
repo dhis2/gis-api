@@ -75,17 +75,17 @@ export const Map = L.Map.extend({
         }
 
         if (options.scaleControl) {
-            this.scaleControl = L.control.scale({
+            this.addScaleControl({
                 imperial: false,
-            }).addTo(this);
+            });
         }
 
         if (options.fitBoundsControl) {
-            this.fitBoundsControl = fitBoundsControl().addTo(this);
+            this.addFitBoundsControl();
         }
 
         if (options.legendControl) {
-            this.legendControl = legendControl().addTo(this);
+            this.addLegendControl();
         }
     },
 
@@ -123,6 +123,21 @@ export const Map = L.Map.extend({
         });
 
         return bounds;
+    },
+
+    addScaleControl(options) {
+        this.scaleControl = L.control.scale(options).addTo(this);
+        return this.scaleControl;
+    },
+
+    addFitBoundsControl(options) {
+        this.fitBoundsControl = fitBoundsControl(options).addTo(this);
+        return this.fitBoundsControl;
+    },
+
+    addLegendControl(options) {
+        this.legendControl = legendControl(options).addTo(this);
+        return this.legendControl;
     },
 
 });
