@@ -35,18 +35,69 @@
 
     .leaflet-control-legend-content {
       display: block;
-
+      max-width: 160px;
     }
-
   }
 
+}
 
+// Outside leaflet-dhis2 class as the legend is also shown in an Ext JS panel
+.dhis2-legend {
+  display: block;
+  padding-top: 15px;
 
+  h2 {
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 13px;
+    margin: 0 0 10px 0;
+    span {
+      display: block;
+      font-weight: normal;
+    }
+  }
+  dl {
+    margin: 0;
+    dt {
+      float: left;
+      clear: left;
+      width: 30px;
+      height: 15px;
+    }
+    dd {
+      margin: 0;
+      padding: 1px 0 1px 38px;
+      height: 15px;
+      font-size: 11px;
+      line-height: 12px;
+      white-space: nowrap;
+      strong {
+        line-height: 12px;
+        font-weight: bold;
+        display: block
+      }
+    }
+  }
 
+  .dhis2-legend-predefined {
+    dt {
+      height: 25px;
+    }
+    dd {
+      height: 25px;
+    }
+  }
 
+  .dhis2-legend-image {
+    dt {
+      width: 15px;
+    }
+    dd {
+      padding-left: 23px;
+    }
+  }
+}
 
-
-
-
-
+.dhis2-legend:first-child {
+  padding-top: 0;
 }
