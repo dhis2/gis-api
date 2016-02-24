@@ -36,6 +36,12 @@ export const Markers = GeoJson.extend({
         return marker(latlng, markerOptions);
     },
 
+    setOpacity(opacity) {
+        this.eachLayer(layer => {
+            layer.setOpacity(opacity);
+        });
+    },
+
     // Higlight marker with pulsing circle
     highlight(id) {
         const layer = this.findById(id);
