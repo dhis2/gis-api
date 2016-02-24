@@ -6,11 +6,12 @@ export const Legend = L.Control.extend({
     options: {
         position: 'topright',
         collapsed: true,
+        offset: [0, 0],
     },
 
-    initialize(content, options) {
-        L.setOptions(this, options);
-        this._content = content || '';
+    initialize(opts) {
+        const options = L.setOptions(this, opts);
+        this._content = options.content || '';
         this._handlingClick = false;
     },
 
@@ -72,15 +73,20 @@ export const Legend = L.Control.extend({
     },
 
     _expand() {
+        const offset = L.point(this.options.offset);
         L.DomUtil.addClass(this._container, 'leaflet-control-legend-expanded');
+        this._container.style.left = offset.x + 'px';
+        this._container.style.top = offset.y + 'px';
     },
 
     _collapse() {
         L.DomUtil.removeClass(this._container, 'leaflet-control-legend-expanded');
+        this._container.style.left = 0;
+        this._container.style.top = 0;
     },
 
 });
 
-export default function legend(content, options) {
-    return new Legend(content, options);
+export default function legend(options) {
+    return new Legend(options);
 }

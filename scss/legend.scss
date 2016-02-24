@@ -24,18 +24,20 @@
   }
 
   .leaflet-control-legend-expanded {
-    overflow-y: auto;
-    max-height: 260px;
-    padding: 6px 10px 6px 6px;
-    color: #333;
+    position: relative;
 
     .leaflet-control-legend-toggle {
       display: none;
     }
 
     .leaflet-control-legend-content {
+      overflow-y: auto;
+      min-width: 150px;
+      max-width: 200px;
+      max-height: 260px;
+      padding: 6px 10px 6px 6px;
+      color: #333;
       display: block;
-      max-width: 160px;
     }
   }
 

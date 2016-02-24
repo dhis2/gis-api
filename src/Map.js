@@ -8,8 +8,8 @@ import circles from './Circles';
 import markers from './Markers';
 import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
-import fitBoundsControl from './FitBounds';
-import legendControl from './Legend';
+import fitBounds from './FitBounds';
+import legend from './Legend';
 import heat from './Heat';
 import grid from './Grid';
 import cluster from './Cluster';
@@ -48,9 +48,11 @@ export const Map = L.Map.extend({
             earthEngine,
         },
         controlTypes: {
-            legendControl,
-            fitBoundsControl,
+            legend,
+            fitBounds,
         },
+        zoomControl: false,
+        controls: [],
     },
 
     initialize(id, opts) {
@@ -74,18 +76,8 @@ export const Map = L.Map.extend({
             L.control.layers(baseLayers, overlays).addTo(this);
         }
 
-        if (options.scaleControl) {
-            this.addScaleControl({
-                imperial: false,
-            });
-        }
-
-        if (options.fitBoundsControl) {
-            this.addFitBoundsControl();
-        }
-
-        if (options.legendControl) {
-            this.addLegendControl();
+        for (const control of options.controls) {
+            this.addControl(control);
         }
     },
 
@@ -104,12 +96,25 @@ export const Map = L.Map.extend({
         }
 
         L.Map.prototype.addLayer.call(this, newLayer);
-
         return newLayer;
     },
 
     createLayer(layer) {
         return this.options.layerTypes[layer.type](layer);
+    },
+
+    addControl(control) {
+        const controlTypes = this.options.controlTypes;
+        let newControl = control;
+
+        if (control.type && controlTypes[control.type]) {
+            newControl = controlTypes[control.type](control);
+        } else if (control.type && L.control[control.type]) {
+            newControl = L.control[control.type](control);
+        }
+
+        L.Map.prototype.addControl.call(this, newControl);
+        return newControl;
     },
 
     // Returns combined bounds for non-tile layers
@@ -123,21 +128,6 @@ export const Map = L.Map.extend({
         });
 
         return bounds;
-    },
-
-    addScaleControl(options) {
-        this.scaleControl = L.control.scale(options).addTo(this);
-        return this.scaleControl;
-    },
-
-    addFitBoundsControl(options) {
-        this.fitBoundsControl = fitBoundsControl(options).addTo(this);
-        return this.fitBoundsControl;
-    },
-
-    addLegendControl(options) {
-        this.legendControl = legendControl(options).addTo(this);
-        return this.legendControl;
     },
 
 });
