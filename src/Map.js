@@ -10,11 +10,11 @@ import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import fitBounds from './FitBounds';
 import legend from './Legend';
-import heat from './Heat';
-import grid from './Grid';
-import cluster from './Cluster';
-import serverCluster from './ServerCluster';
-import earthEngine from './EarthEngine';
+// import heat from './Heat';
+// import grid from './Grid';
+// import cluster from './Cluster';
+// import serverCluster from './ServerCluster';
+// import earthEngine from './EarthEngine';
 
 /**
  * Creates a map instance.
@@ -41,11 +41,11 @@ export const Map = L.Map.extend({
             markers,
             circleMarkers,
             choropleth,
-            heat,
-            grid,
-            cluster,
-            serverCluster,
-            earthEngine,
+            // heat,
+            // grid,
+            // cluster,
+            // serverCluster,
+            // earthEngine,
         },
         controlTypes: {
             legend,
