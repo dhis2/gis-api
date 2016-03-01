@@ -6,10 +6,10 @@ import boundary from './Boundary';
 import points from './Points';
 import circles from './Circles';
 import markers from './Markers';
-import circleMarkers from './CircleMarkers';
 import choropleth from './Choropleth';
 import fitBounds from './FitBounds';
 import legend from './Legend';
+// import circleMarkers from './CircleMarkers';
 // import heat from './Heat';
 // import grid from './Grid';
 // import cluster from './Cluster';
@@ -39,8 +39,8 @@ export const Map = L.Map.extend({
             points,
             circles,
             markers,
-            circleMarkers,
             choropleth,
+            // circleMarkers,
             // heat,
             // grid,
             // cluster,
