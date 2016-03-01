@@ -10,7 +10,7 @@ export const Boundary = GeoJson.extend({
             fillOpacity: 0,
         },
         highlightStyle: {
-            fillOpacity: 0.1,
+            weight: 3,
         },
     },
 

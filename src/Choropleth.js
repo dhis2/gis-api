@@ -10,7 +10,7 @@ export const Choropleth = GeoJson.extend({
             fillOpacity: 0.8,
         },
         highlightStyle: {
-            weight: 2,
+            weight: 3,
         },
         valueKey: 'value',
         colorKey: 'color',
@@ -60,24 +60,13 @@ export const Choropleth = GeoJson.extend({
     highlight(id) {
         const layer = this.findById(id);
 
-        this.removeHighlight();
+        if (this._highlight) {
+            this._highlight.setStyle(this.options.resetStyle);
+        }
 
         if (layer) {
-            this._highlight = layer.setStyle({
-                weight: 3,
-                fillOpacity: 1,
-            });
+            this._highlight = layer.setStyle(this.options.highlightStyle);
             return layer;
-        }
-    },
-
-    // Remove highlight from feature
-    removeHighlight() {
-        if (this._highlight) {
-            this._highlight.setStyle({
-                weight: 1,
-                fillOpacity: 0.8,
-            });
         }
     },
 

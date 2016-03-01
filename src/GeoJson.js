@@ -7,6 +7,9 @@ export const GeoJson = L.GeoJSON.extend({
         highlightStyle: {
             weight: 2,
         },
+        resetStyle: {
+            weight: 1,
+        },
     },
 
     initialize(options = {}) {
@@ -74,17 +77,11 @@ export const GeoJson = L.GeoJSON.extend({
     // Set highlight style
     onMouseOver(evt) {
         evt.layer.setStyle(this.options.highlightStyle);
-
-        /*
-        if (!L.Browser.ie && !L.Browser.opera) {
-            evt.layer.bringToFront();
-        }
-        */
     },
 
     // Reset style
     onMouseOut(evt) {
-        this.resetStyle(evt.layer);
+        evt.layer.setStyle(this.options.resetStyle);
     },
 
 });
