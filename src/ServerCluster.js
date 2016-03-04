@@ -1,5 +1,4 @@
 import L from 'leaflet';
-import '../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
 
 export const ServerCluster = L.GridLayer.extend({
     options: {
@@ -12,20 +11,12 @@ export const ServerCluster = L.GridLayer.extend({
         this._clusters = L.featureGroup();
         this._clusterCache = {};
 
-        // Used to replicate spiderify from Leaflet.markercluster
-        // this._markerCluster = new L.MarkerCluster();
-        // this._markerCluster._group = new L.MarkerClusterGroup();
-
         this._clusters.on('click', this.onClusterClick, this);
     },
 
     onAdd(map) {
         L.GridLayer.prototype.onAdd.call(this);
-
         this._clusters.addTo(map);
-
-        // this._markerCluster._group._map = map;
-
         map.on('zoomstart', this.onZoomStart, this);
     },
 
@@ -45,9 +36,10 @@ export const ServerCluster = L.GridLayer.extend({
 
         const tileBounds = this._tileCoordsToBounds(coords).toBBoxString();
         const clusterSize = this.getResolution(coords.z) * this.options.clusterSize;
-        const query = `SELECT COUNT(the_geom) AS count, CASE WHEN COUNT(the_geom) <= 20 THEN array_agg(cartodb_id) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
+        // const query = `SELECT COUNT(the_geom) AS count, CASE WHEN COUNT(the_geom) <= 20 THEN array_agg(cartodb_id) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
+        const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT uid, ST_SetSRID(ST_MakePoint(longitude, latitude), 4326) AS the_geom FROM programstageinstance) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
 
-        fetch(`http://turban.cartodb.com/api/v2/sql?q=${encodeURIComponent(query)}`)
+        fetch(`http://dhis2.cartodb.com/api/v2/sql?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => this.onClusterTileLoad(tileId, data))
             .catch(ex => window.console.log('parsing failed', ex));
@@ -72,7 +64,6 @@ export const ServerCluster = L.GridLayer.extend({
             if (map.getZoom() !== map.getMaxZoom()) {
                 this._map.fitBounds(bounds);
             } else {
-                // this.spiderifyCluster(evt.layer);
                 if (marker.options.ids) {
                     marker.bindPopup('IDs: ' + marker.options.ids.join()).openPopup();
                 }
@@ -87,7 +78,7 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     getClusterBounds(d) {
-        const bounds = d.bounds.match(/([\d\.]+)/g);
+        const bounds = d.bounds.match(/([-\d\.]+)/g);
         return [[bounds[1], bounds[0]], [bounds[3], bounds[2]]];
     },
 
@@ -98,11 +89,16 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     createCluster(d) {
-        const latlng = d.center.match(/([\d\.]+)/g).reverse();
+        const latlng = d.center.match(/([-\d\.]+)/g).reverse();
 
         if (d.count === 1) {
-            return L.marker(latlng, {
+            return L.circleMarker(latlng, {
                 id: d.ids[0],
+                radius: 6,
+                color: '#fff',
+                weight: 1,
+                fillColor: '#000',
+                fillOpacity: 0.7,
             });
         }
 
@@ -125,23 +121,6 @@ export const ServerCluster = L.GridLayer.extend({
             count: d.count,
             ids: d.ids,
         });
-    },
-
-    spiderifyCluster(cluster) {
-        const map = this._map;
-        const center = map.latLngToLayerPoint(cluster._latlng);
-        const positions = this._markerCluster._generatePointsSpiral(cluster.options.count, center);
-        const ids = cluster.options.ids;
-        const childMarkers = [];
-
-        this._markerCluster._latlng = cluster._latlng;
-
-        for (let i = 0; i < ids.length; i++) {
-            const marker = L.marker(cluster._latlng).addTo(map);
-            childMarkers.push(marker);
-        }
-
-        this._markerCluster._animationSpiderfy(childMarkers, positions);
     },
 
     onZoomStart() {

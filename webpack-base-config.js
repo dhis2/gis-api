@@ -10,6 +10,7 @@ module.exports = {
         cluster: './example/cluster/index.js',
         earthengine: './example/earthengine/index.js',
         list: './example/list/index.js',
+        geoserver: './example/geoserver/index.js',
     },
     devtool: 'source-map',
     output: {

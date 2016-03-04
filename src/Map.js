@@ -13,7 +13,8 @@ import legend from './Legend';
 // import heat from './Heat';
 // import grid from './Grid';
 // import cluster from './Cluster';
-// import serverCluster from './ServerCluster';
+import serverCluster from './ServerCluster';
+import geoServer from './GeoServer';
 // import earthEngine from './EarthEngine';
 
 /**
@@ -44,7 +45,8 @@ export const Map = L.Map.extend({
             // heat,
             // grid,
             // cluster,
-            // serverCluster,
+            serverCluster,
+            geoServer,
             // earthEngine,
         },
         controlTypes: {
