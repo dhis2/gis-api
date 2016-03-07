@@ -70,6 +70,11 @@ export const Map = L.Map.extend({
 
         L.Icon.Default.imagePath = '/images';
 
+        // Stop propagation to prevent dashboard dragging
+        this.on('mousedown', function(e) {
+            e.originalEvent.stopPropagation();
+        });
+
         if (options.bounds) {
             this.fitBounds(options.bounds);
         }
