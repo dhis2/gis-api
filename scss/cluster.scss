@@ -21,6 +21,23 @@
     }
   }
 
+  .leaflet-cluster-icon {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+    //background-color: rgba(33, 33, 33, 0.8);
+    //border: 5px solid rgba(33, 33, 33, 0.6);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    background-clip: padding-box;
+
+    span {
+      align-self: center;
+    }
+  }
+
+
 
   .marker-cluster-small {
     background-color: rgba(181, 226, 140, 0.6);

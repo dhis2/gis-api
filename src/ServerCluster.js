@@ -1,16 +1,22 @@
 import L from 'leaflet';
+import {scaleLinear} from 'd3-scale';
+import clusterMarker from './ClusterMarker';
 
 export const ServerCluster = L.GridLayer.extend({
     options: {
         tileSize: 512,
         clusterSize: 110,
+        color: 'red',
+        opacity: 1,
+        domain: [2, 100],
+        range: [18, 40],
     },
 
-    initialize(options) {
-        L.setOptions(this, options);
+    initialize(opts) {
+        const options = L.setOptions(this, opts);
         this._clusters = L.featureGroup();
         this._clusterCache = {};
-
+        this._scale = scaleLinear().domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
     },
 
@@ -90,37 +96,33 @@ export const ServerCluster = L.GridLayer.extend({
 
     createCluster(d) {
         const latlng = d.center.match(/([-\d\.]+)/g).reverse();
+        const options = this.options;
+        let marker;
+
 
         if (d.count === 1) {
-            return L.circleMarker(latlng, {
+            marker = L.circleMarker(latlng, {
                 id: d.ids[0],
                 radius: 6,
                 color: '#fff',
                 weight: 1,
-                fillColor: '#000',
-                fillOpacity: 0.7,
+                fillColor: options.color,
+                fillOpacity: options.opacity,
             });
-        }
-
-        let c = ' marker-cluster-';
-        if (d.count < 10) {
-            c += 'small';
-        } else if (d.count < 100) {
-            c += 'medium';
         } else {
-            c += 'large';
+            marker = clusterMarker(latlng, {
+                size: this._scale(d.count),
+                color: options.color,
+                opacity: options.opacity,
+                bounds: this.getClusterBounds(d),
+                count: d.count,
+                ids: d.ids,
+            });
+
+            // console.log(this._scale(d.count), this._map.getZoom(), this.getResolution(this._map.getZoom()));
         }
 
-        return L.marker(latlng, {
-            icon: L.divIcon({
-                html: `<div><span>${d.count}</span></div>`,
-                className: `marker-cluster${c}`,
-                iconSize: [40, 40],
-            }),
-            bounds: this.getClusterBounds(d),
-            count: d.count,
-            ids: d.ids,
-        });
+        return marker;
     },
 
     onZoomStart() {
@@ -132,6 +134,18 @@ export const ServerCluster = L.GridLayer.extend({
     // http://blog.thematicmapping.org/2012/07/using-custom-projections-with-tilecache.html
     getResolution(zoom) {
         return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
+    },
+
+    setOpacity(opacity) {
+        this._clusters.eachLayer(layer => {
+            if (layer.setOpacity) { // cluster marker
+                layer.setOpacity(opacity);
+            } else {
+                layer.setStyle({ // circle marker
+                    fillOpacity: opacity,
+                });
+            }
+        });
     },
 
 });

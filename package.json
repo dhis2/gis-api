@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/dhis2/dhis2-gis-api#readme",
   "dependencies": {
-    "d3-scale": "^0.2.0",
+    "d3-scale": "^0.6.4",
     "leaflet": "1.0.0-beta.2",
     "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
     "topojson": "^1.6.19",
