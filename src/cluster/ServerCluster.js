@@ -9,7 +9,8 @@ export const ServerCluster = L.GridLayer.extend({
         color: 'red',
         opacity: 1,
         domain: [2, 100],
-        range: [18, 40],
+        range: [20, 40],
+        zoomToFirstBounds: true,
     },
 
     initialize(opts) {
@@ -18,6 +19,8 @@ export const ServerCluster = L.GridLayer.extend({
         this._clusterCache = {};
         this._scale = scaleLinear().domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
+        this._maxZoomCount = {}; // Contains highest cluster count for each zoom level
+        this._loadingTiles = []; // Contains cluster ids still loading
     },
 
     onAdd(map) {
@@ -40,23 +43,30 @@ export const ServerCluster = L.GridLayer.extend({
             return;
         }
 
+        this._loadingTiles.push(tileId);
+
         const tileBounds = this._tileCoordsToBounds(coords).toBBoxString();
         const clusterSize = this.getResolution(coords.z) * this.options.clusterSize;
         // const query = `SELECT COUNT(the_geom) AS count, CASE WHEN COUNT(the_geom) <= 20 THEN array_agg(cartodb_id) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
-        const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT uid, ST_SetSRID(ST_MakePoint(longitude, latitude), 4326) AS the_geom FROM programstageinstance) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
+        // const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT uid, ST_SetSRID(ST_MakePoint(longitude, latitude), 4326) AS the_geom FROM programstageinstance) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
+        const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT cartodb_id AS uid, the_geom FROM programstageinstance_random) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
 
         fetch(`http://dhis2.cartodb.com/api/v2/sql?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => this.onClusterTileLoad(tileId, data))
-            .catch(ex => window.console.log('parsing failed', ex));
+            .catch(ex => this.onClusterTileLoad(tileId, ex));
     },
 
     onClusterTileLoad(tileId, data) {
-        this._clusterCache[tileId] = data.rows;
-
         if (data.rows.length) {
             this.addClusters(data.rows);
         }
+        this.scaleClusters(tileId);
+    },
+
+    onClusterTileFail(tileId, ex) {
+        window.console.log('parsing failed', ex);
+        this.scaleClusters(tileId);
     },
 
     onClusterClick(evt) {
@@ -97,10 +107,11 @@ export const ServerCluster = L.GridLayer.extend({
     createCluster(d) {
         const latlng = d.center.match(/([-\d\.]+)/g).reverse();
         const options = this.options;
+        const count = d.count;
+        const zoom = this._map.getZoom();
         let marker;
 
-
-        if (d.count === 1) {
+        if (count === 1) {
             marker = L.circleMarker(latlng, {
                 id: d.ids[0],
                 radius: 6,
@@ -111,22 +122,48 @@ export const ServerCluster = L.GridLayer.extend({
             });
         } else {
             marker = clusterMarker(latlng, {
-                size: this._scale(d.count),
+                size: this._scale(count),
                 color: options.color,
                 opacity: options.opacity,
                 bounds: this.getClusterBounds(d),
-                count: d.count,
+                count: count,
                 ids: d.ids,
             });
 
-            // console.log(this._scale(d.count), this._map.getZoom(), this.getResolution(this._map.getZoom()));
+            if (this._maxZoomCount[zoom] === undefined) {
+                this._maxZoomCount[zoom] = 0;
+            }
+
+            if (count > this._maxZoomCount[zoom]) {
+                this._maxZoomCount[zoom] = count;
+            }
         }
 
         return marker;
     },
 
+    scaleClusters(tileId) {
+        const i = this._loadingTiles.indexOf(tileId);
+        if (i !== -1) {
+            this._loadingTiles.splice(i, 1);
+        }
+
+        if (!this._loadingTiles.length) {
+            const maxCount = this._maxZoomCount[this._map.getZoom()];
+            const scale = scaleLinear().domain([1, maxCount]).range(this.options.range).clamp(true);
+
+            this._clusters.eachLayer(layer => {
+                if (layer.setSize) { // cluster marker
+                    layer.setSize(scale(layer.options.count), layer.options.count);
+                }
+            });
+        }
+    },
+
     onZoomStart() {
         this._clusters.clearLayers();
+        this._maxClusterCount = 0;
+        this._loadingTiles = [];
     },
 
     // Meters per pixel

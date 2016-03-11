@@ -5,10 +5,14 @@ map('map', {
         type: 'mapQuest',
         name: 'OpenStreetMap',
     }, {
-        type: 'serverCluster',
-        name: 'Server Cluster',
+        type: 'cluster',
+        name: 'Cluster',
+        api: 'http://dhis2.cartodb.com/api/v2/sql?q=',
+        query: 'SELECT count(*), ST_Extent(the_geom) AS extent FROM {table}',
+        table: 'programstageinstance',
+        // table: 'programstageinstance_random',
         overlay: true,
         visible: true,
     }],
-    bounds: [[58.787, 4.712], [59.669, 7.458]],
+    bounds: [[-34.9, -18.7], [35.9, 50.2]],
 });

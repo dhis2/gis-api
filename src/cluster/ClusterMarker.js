@@ -12,6 +12,12 @@ export const ClusterMarker = L.Marker.extend({
         L.setOptions(this, options);
         this._latlng = L.latLng(latlng);
     },
+
+    setSize(size, count) {
+        const icon = this.options.icon;
+        icon.setSize(size);
+        icon.setCount(count);
+    },
 });
 
 export default function clusterMarker(latlng, options) {
