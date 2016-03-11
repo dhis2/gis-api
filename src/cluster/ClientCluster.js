@@ -1,19 +1,23 @@
 import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
+import {scaleLinear} from 'd3-scale';
 // import 'leaflet.markercluster';
 import '../../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
 
     options: {
+        maxClusterRadius: 60,
         showCoverageOnHover: false,
         iconCreateFunction(cluster) {
+            const size = this.scale(cluster.getChildCount());
             return clusterIcon({
                 color: this.color,
-                iconSize: [30, 30],
+                iconSize: [size, size],
                 html: '<span>' + cluster.getChildCount() + '</span>',
             });
         },
+        scale: scaleLinear().domain([1, 100]).range([20, 40]).clamp(true),
     },
 
     initialize(opts) {

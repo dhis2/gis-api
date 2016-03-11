@@ -34,11 +34,13 @@ export const Cluster = L.Layer.extend({
     },
 
     onInitLoad(data) {
-        if (this.options.fitBounds) {
+        const options = this.options;
+
+        if (options.fitBounds) {
             this._map.fitBounds(this._boxToBounds(data.extent));
         }
 
-        if (data.count <= this.options.clientClusterLimit) {
+        if (options.clustering !== 'server' && data.count <= options.clientClusterLimit) {
             this.initClientCluster();
         } else {
             this.initServerCluster();
@@ -52,7 +54,9 @@ export const Cluster = L.Layer.extend({
     },
 
     initServerCluster() {
-        this._clusterLayer = serverCluster().addTo(this._map);
+        this._clusterLayer = serverCluster({
+            query: 'SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT cartodb_id AS uid, the_geom FROM {table}) sq WHERE the_geom && ST_MakeEnvelope({bounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), {size})',
+        }).addTo(this._map);
     },
 
     // Converts a PostGIS box2d to Leaflet bounds

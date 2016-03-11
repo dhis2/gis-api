@@ -7,6 +7,7 @@ map('map', {
     }, {
         type: 'cluster',
         name: 'Cluster',
+        // clustering: 'server',
         api: 'http://dhis2.cartodb.com/api/v2/sql?q=',
         query: 'SELECT count(*), ST_Extent(the_geom) AS extent FROM {table}',
         table: 'programstageinstance',
