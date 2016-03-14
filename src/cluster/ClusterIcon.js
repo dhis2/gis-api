@@ -22,6 +22,7 @@ export const ClusterIcon = L.Icon.extend({
         this._div = div;
 
         this.setColor();
+        this.setOpacity();
 
         return div;
     },
@@ -49,6 +50,10 @@ export const ClusterIcon = L.Icon.extend({
 
     setColor(color) {
         this._div.style.background = color || this.options.color;
+    },
+
+    setOpacity(opacity) {
+        this._div.style.opacity = opacity || this.options.opacity;
     },
 
     createShadow() {

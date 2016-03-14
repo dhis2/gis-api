@@ -1,8 +1,7 @@
 import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import {scaleLinear} from 'd3-scale';
-// import 'leaflet.markercluster';
-import '../../temp/leaflet.markercluster-fix'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
+import '../../temp/leaflet.markercluster-src'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
 
@@ -10,11 +9,16 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         maxClusterRadius: 60,
         showCoverageOnHover: false,
         iconCreateFunction(cluster) {
-            const size = this.scale(cluster.getChildCount());
+            const count = cluster.getChildCount();
+            const size = this.scale(count);
+
+            cluster.options.opacity = this.opacity;
+
             return clusterIcon({
                 color: this.color,
+                opacity: this.opacity,
                 iconSize: [size, size],
-                html: '<span>' + cluster.getChildCount() + '</span>',
+                html: '<span>' + count + '</span>',
             });
         },
         scale: scaleLinear().domain([1, 100]).range([20, 40]).clamp(true),
@@ -51,10 +55,30 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
                     color: '#fff',
                     weight: 1,
                     fillColor: this.options.color,
+                    opacity: this.options.opacity,
                     fillOpacity: this.options.opacity,
                 });
             }));
         }
+    },
+
+    setOpacity(opacity) {
+        this.options.opacity = opacity;
+
+        // Set circle marker opacity
+        this.eachLayer(layer => {
+            layer.setStyle({
+                opacity: opacity,
+                fillOpacity: opacity,
+            });
+        });
+
+        // Set cluster marker opacity
+        this._featureGroup.eachLayer(layer => {
+            if (layer.setOpacity) {
+                layer.setOpacity(opacity);
+            }
+        });
     },
 
 });

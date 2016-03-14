@@ -119,6 +119,7 @@ export const ServerCluster = L.GridLayer.extend({
                 weight: 1,
                 fillColor: options.color,
                 fillOpacity: options.opacity,
+                opacity: options.opacity,
             });
         } else {
             marker = clusterMarker(latlng, {
@@ -174,11 +175,14 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     setOpacity(opacity) {
+        this.options.opacity = opacity;
+
         this._clusters.eachLayer(layer => {
             if (layer.setOpacity) { // cluster marker
                 layer.setOpacity(opacity);
             } else {
                 layer.setStyle({ // circle marker
+                    opacity: opacity,
                     fillOpacity: opacity,
                 });
             }

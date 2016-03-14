@@ -7,18 +7,24 @@ export const Cluster = L.Layer.extend({
     options: {
         clientClusterLimit: 2000,
         fitBounds: true,
-        color: 'red',
+        color: '#333',
         opacity: 1,
     },
 
     initialize(options) {
         L.setOptions(this, options);
+        this.initCluster();
     },
 
     onAdd(map) {
-        this._map = map;
-        if (!this._clusterLayer) {
-            this.initCluster();
+        if (this._clusterLayer) {
+            map.addLayer(this._clusterLayer);
+        }
+    },
+
+    onRemove(map) {
+        if (this._clusterLayer && map.hasLayer(this._clusterLayer)) {
+            map.removeLayer(this._clusterLayer);
         }
     },
 
@@ -54,9 +60,16 @@ export const Cluster = L.Layer.extend({
     },
 
     initServerCluster() {
-        this._clusterLayer = serverCluster({
+        this._clusterLayer = serverCluster(L.extend(this.options, {
             query: 'SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT cartodb_id AS uid, the_geom FROM {table}) sq WHERE the_geom && ST_MakeEnvelope({bounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), {size})',
-        }).addTo(this._map);
+        })).addTo(this._map);
+    },
+
+    setOpacity(opacity) {
+        this.options.opacity = opacity;
+        if (this._clusterLayer) {
+            this._clusterLayer.setOpacity(opacity);
+        }
     },
 
     // Converts a PostGIS box2d to Leaflet bounds

@@ -6,7 +6,7 @@ export const MapQuest = L.TileLayer.extend({
         url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
         subdomains: '1234',
         attribution: '&copy; <a href="http://www.mapquest.com/">MapQuest</a>, &copy; <a href="http://www.openstreetmap.org/about">OpenStreetMap</a>',
-        maxZoom: 17,
+        maxZoom: 18,
     },
 
     initialize(opts = {}) {
