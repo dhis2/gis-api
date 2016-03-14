@@ -25,8 +25,17 @@ export const ServerCluster = L.GridLayer.extend({
 
     onAdd(map) {
         L.GridLayer.prototype.onAdd.call(this);
-        this._clusters.addTo(map);
+
+        if (!map.hasLayer(this._clusters)) {
+            this._clusters.addTo(map);
+        }
+
         map.on('zoomstart', this.onZoomStart, this);
+    },
+
+    onRemove(map) {
+        this._clusters.clearLayers();
+        map.removeLayer(this._clusters);
     },
 
     createTile(coords) {
