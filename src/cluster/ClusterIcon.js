@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import {hcl} from 'd3-color';
 
 export const ClusterIcon = L.Icon.extend({
     options: {
@@ -48,8 +49,11 @@ export const ClusterIcon = L.Icon.extend({
         this._div.innerHTML = '<span>' + (num || count) + '</span>';
     },
 
-    setColor(color) {
-        this._div.style.background = color || this.options.color;
+    setColor(col) {
+        const color = col || this.options.color;
+
+        this._div.style.background = color;
+        this._div.style.color = hcl(color).l < 70 ? '#fff' : '#000';
     },
 
     setOpacity(opacity) {

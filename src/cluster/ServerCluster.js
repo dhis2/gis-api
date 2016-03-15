@@ -36,6 +36,7 @@ export const ServerCluster = L.GridLayer.extend({
     onRemove(map) {
         this._clusters.clearLayers();
         map.removeLayer(this._clusters);
+        map.off('zoomstart', this.onZoomStart, this);
     },
 
     createTile(coords) {
@@ -67,10 +68,13 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     onClusterTileLoad(tileId, data) {
-        if (data.rows.length) {
-            this.addClusters(data.rows);
+        // Make sure that tile is still wanted
+        if (this._loadingTiles.indexOf(tileId) !== -1) {
+            if (data.rows.length) {
+                this.addClusters(data.rows);
+            }
+            this.scaleClusters(tileId);
         }
-        this.scaleClusters(tileId);
     },
 
     onClusterTileFail(tileId, ex) {
@@ -154,10 +158,12 @@ export const ServerCluster = L.GridLayer.extend({
 
     scaleClusters(tileId) {
         const i = this._loadingTiles.indexOf(tileId);
+
         if (i !== -1) {
             this._loadingTiles.splice(i, 1);
         }
 
+        /*
         if (!this._loadingTiles.length) {
             const maxCount = this._maxZoomCount[this._map.getZoom()];
             const scale = scaleLinear().domain([1, maxCount]).range(this.options.range).clamp(true);
@@ -168,6 +174,7 @@ export const ServerCluster = L.GridLayer.extend({
                 }
             });
         }
+        */
     },
 
     onZoomStart() {

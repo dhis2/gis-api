@@ -22,6 +22,7 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
             });
         },
         scale: scaleLinear().domain([1, 100]).range([20, 40]).clamp(true),
+        radius: 6, // circle marker radius
     },
 
     initialize(opts) {
@@ -51,12 +52,12 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
             this.addLayers(rows.map(d => {
                 return L.circleMarker(JSON.parse(d.geom).coordinates.reverse(), {
                     id: d.uid,
-                    radius: 6,
-                    color: '#fff',
-                    weight: 1,
+                    radius: this.options.radius,
                     fillColor: this.options.color,
                     opacity: this.options.opacity,
                     fillOpacity: this.options.opacity,
+                    color: '#fff',
+                    weight: 1,
                 });
             }));
         }
