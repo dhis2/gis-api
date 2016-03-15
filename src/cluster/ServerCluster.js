@@ -19,8 +19,9 @@ export const ServerCluster = L.GridLayer.extend({
         this._clusterCache = {};
         this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
-        this._maxZoomCount = {}; // Contains highest cluster count for each zoom level
         this._loadingTiles = []; // Contains cluster ids still loading
+        this._spiderLegs = L.featureGroup();
+        this._spiderMarkers = L.featureGroup();
     },
 
     onAdd(map) {
@@ -30,13 +31,18 @@ export const ServerCluster = L.GridLayer.extend({
             this._clusters.addTo(map);
         }
 
+        this._spiderLegs.addTo(map);
+        this._spiderMarkers.addTo(map);
+
         map.on('zoomstart', this.onZoomStart, this);
+        map.on('mousedown', this.unspiderify, this);
     },
 
     onRemove(map) {
         this._clusters.clearLayers();
         map.removeLayer(this._clusters);
         map.off('zoomstart', this.onZoomStart, this);
+        map.off('mousedown', this.unspiderify, this);
     },
 
     createTile(coords) {
@@ -89,10 +95,8 @@ export const ServerCluster = L.GridLayer.extend({
         if (bounds) { // Is cluster
             if (map.getZoom() !== map.getMaxZoom()) {
                 this._map.fitBounds(bounds);
-            } else {
-                if (marker.options.ids) {
-                    marker.bindPopup('IDs: ' + marker.options.ids.join()).openPopup();
-                }
+            } else if (marker.options.ids) {
+                this.spiderify(marker);
             }
         } else { // Is single marker
             marker.bindPopup('ID: ' + marker.options.id).openPopup();
@@ -118,7 +122,6 @@ export const ServerCluster = L.GridLayer.extend({
         const latlng = d.center.match(/([-\d\.]+)/g).reverse();
         const options = this.options;
         const count = d.count;
-        const zoom = this._map.getZoom();
         let marker;
 
         if (count === 1) {
@@ -140,14 +143,6 @@ export const ServerCluster = L.GridLayer.extend({
                 count: count,
                 ids: d.ids,
             });
-
-            if (this._maxZoomCount[zoom] === undefined) {
-                this._maxZoomCount[zoom] = 0;
-            }
-
-            if (count > this._maxZoomCount[zoom]) {
-                this._maxZoomCount[zoom] = count;
-            }
         }
 
         return marker;
@@ -155,8 +150,8 @@ export const ServerCluster = L.GridLayer.extend({
 
     onZoomStart() {
         this._clusters.clearLayers();
-        this._maxClusterCount = 0;
         this._loadingTiles = [];
+        this.unspiderify();
     },
 
     // Meters per pixel
@@ -177,6 +172,54 @@ export const ServerCluster = L.GridLayer.extend({
                 });
             }
         });
+    },
+
+    spiderify(cluster) {
+        const options = this.options;
+        const map = this._map;
+        const latlng = cluster.getLatLng();
+        const center = map.latLngToLayerPoint(latlng);
+        const ids = cluster.options.ids || []; // TODO: Add name?
+        const count = ids.length; // cluster.options.length
+        const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 };
+        const _2PI = Math.PI * 2;
+        const circumference = 13 * (2 + count);
+        const startAngle = Math.PI / 6;
+        const legLength = circumference / _2PI;
+        const angleStep = _2PI / count;
+
+        this.unspiderify();
+
+        for (let i = count - 1, angle, point, uid, newPos; i >= 0; i--) {
+            angle = startAngle + i * angleStep;
+            point = L.point(center.x + legLength * Math.cos(angle), center.y + legLength * Math.sin(angle))._round();
+            uid = ids[i];
+            newPos = map.layerPointToLatLng(point);
+
+            this._spiderLegs.addLayer(L.polyline([latlng, newPos], legOptions));
+
+            this._spiderMarkers.addLayer(L.circleMarker(newPos, {
+                id: uid,
+                radius: 6,
+                color: '#fff',
+                weight: 1,
+                fillColor: options.color,
+                fillOpacity: options.opacity,
+                opacity: options.opacity,
+            }));
+        }
+
+        cluster.setOpacity(0.1);
+        this._spiderCluster = cluster;
+    },
+
+    unspiderify() {
+        if (this._spiderCluster) {
+            this._spiderCluster.setOpacity(this.options.opacity);
+            this._spiderLegs.clearLayers();
+            this._spiderMarkers.clearLayers();
+            this._spiderCluster = null;
+        }
     },
 
 });
