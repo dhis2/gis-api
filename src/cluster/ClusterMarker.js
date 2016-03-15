@@ -4,9 +4,11 @@ import clusterIcon from './ClusterIcon';
 export const ClusterMarker = L.Marker.extend({
     initialize(latlng, options) {
         options.icon = clusterIcon({
-            html: `<span>${options.count}</span>`,
-            iconSize: [options.size, options.size],
+            // html: `<span>${options.count}</span>`,
+            // iconSize: [options.size, options.size],
+            size: options.size,
             color: options.color,
+            count: options.count,
         });
 
         L.setOptions(this, options);

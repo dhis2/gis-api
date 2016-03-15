@@ -3,29 +3,19 @@ import {hcl} from 'd3-color';
 
 export const ClusterIcon = L.Icon.extend({
     options: {
-        iconSize: [20, 20],
         className: 'leaflet-cluster-icon',
-        html: false,
     },
 
     createIcon(oldIcon) {
-        const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div');
         const options = this.options;
+        this._div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div');
 
-        div.innerHTML = options.html !== false ? options.html : '';
+        this.setSize(options.size);
+        this.setCount(options.count);
+        this.setColor(options.color);
+        this.setOpacity(options.opacity);
 
-        if (options.bgPos) {
-            const bgPos = L.point(options.bgPos);
-            div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
-        }
-        this._setIconStyles(div, 'icon');
-
-        this._div = div;
-
-        this.setColor();
-        this.setOpacity();
-
-        return div;
+        return this._div;
     },
 
     setSize(size) {
@@ -49,15 +39,13 @@ export const ClusterIcon = L.Icon.extend({
         this._div.innerHTML = '<span>' + (num || count) + '</span>';
     },
 
-    setColor(col) {
-        const color = col || this.options.color;
-
+    setColor(color) {
         this._div.style.background = color;
         this._div.style.color = hcl(color).l < 70 ? '#fff' : '#000';
     },
 
     setOpacity(opacity) {
-        this._div.style.opacity = opacity || this.options.opacity;
+        this._div.style.opacity = opacity;
     },
 
     createShadow() {

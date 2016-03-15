@@ -49,7 +49,7 @@ export const Cluster = L.Layer.extend({
         if (options.clustering !== 'server' && data.count <= options.clientClusterLimit) {
             this.initClientCluster();
         } else {
-            this.initServerCluster();
+            this.initServerCluster(data.count);
         }
     },
 
@@ -59,9 +59,10 @@ export const Cluster = L.Layer.extend({
         })).addTo(this._map);
     },
 
-    initServerCluster() {
+    initServerCluster(count) {
         this._clusterLayer = serverCluster(L.extend(this.options, {
             query: 'SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT cartodb_id AS uid, the_geom FROM {table}) sq WHERE the_geom && ST_MakeEnvelope({bounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), {size})',
+            domain: [1, count],
         })).addTo(this._map);
     },
 

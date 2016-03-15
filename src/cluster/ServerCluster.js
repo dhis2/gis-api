@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {scaleLinear} from 'd3-scale';
+import {scaleLog} from 'd3-scale';
 import clusterMarker from './ClusterMarker';
 
 export const ServerCluster = L.GridLayer.extend({
@@ -8,8 +8,8 @@ export const ServerCluster = L.GridLayer.extend({
         clusterSize: 110,
         color: 'red',
         opacity: 1,
-        domain: [2, 100],
-        range: [20, 40],
+        domain: [1, 10000],
+        range: [16, 40],
         zoomToFirstBounds: true,
     },
 
@@ -17,7 +17,7 @@ export const ServerCluster = L.GridLayer.extend({
         const options = L.setOptions(this, opts);
         this._clusters = L.featureGroup();
         this._clusterCache = {};
-        this._scale = scaleLinear().domain(options.domain).range(options.range).clamp(true);
+        this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
         this._maxZoomCount = {}; // Contains highest cluster count for each zoom level
         this._loadingTiles = []; // Contains cluster ids still loading
@@ -47,6 +47,7 @@ export const ServerCluster = L.GridLayer.extend({
 
     loadClusterTile(coords) {
         const tileId = this.getClusterTileId(coords);
+        const options = this.options;
 
         if (this._clusterCache[tileId]) {
             this.addClusters(this._clusterCache[tileId]);
@@ -55,39 +56,35 @@ export const ServerCluster = L.GridLayer.extend({
 
         this._loadingTiles.push(tileId);
 
-        const tileBounds = this._tileCoordsToBounds(coords).toBBoxString();
-        const clusterSize = this.getResolution(coords.z) * this.options.clusterSize;
-        // const query = `SELECT COUNT(the_geom) AS count, CASE WHEN COUNT(the_geom) <= 20 THEN array_agg(cartodb_id) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM spot WHERE (the_geom && ST_MakeEnvelope(${tileBounds}, 4326)) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
-        // const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT uid, ST_SetSRID(ST_MakePoint(longitude, latitude), 4326) AS the_geom FROM programstageinstance) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
-        const query = `SELECT COUNT(uid) AS count, CASE WHEN COUNT(uid) <= 20 THEN array_agg(uid) END AS ids, ST_AsText(ST_Centroid(ST_Collect(the_geom))) AS center, ST_Extent(the_geom) AS bounds FROM (SELECT cartodb_id AS uid, the_geom FROM programstageinstance) sq WHERE the_geom && ST_MakeEnvelope(${tileBounds}, 4326) GROUP BY ST_SnapToGrid(ST_Transform(the_geom, 3785), ${clusterSize})`;
+        const query = L.Util.template(options.query, {
+            table: options.table,
+            bounds: this._tileCoordsToBounds(coords).toBBoxString(),
+            size: this.getResolution(coords.z) * options.clusterSize,
+        });
 
-        fetch(`http://dhis2.cartodb.com/api/v2/sql?q=${encodeURIComponent(query)}`)
+        fetch(options.api + encodeURIComponent(query))
             .then(response => response.json())
             .then(data => this.onClusterTileLoad(tileId, data))
-            .catch(ex => this.onClusterTileLoad(tileId, ex));
+            .catch(ex => this.onClusterTileFail(tileId, ex));
     },
 
     onClusterTileLoad(tileId, data) {
         // Make sure that tile is still wanted
-        if (this._loadingTiles.indexOf(tileId) !== -1) {
-            if (data.rows.length) {
-                this.addClusters(data.rows);
-            }
-            this.scaleClusters(tileId);
+        const i = this._loadingTiles.indexOf(tileId);
+        if (i !== -1) {
+            this._loadingTiles.splice(i, 1);
+            this.addClusters(data.rows);
         }
     },
 
     onClusterTileFail(tileId, ex) {
         window.console.log('parsing failed', ex);
-        this.scaleClusters(tileId);
     },
 
     onClusterClick(evt) {
         const marker = evt.layer;
         const bounds = marker.options.bounds;
         const map = this._map;
-
-        // console.log(this._map.getZoom(), this._map.getMaxZoom());
 
         if (bounds) { // Is cluster
             if (map.getZoom() !== map.getMaxZoom()) {
@@ -156,27 +153,6 @@ export const ServerCluster = L.GridLayer.extend({
         return marker;
     },
 
-    scaleClusters(tileId) {
-        const i = this._loadingTiles.indexOf(tileId);
-
-        if (i !== -1) {
-            this._loadingTiles.splice(i, 1);
-        }
-
-        /*
-        if (!this._loadingTiles.length) {
-            const maxCount = this._maxZoomCount[this._map.getZoom()];
-            const scale = scaleLinear().domain([1, maxCount]).range(this.options.range).clamp(true);
-
-            this._clusters.eachLayer(layer => {
-                if (layer.setSize) { // cluster marker
-                    layer.setSize(scale(layer.options.count), layer.options.count);
-                }
-            });
-        }
-        */
-    },
-
     onZoomStart() {
         this._clusters.clearLayers();
         this._maxClusterCount = 0;
@@ -184,8 +160,6 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     // Meters per pixel
-    // http://blog.thematicmapping.org/2012/09/creating-shaded-relief-map-of-new.html
-    // http://blog.thematicmapping.org/2012/07/using-custom-projections-with-tilecache.html
     getResolution(zoom) {
         return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
     },
