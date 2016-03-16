@@ -54,6 +54,7 @@ export const ServerCluster = L.GridLayer.extend({
     loadClusterTile(coords) {
         const tileId = this.getClusterTileId(coords);
         const options = this.options;
+        const map = this._map;
 
         if (this._clusterCache[tileId]) {
             this.addClusters(this._clusterCache[tileId]);
@@ -62,29 +63,24 @@ export const ServerCluster = L.GridLayer.extend({
 
         this._loadingTiles.push(tileId);
 
-        const query = L.Util.template(options.query, {
-            table: options.table,
-            bounds: this._tileCoordsToBounds(coords).toBBoxString(),
-            size: this.getResolution(coords.z) * options.clusterSize,
-        });
+        const params = {
+            tileId: tileId,
+            bbox: this._tileCoordsToBounds(coords).toBBoxString(),
+            clusterSize: Math.round(this.getResolution(coords.z) * options.clusterSize),
+            includeClusterPoints: (map.getZoom() === map.getMaxZoom()),
+        };
 
-        fetch(options.api + encodeURIComponent(query))
-            .then(response => response.json())
-            .then(data => this.onClusterTileLoad(tileId, data))
-            .catch(ex => this.onClusterTileFail(tileId, ex));
+        if (options.load) {
+            options.load(params, L.bind(this.onClusterTileLoad, this), this);
+        }
     },
 
     onClusterTileLoad(tileId, data) {
-        // Make sure that tile is still wanted
         const i = this._loadingTiles.indexOf(tileId);
         if (i !== -1) {
             this._loadingTiles.splice(i, 1);
             this.addClusters(data.rows);
         }
-    },
-
-    onClusterTileFail(tileId, ex) {
-        window.console.log('parsing failed', ex);
     },
 
     onClusterClick(evt) {
@@ -107,8 +103,8 @@ export const ServerCluster = L.GridLayer.extend({
         return `z${coords.z}x${coords.x}y${coords.y}`;
     },
 
-    getClusterBounds(d) {
-        const bounds = d.bounds.match(/([-\d\.]+)/g);
+    getClusterBounds(box) {
+        const bounds = box.match(/([-\d\.]+)/g);
         return [[bounds[1], bounds[0]], [bounds[3], bounds[2]]];
     },
 
@@ -119,14 +115,16 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     createCluster(d) {
-        const latlng = d.center.match(/([-\d\.]+)/g).reverse();
+        const count = parseInt(d[0], 10);
+        const latlng = d[1].match(/([-\d\.]+)/g).reverse();
+        const bounds = this.getClusterBounds(d[2]);
         const options = this.options;
-        const count = d.count;
+
         let marker;
 
         if (count === 1) {
             marker = L.circleMarker(latlng, {
-                id: d.ids[0],
+                id: d[3],
                 radius: 6,
                 color: '#fff',
                 weight: 1,
@@ -139,9 +137,9 @@ export const ServerCluster = L.GridLayer.extend({
                 size: this._scale(count),
                 color: options.color,
                 opacity: options.opacity,
-                bounds: this.getClusterBounds(d),
+                bounds: bounds,
                 count: count,
-                ids: d.ids,
+                ids: (d[3] || '').split(','),
             });
         }
 

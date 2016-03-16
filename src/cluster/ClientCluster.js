@@ -6,7 +6,7 @@ import '../../temp/leaflet.markercluster-src'; // TODO: Remove when cluster repo
 export const ClientCluster = L.MarkerClusterGroup.extend({
 
     options: {
-        maxClusterRadius: 60,
+        maxClusterRadius: 40,
         showCoverageOnHover: false,
         iconCreateFunction(cluster) {
             const count = cluster.getChildCount();
@@ -35,6 +35,8 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         } else {
             this.loadData(options.api + encodeURIComponent(L.Util.template(options.query, options)));
         }
+
+        this.on('mouse', this._onClick, this);
     },
 
     // Load DHIS2 data
@@ -46,6 +48,34 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     },
 
     // Add DHIS2 data
+    addData(data) {
+        const options = this.options;
+
+        if (data.length) {
+            options.domain = [1, data.length];
+            options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
+
+            this.addLayers(data.map(d => {
+                const marker = L.circleMarker(d.geometry.coordinates.reverse(), {
+                    id: d.id,
+                    radius: options.radius,
+                    fillColor: options.color,
+                    opacity: options.opacity,
+                    fillOpacity: options.opacity,
+                    color: '#fff',
+                    weight: 1,
+                });
+
+                if (options.popup) {
+                    this.bindPopup(L.Util.template(options.popup, d.properties));
+                }
+
+                return marker;
+            }));
+        }
+    },
+
+    /* Used for testing with CartoDB
     addData(data) {
         const rows = data.rows;
         const options = this.options;
@@ -67,6 +97,8 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
             }));
         }
     },
+    */
+
 
     setOpacity(opacity) {
         this.options.opacity = opacity;
