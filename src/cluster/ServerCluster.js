@@ -46,12 +46,13 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     loadClusterTile(coords) {
-        const tileId = this.getClusterTileId(coords);
+        const tileId = this._tileCoordsToKey(coords);
+
         const options = this.options;
         const map = this._map;
 
         if (this._clusterCache[tileId]) {
-            this.addClusters(this._clusterCache[tileId]);
+            this.addClusters(tileId, this._clusterCache[tileId]);
             return;
         }
 
@@ -73,7 +74,7 @@ export const ServerCluster = L.GridLayer.extend({
         const i = this._loadingTiles.indexOf(tileId);
         if (i !== -1) {
             this._loadingTiles.splice(i, 1);
-            this.addClusters(features);
+            this.addClusters(tileId, features);
         }
     },
 
@@ -95,19 +96,17 @@ export const ServerCluster = L.GridLayer.extend({
         }
     },
 
-    getClusterTileId(coords) {
-        return `z${coords.z}x${coords.x}y${coords.y}`;
-    },
-
     getClusterBounds(box) {
         const bounds = box.match(/([-\d\.]+)/g);
         return [[bounds[1], bounds[0]], [bounds[3], bounds[2]]];
     },
 
-    addClusters(clusters) {
+    addClusters(tileId, clusters) {
         clusters.forEach(d => {
             this._clusters.addLayer(this.createCluster(d));
         });
+
+        this._clusterCache[tileId] = clusters;
     },
 
     createCluster(feature) {
@@ -150,6 +149,18 @@ export const ServerCluster = L.GridLayer.extend({
                 });
             }
         });
+    },
+
+    _removeTile(key) {
+        const clusters = this._clusterCache[key];
+
+        if (clusters) {
+            clusters.forEach(d => {
+                this._clusters.removeLayer(d);
+            });
+        }
+
+        L.GridLayer.prototype._removeTile.call(this, key);
     },
 
 });

@@ -75,31 +75,6 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         }
     },
 
-    /* Used for testing with CartoDB
-    addData(data) {
-        const rows = data.rows;
-        const options = this.options;
-
-        if (rows.length) { // Create markers from data
-            options.domain = [1, rows.length];
-            options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
-
-            this.addLayers(rows.map(d => {
-                return L.circleMarker(JSON.parse(d.geom).coordinates.reverse(), {
-                    id: d.uid,
-                    radius: this.options.radius,
-                    fillColor: this.options.color,
-                    opacity: this.options.opacity,
-                    fillOpacity: this.options.opacity,
-                    color: '#fff',
-                    weight: 1,
-                });
-            }));
-        }
-    },
-    */
-
-
     setOpacity(opacity) {
         this.options.opacity = opacity;
 
