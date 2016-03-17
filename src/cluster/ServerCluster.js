@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import {scaleLog} from 'd3-scale';
 import clusterMarker from './ClusterMarker';
+import circleMarker from '../CircleMarker';
 
 export const ServerCluster = L.GridLayer.extend({
     options: {
@@ -20,8 +21,6 @@ export const ServerCluster = L.GridLayer.extend({
         this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
         this._loadingTiles = []; // Contains cluster ids still loading
-        this._spiderLegs = L.featureGroup();
-        this._spiderMarkers = L.featureGroup();
     },
 
     onAdd(map) {
@@ -31,18 +30,13 @@ export const ServerCluster = L.GridLayer.extend({
             this._clusters.addTo(map);
         }
 
-        this._spiderLegs.addTo(map);
-        this._spiderMarkers.addTo(map);
-
         map.on('zoomstart', this.onZoomStart, this);
-        map.on('mousedown', this.unspiderify, this);
     },
 
     onRemove(map) {
         this._clusters.clearLayers();
         map.removeLayer(this._clusters);
         map.off('zoomstart', this.onZoomStart, this);
-        map.off('mousedown', this.unspiderify, this);
     },
 
     createTile(coords) {
@@ -75,27 +69,29 @@ export const ServerCluster = L.GridLayer.extend({
         }
     },
 
-    onClusterTileLoad(tileId, data) {
+    onClusterTileLoad(tileId, features) {
         const i = this._loadingTiles.indexOf(tileId);
         if (i !== -1) {
             this._loadingTiles.splice(i, 1);
-            this.addClusters(data.rows);
+            this.addClusters(features);
         }
     },
 
     onClusterClick(evt) {
         const marker = evt.layer;
-        const bounds = marker.options.bounds;
         const map = this._map;
 
-        if (bounds) { // Is cluster
-            if (map.getZoom() !== map.getMaxZoom()) {
-                this._map.fitBounds(bounds);
-            } else if (marker.options.ids) {
-                this.spiderify(marker);
+        if (marker.getBounds) { // Is cluster
+            if (map.getZoom() !== map.getMaxZoom()) { // Zoom to cluster bounds
+                map.fitBounds(marker.getBounds());
+            } else { // Spiderify on last zoom
+                if (this._spider) {
+                    this._spider.unspiderify();
+                }
+                this._spider = marker.spiderify();
             }
-        } else { // Is single marker
-            marker.bindPopup('ID: ' + marker.options.id).openPopup();
+        } else if (this.options.popup) { // Is single marker
+            marker.showPopup();
         }
     },
 
@@ -114,33 +110,14 @@ export const ServerCluster = L.GridLayer.extend({
         });
     },
 
-    createCluster(d) {
-        const count = parseInt(d[0], 10);
-        const latlng = d[1].match(/([-\d\.]+)/g).reverse();
-        const bounds = this.getClusterBounds(d[2]);
-        const options = this.options;
-
+    createCluster(feature) {
         let marker;
 
-        if (count === 1) {
-            marker = L.circleMarker(latlng, {
-                id: d[3],
-                radius: 6,
-                color: '#fff',
-                weight: 1,
-                fillColor: options.color,
-                fillOpacity: options.opacity,
-                opacity: options.opacity,
-            });
+        if (feature.properties.count === 1) {
+            marker = circleMarker(feature, this.options);
         } else {
-            marker = clusterMarker(latlng, {
-                size: this._scale(count),
-                color: options.color,
-                opacity: options.opacity,
-                bounds: bounds,
-                count: count,
-                ids: (d[3] || '').split(','),
-            });
+            feature.properties.size = this._scale(feature.properties.count);
+            marker = clusterMarker(feature, this.options);
         }
 
         return marker;
@@ -149,7 +126,10 @@ export const ServerCluster = L.GridLayer.extend({
     onZoomStart() {
         this._clusters.clearLayers();
         this._loadingTiles = [];
-        this.unspiderify();
+
+        if (this._spider) {
+            this._spider.unspiderify();
+        }
     },
 
     // Meters per pixel
@@ -170,54 +150,6 @@ export const ServerCluster = L.GridLayer.extend({
                 });
             }
         });
-    },
-
-    spiderify(cluster) {
-        const options = this.options;
-        const map = this._map;
-        const latlng = cluster.getLatLng();
-        const center = map.latLngToLayerPoint(latlng);
-        const ids = cluster.options.ids || []; // TODO: Add name?
-        const count = ids.length; // cluster.options.length
-        const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 };
-        const _2PI = Math.PI * 2;
-        const circumference = 13 * (2 + count);
-        const startAngle = Math.PI / 6;
-        const legLength = circumference / _2PI;
-        const angleStep = _2PI / count;
-
-        this.unspiderify();
-
-        for (let i = count - 1, angle, point, uid, newPos; i >= 0; i--) {
-            angle = startAngle + i * angleStep;
-            point = L.point(center.x + legLength * Math.cos(angle), center.y + legLength * Math.sin(angle))._round();
-            uid = ids[i];
-            newPos = map.layerPointToLatLng(point);
-
-            this._spiderLegs.addLayer(L.polyline([latlng, newPos], legOptions));
-
-            this._spiderMarkers.addLayer(L.circleMarker(newPos, {
-                id: uid,
-                radius: 6,
-                color: '#fff',
-                weight: 1,
-                fillColor: options.color,
-                fillOpacity: options.opacity,
-                opacity: options.opacity,
-            }));
-        }
-
-        cluster.setOpacity(0.1);
-        this._spiderCluster = cluster;
-    },
-
-    unspiderify() {
-        if (this._spiderCluster) {
-            this._spiderCluster.setOpacity(this.options.opacity);
-            this._spiderLegs.clearLayers();
-            this._spiderMarkers.clearLayers();
-            this._spiderCluster = null;
-        }
     },
 
 });

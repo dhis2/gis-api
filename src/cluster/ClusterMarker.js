@@ -1,27 +1,114 @@
+// Custom cluster marker used for server clusters
+
 import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
+import circleMarker from '../CircleMarker';
 
 export const ClusterMarker = L.Marker.extend({
-    initialize(latlng, options) {
+
+    initialize(feature, options) {
+        this._feature = feature;
+        this._latlng = L.GeoJSON.coordsToLatLng(feature.geometry.coordinates);
+
         options.icon = clusterIcon({
-            // html: `<span>${options.count}</span>`,
-            // iconSize: [options.size, options.size],
-            size: options.size,
+            size: feature.properties.size,
+            count: feature.properties.count,
             color: options.color,
-            count: options.count,
         });
 
         L.setOptions(this, options);
-        this._latlng = L.latLng(latlng);
     },
 
-    setSize(size, count) {
-        const icon = this.options.icon;
-        icon.setSize(size);
-        icon.setCount(count);
+    getFeature() {
+        return this._feature;
     },
+
+    getBounds() {
+        return this._feature.properties.bounds;
+    },
+
+    spiderify() {
+        if (!this._spiderified) {
+            const feature = this._feature;
+            const options = this.options;
+            const map = this._map;
+            const latlng = this.getLatLng();
+            const center = map.latLngToLayerPoint(latlng);
+            const ids = (this._feature.id || '').split(',');
+            const count = feature.properties.count;
+            const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 };
+            const _2PI = Math.PI * 2;
+            const circumference = 13 * (2 + count);
+            const startAngle = Math.PI / 6;
+            const legLength = circumference / _2PI;
+            const angleStep = _2PI / count;
+
+            this._spiderLegs = L.featureGroup();
+            this._spiderMarkers = L.featureGroup();
+
+            this._spiderMarkers.on('click', this.onSpiderMarkerClick, this);
+
+            for (let i = count - 1, angle, point, id, newPos; i >= 0; i--) {
+                angle = startAngle + i * angleStep;
+                point = L.point(center.x + legLength * Math.cos(angle), center.y + legLength * Math.sin(angle))._round();
+                id = ids[i];
+                newPos = map.layerPointToLatLng(point);
+
+                this._spiderLegs.addLayer(L.polyline([latlng, newPos], legOptions));
+
+                this._spiderMarkers.addLayer(circleMarker({
+                    type: 'Feature',
+                    id: id,
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [newPos.lng, newPos.lat],
+                    },
+                }, this.options));
+            }
+
+            this._spiderLegs.addTo(map);
+            this._spiderMarkers.addTo(map);
+
+            this._originalOpacity = options.opacity;
+            this.setOpacity(0.1);
+            this._spiderified = true;
+        }
+
+        return this;
+    },
+
+    unspiderify() {
+        const map = this._map;
+
+        this.setOpacity(this._originalOpacity);
+
+        if (this._spiderLegs && map.hasLayer(this._spiderLegs)) {
+            map.removeLayer(this._spiderLegs);
+        }
+
+        if (this._spiderMarkers && map.hasLayer(this._spiderMarkers)) {
+            map.removeLayer(this._spiderMarkers);
+            this._spiderMarkers.off('click', this.onSpiderMarkerClick, this);
+        }
+
+        this._spiderified = false;
+
+        return this;
+    },
+
+    onSpiderMarkerClick(evt) {
+        evt.layer.showPopup();
+    },
+
+    onRemove() {
+        if (this._spiderified) {
+            this.unspiderify();
+        }
+        L.Marker.prototype.onRemove.call(this);
+    },
+
 });
 
-export default function clusterMarker(latlng, options) {
-    return new ClusterMarker(latlng, options);
+export default function clusterMarker(feature, options) {
+    return new ClusterMarker(feature, options);
 }
