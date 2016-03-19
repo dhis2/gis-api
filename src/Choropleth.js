@@ -15,6 +15,7 @@ export const Choropleth = GeoJson.extend({
         valueKey: 'value',
         colorKey: 'color',
         radiusKey: 'radius',
+        zIndex: 250,
     },
 
     initialize(options = {}) {

@@ -5,77 +5,78 @@ import circleMarker from '../CircleMarker';
 
 export const ServerCluster = L.GridLayer.extend({
     options: {
+        pane: 'markerPane',
         tileSize: 512,
         clusterSize: 110,
         color: 'red',
         opacity: 1,
         domain: [1, 10000],
         range: [16, 40],
-        zoomToFirstBounds: true,
     },
 
     initialize(opts) {
         const options = L.setOptions(this, opts);
-        this._clusters = L.featureGroup();
-        this._clusterCache = {};
+        this._clusters = L.featureGroup(); // Clusters shown on map
+        this._tileClusters = {}; // Cluster cache
         this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
-        this._loadingTiles = []; // Contains cluster ids still loading
     },
 
     onAdd(map) {
-        L.GridLayer.prototype.onAdd.call(this);
+        this._levels = {};
+        this._tiles = {};
 
-        if (!map.hasLayer(this._clusters)) {
-            this._clusters.addTo(map);
-        }
+        this._resetView();
+        this._update();
 
-        map.on('zoomstart', this.onZoomStart, this);
+        map.addLayer(this._clusters);
     },
 
     onRemove(map) {
         this._clusters.clearLayers();
         map.removeLayer(this._clusters);
-        map.off('zoomstart', this.onZoomStart, this);
     },
 
+    // Load/add clusters within tile bounds
     createTile(coords) {
-        const div = L.DomUtil.create('div', 'leaflet-tile-cluster');
-        this.loadClusterTile(coords);
-        return div;
-    },
-
-    loadClusterTile(coords) {
         const tileId = this._tileCoordsToKey(coords);
+        const clusters = this._tileClusters[tileId];
 
-        const options = this.options;
-        const map = this._map;
-
-        if (this._clusterCache[tileId]) {
-            this.addClusters(tileId, this._clusterCache[tileId]);
+        if (clusters) { // Add from cache
+            clusters.forEach(cluster => this._clusters.addLayer(cluster));
             return;
         }
 
-        this._loadingTiles.push(tileId);
+        const options = this.options;
+        const map = this._map;
+        const bounds = this._tileCoordsToBounds(coords);
 
         const params = {
             tileId: tileId,
-            bbox: this._tileCoordsToBounds(coords).toBBoxString(),
+            bbox: bounds.toBBoxString(),
             clusterSize: Math.round(this.getResolution(coords.z) * options.clusterSize),
             includeClusterPoints: (map.getZoom() === map.getMaxZoom()),
         };
 
         if (options.load) {
-            options.load(params, L.bind(this.onClusterTileLoad, this), this);
+            options.load(params, L.bind(this.addClusters, this), this);
         }
     },
 
-    onClusterTileLoad(tileId, features) {
-        const i = this._loadingTiles.indexOf(tileId);
-        if (i !== -1) {
-            this._loadingTiles.splice(i, 1);
-            this.addClusters(tileId, features);
-        }
+    _addTile(coords) {
+        const key = this._tileCoordsToKey(coords);
+
+        this._tiles[key] = {
+            coords: coords,
+            current: true,
+        };
+
+        this.createTile(this._wrapCoords(coords));
+
+        this.fire('tileloadstart', {
+            key: key,
+            coords: coords,
+        });
     },
 
     onClusterClick(evt) {
@@ -102,11 +103,17 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     addClusters(tileId, clusters) {
+        const tileClusters = [];
+
         clusters.forEach(d => {
-            this._clusters.addLayer(this.createCluster(d));
+            const cluster = this.createCluster(d);
+            if (this._tiles[tileId]) { // If tile still present
+                this._clusters.addLayer(cluster);
+            }
+            tileClusters.push(cluster);
         });
 
-        this._clusterCache[tileId] = clusters;
+        this._tileClusters[tileId] = tileClusters;
     },
 
     createCluster(feature) {
@@ -120,15 +127,6 @@ export const ServerCluster = L.GridLayer.extend({
         }
 
         return marker;
-    },
-
-    onZoomStart() {
-        this._clusters.clearLayers();
-        this._loadingTiles = [];
-
-        if (this._spider) {
-            this._spider.unspiderify();
-        }
     },
 
     // Meters per pixel
@@ -152,19 +150,30 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     _removeTile(key) {
-        const clusters = this._clusterCache[key];
+        const tile = this._tiles[key];
+        if (!tile) { return; }
+
+        const clusters = this._tileClusters[key];
 
         if (clusters) {
-            clusters.forEach(d => {
-                this._clusters.removeLayer(d);
-            });
+            clusters.forEach(layer => this._clusters.removeLayer(layer));
         }
 
-        L.GridLayer.prototype._removeTile.call(this, key);
+        delete this._tiles[key];
+
+        this.fire('tileunload', {
+            tileId: key,
+            coords: this._keyToTileCoords(key),
+        });
     },
+
+    // Disable zoom animation
+    _animateZoom() {},
 
 });
 
 export default function serverCluster(options) {
     return new ServerCluster(options);
 }
+
+
