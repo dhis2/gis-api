@@ -134,19 +134,21 @@ export const ServerCluster = L.GridLayer.extend({
         return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
     },
 
+    // Set opacity for all clusters and circle markers
     setOpacity(opacity) {
-        this.options.opacity = opacity;
+        const tileClusters = this._tileClusters;
+        let tileId;
+        let layer;
 
-        this._clusters.eachLayer(layer => {
-            if (layer.setOpacity) { // cluster marker
-                layer.setOpacity(opacity);
-            } else {
-                layer.setStyle({ // circle marker
-                    opacity: opacity,
-                    fillOpacity: opacity,
-                });
+        for (tileId in tileClusters) {
+            if (tileClusters.hasOwnProperty(tileId)) {
+                for (layer of tileClusters[tileId]) {
+                    layer.setOpacity(opacity);
+                }
             }
-        });
+        }
+
+        this.options.opacity = opacity;
     },
 
     _removeTile(key) {
