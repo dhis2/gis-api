@@ -3,7 +3,7 @@ import tileLayer from './TileLayer';
 import googleLayer from './GoogleLayer';
 import mapQuest from './MapQuest';
 import boundary from './Boundary';
-import points from './Points';
+import dots from './Dots';
 import circles from './Circles';
 import markers from './Markers';
 import choropleth from './Choropleth';
@@ -38,7 +38,7 @@ export const Map = L.Map.extend({
             mapQuest,
             googleLayer,
             boundary,
-            points,
+            dots,
             circles,
             markers,
             choropleth,

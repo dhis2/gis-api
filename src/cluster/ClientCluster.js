@@ -33,58 +33,29 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
 
         if (options.data) {
             this.addData(options.data);
-        } else {
-            this.loadData(options.api + encodeURIComponent(L.Util.template(options.query, options)));
         }
 
-        this.on('mouse', this._onClick, this);
+        this.on('click', this.onMarkerClick, this);
     },
 
-    // Load DHIS2 data
-    loadData(url) {
-        fetch(url)
-            .then(response => response.json())
-            .then(this.addData.bind(this))
-            .catch(ex => window.console.log('parsing failed', ex));
+    onMarkerClick(evt) {
+        evt.layer.showPopup();
     },
 
-    // Add DHIS2 data
     addData(data) {
         const options = this.options;
 
         if (data.length) {
             options.domain = [1, data.length];
             options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
-
-            this.addLayers(data.map(d => {
-                const marker = circleMarker(d, options);
-
-                if (options.popup) {
-                    this.bindPopup(L.Util.template(options.popup, d.properties));
-                }
-
-                return marker;
-            }));
+            this.addLayers(data.map(d => circleMarker(d, options)));
         }
     },
 
     setOpacity(opacity) {
         this.options.opacity = opacity;
-
-        // Set circle marker opacity
-        this.eachLayer(layer => {
-            layer.setStyle({
-                opacity: opacity,
-                fillOpacity: opacity,
-            });
-        });
-
-        // Set cluster marker opacity
-        this._featureGroup.eachLayer(layer => {
-            if (layer.setOpacity) {
-                layer.setOpacity(opacity);
-            }
-        });
+        this.eachLayer(layer => layer.setOpacity(opacity)); // Circle markers
+        this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
     },
 
 });

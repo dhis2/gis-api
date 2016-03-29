@@ -5,15 +5,18 @@ import L from 'leaflet';
 export const CircleMarker = L.CircleMarker.extend({
 
     options: {
-        color: '#fff',
-        weight: 1,
+        strokeColor: '#fff',
+        weight: 0.5,
+        radius: 6,
     },
 
-    initialize(feature, options) {
+    initialize(feature, opts) {
+        const options = L.setOptions(this, opts);
+
         options.fillColor = options.color;
         options.fillOpacity = options.opacity;
+        options.color = options.strokeColor;
 
-        L.setOptions(this, options);
         this._feature = feature;
         this._latlng = L.GeoJSON.coordsToLatLng(feature.geometry.coordinates);
         this._radius = this.options.radius;

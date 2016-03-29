@@ -24,7 +24,7 @@ export const GeoJson = L.GeoJSON.extend({
             layer.bindLabel(L.Util.template(options.hoverLabel || options.label, feature.properties));
         }
 
-        if (options.popup) {
+        if (options.popup && !(options.popup instanceof Function)) {
             layer.bindPopup(L.Util.template(options.popup, feature.properties));
         }
 
