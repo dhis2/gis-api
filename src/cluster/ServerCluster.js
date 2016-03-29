@@ -97,11 +97,7 @@ export const ServerCluster = L.GridLayer.extend({
         }
     },
 
-    getClusterBounds(box) {
-        const bounds = box.match(/([-\d\.]+)/g);
-        return [[bounds[1], bounds[0]], [bounds[3], bounds[2]]];
-    },
-
+    // Add clusters for one tile
     addClusters(tileId, clusters) {
         const tileClusters = [];
 
@@ -116,6 +112,7 @@ export const ServerCluster = L.GridLayer.extend({
         this._tileClusters[tileId] = tileClusters;
     },
 
+    // Create cluster or circle marker
     createCluster(feature) {
         let marker;
 
@@ -151,6 +148,7 @@ export const ServerCluster = L.GridLayer.extend({
         this.options.opacity = opacity;
     },
 
+    // Remove clusters in tile
     _removeTile(key) {
         const tile = this._tiles[key];
         if (!tile) { return; }

@@ -1,4 +1,4 @@
-// Creates a circle marker form a GeoJSON feature
+// Creates a circle marker from a GeoJSON feature
 
 import L from 'leaflet';
 

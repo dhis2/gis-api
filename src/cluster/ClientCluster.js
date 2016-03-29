@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
+import circleMarker from '../CircleMarker';
 import {scaleLog} from 'd3-scale';
 import '../../temp/leaflet.markercluster-src'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
 
@@ -56,15 +57,7 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
             options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
 
             this.addLayers(data.map(d => {
-                const marker = L.circleMarker(d.geometry.coordinates.reverse(), {
-                    id: d.id,
-                    radius: options.radius,
-                    fillColor: options.color,
-                    opacity: options.opacity,
-                    fillOpacity: options.opacity,
-                    color: '#fff',
-                    weight: 1,
-                });
+                const marker = circleMarker(d, options);
 
                 if (options.popup) {
                     this.bindPopup(L.Util.template(options.popup, d.properties));
