@@ -1,4 +1,5 @@
-// NOT IN USE
+// Proportional symbols
+// Currently not i use
 
 import {GeoJson} from './GeoJson';
 import {linear} from 'd3-scale';

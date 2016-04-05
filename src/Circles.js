@@ -1,3 +1,5 @@
+// Facility layer circular area
+
 import {GeoJson} from './GeoJson';
 
 export const Circles = GeoJson.extend({

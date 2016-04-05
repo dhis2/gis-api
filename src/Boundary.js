@@ -1,3 +1,5 @@
+// Boundary layer
+
 import {GeoJson} from './GeoJson';
 import label from './Label';
 

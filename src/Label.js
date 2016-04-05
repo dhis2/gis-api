@@ -1,3 +1,5 @@
+// Used in boundary layer, choropleth,
+
 import L from 'leaflet';
 
 // Text label

@@ -1,3 +1,5 @@
+// Base class for most vector layers
+
 import L from 'leaflet';
 import '../temp/leaflet.label-src';
 

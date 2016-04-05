@@ -1,3 +1,5 @@
+// Currently not in use
+
 import {Choropleth} from './Choropleth';
 import turf from 'turf'; // TODO: Only include what we use
 

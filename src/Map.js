@@ -1,22 +1,16 @@
 import L from 'leaflet';
 import tileLayer from './TileLayer';
-import googleLayer from './GoogleLayer';
 import mapQuest from './MapQuest';
+import googleLayer from './GoogleLayer';
 import boundary from './Boundary';
 import dots from './Dots';
-import circles from './Circles';
 import markers from './Markers';
+import circles from './Circles';
 import choropleth from './Choropleth';
-import fitBounds from './FitBounds';
-import legend from './Legend';
-// import circleMarkers from './CircleMarkers';
-// import heat from './Heat';
-// import grid from './Grid';
-import cluster from './cluster/Cluster';
 import clientCluster from './cluster/ClientCluster';
 import serverCluster from './cluster/ServerCluster';
-import geoServer from './GeoServer';
-// import earthEngine from './EarthEngine';
+import legend from './Legend';
+import fitBounds from './FitBounds';
 
 /**
  * Creates a map instance.
@@ -34,22 +28,16 @@ export const Map = L.Map.extend({
     options: {
         className: 'leaflet-dhis2',
         layerTypes: {
-            tileLayer,
-            mapQuest,
-            googleLayer,
-            boundary,
-            dots,
-            circles,
-            markers,
-            choropleth,
-            // circleMarkers,
-            // heat,
-            // grid,
-            cluster,
-            clientCluster,
-            serverCluster,
-            geoServer,
-            // earthEngine,
+            tileLayer,      // CartoDB basemap
+            mapQuest,       // MapQuest basemap
+            googleLayer,    // Google basemap
+            boundary,       // Boundary layer
+            dots,           // Event layer without clustering
+            markers,        // Facility layer
+            circles,        // Facility layer circular area
+            choropleth,     // Thematic layer
+            clientCluster,  // Event layer
+            serverCluster,  // Event layer
         },
         controlTypes: {
             legend,

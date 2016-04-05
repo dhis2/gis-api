@@ -1,3 +1,5 @@
+// Currently not in use
+
 import L from 'leaflet';
 
 export const GeoServer = L.TileLayer.WMS.extend({

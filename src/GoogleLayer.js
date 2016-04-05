@@ -1,3 +1,6 @@
+// Extending https://github.com/shramov/leaflet-plugins/blob/master/layer/tile/Google.js
+// Handles Google API loading
+
 import L from 'leaflet';
 import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
 

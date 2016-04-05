@@ -1,6 +1,6 @@
+// Adds a fit map to contents button
 import L from 'leaflet';
 
-// Marker with label support
 export const FitBounds = L.Control.extend({
 
     options: {
@@ -51,6 +51,7 @@ export const FitBounds = L.Control.extend({
         }
     },
 
+    // Only show control when map contains "fittable" content
     _toggleControl(isValidBounds) {
         if (isValidBounds) {
             this._container.style.display = 'block';

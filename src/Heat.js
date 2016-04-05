@@ -1,3 +1,5 @@
+// Currently not in use
+
 import L from 'leaflet';
 import '../temp/leaflet.heat'; // TODO: Load as NPM module when Leaflet 1.0 is released
 
