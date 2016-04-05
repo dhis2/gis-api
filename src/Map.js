@@ -93,6 +93,7 @@ export const Map = L.Map.extend({
         }
 
         L.Map.prototype.addLayer.call(this, newLayer);
+
         return newLayer;
     },
 
