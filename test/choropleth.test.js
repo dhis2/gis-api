@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {Choropleth} from '../src/Choropleth';
+import {Choropleth} from '../srcx/Choropleth';
 
 describe('DHIS2 choropleth', () => {
 

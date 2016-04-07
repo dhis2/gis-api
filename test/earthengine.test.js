@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {EarthEngine} from '../src/EarthEngine';
+import {EarthEngine} from '../srcx/EarthEngine';
 
 describe('DHIS2 Earth Engine', () => {
 
