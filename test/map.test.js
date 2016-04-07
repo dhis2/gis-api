@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {Map} from '../srcx/Map';
+import {Map} from '../src/Map';
 
 describe('DHIS2 map', () => {
     let mapDiv;

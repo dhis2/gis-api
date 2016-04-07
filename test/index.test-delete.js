@@ -1,4 +1,4 @@
-import L from '../srcx/index';
+import L from '../src/index';
 import Leaflet from 'leaflet';
 
 describe('DHIS2 GIS', () => {

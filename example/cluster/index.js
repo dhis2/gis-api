@@ -1,4 +1,4 @@
-import map from '../../srcx/';
+import map from '../../src/';
 
 map('map', {
     layers: [{
