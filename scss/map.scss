@@ -33,6 +33,16 @@
         padding: 2px 2px 1px;
     }
 
+    .leaflet-loader {
+        &:before {
+
+        }
+
+        &:after {
+
+        }
+    }
+
 }
 
 .leaflet-dhis2.leaflet-google {

@@ -30,11 +30,14 @@ export const ServerCluster = L.GridLayer.extend({
         this._update();
 
         map.addLayer(this._clusters);
+
+        map.on('zoomstart', this._onZoomStart, this);
     },
 
     onRemove(map) {
         this._clusters.clearLayers();
         map.removeLayer(this._clusters);
+        map.off('zoomstart', this._onZoomStart, this);
     },
 
     // Load/add clusters within tile bounds
@@ -165,6 +168,11 @@ export const ServerCluster = L.GridLayer.extend({
             tileId: key,
             coords: this._keyToTileCoords(key),
         });
+    },
+
+    // Remove cluster on zoom change
+    _onZoomStart() {
+        this._clusters.clearLayers();
     },
 
     // Disable zoom animation

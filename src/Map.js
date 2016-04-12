@@ -128,6 +128,18 @@ export const Map = L.Map.extend({
         return bounds;
     },
 
+    toggleLoader(show) {
+        const container = this._containter;
+        const className = 'leaflet-loader';
+        const hasClass = L.DomUtil.hasClass(container, className);
+
+        if (hasClass && show !== true) {
+            L.DomUtil.removeClass(container, className);
+        } else {
+            L.DomUtil.addClass(container, className);
+        }
+    },
+
 });
 
 export default function map(id, options) {
