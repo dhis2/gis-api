@@ -62,13 +62,17 @@ export const Choropleth = GeoJson.extend({
     highlight(id) {
         const layer = this.findById(id);
 
-        if (this._highlight) {
-            this._highlight.setStyle(this.options.resetStyle);
-        }
+        this.removeHighlight();
 
         if (layer) {
             this._highlight = layer.setStyle(this.options.highlightStyle);
             return layer;
+        }
+    },
+
+    removeHighlight() {
+        if (this._highlight) {
+            this._highlight.setStyle(this.options.resetStyle);
         }
     },
 
