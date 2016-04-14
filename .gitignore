@@ -5,3 +5,4 @@ lib
 *.iml
 npm-debug.log
 coverage
+*.gzip
