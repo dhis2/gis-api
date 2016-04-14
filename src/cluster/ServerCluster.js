@@ -20,6 +20,7 @@ export const ServerCluster = L.GridLayer.extend({
         this._tileClusters = {}; // Cluster cache
         this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
+        this._bounds = options.bounds;
     },
 
     onAdd(map) {
@@ -132,6 +133,11 @@ export const ServerCluster = L.GridLayer.extend({
     // Meters per pixel
     getResolution(zoom) {
         return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
+    },
+
+    // Returns bounds for all clusters
+    getBounds() {
+        return this._bounds ? L.latLngBounds(this._bounds) : this._clusters.getBounds();
     },
 
     // Set opacity for all clusters and circle markers

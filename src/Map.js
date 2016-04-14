@@ -120,7 +120,7 @@ export const Map = L.Map.extend({
         const bounds = new L.LatLngBounds();
 
         this.eachLayer(layer => {
-            if (layer instanceof L.FeatureGroup) {
+            if (layer.getBounds) {
                 bounds.extend(layer.getBounds());
             }
         });
