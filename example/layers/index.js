@@ -90,13 +90,13 @@ map('map', {
         overlay: true,
         visible: false,
         data: '/data/facilities-features.json',
-    },*/ {
+    }, {
         type: 'cluster',
         name: 'Cluster',
         overlay: true,
         visible: false,
         data: '/data/facilities-features.json',
-    }, /* {
+    }, {
         type: 'grid',
         name: 'Grid',
         overlay: true,
