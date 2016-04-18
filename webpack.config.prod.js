@@ -15,10 +15,11 @@ webpackBaseConfig.plugins = [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-        minimize: true,
+        compress: {
+            warnings: false // Includes many warnings from 3rd party libraries
+        },
         sourceMap: true,
     }),
-
 ];
 
 module.exports = webpackBaseConfig;
