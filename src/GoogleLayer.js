@@ -19,8 +19,10 @@ export const GoogleLayer = L.Google.extend({
         if (this.googleMapsApiLoaded()) {
             this._ready = google.maps.Map !== undefined;
             if (!this._ready) L.Google.asyncWait.push(this);
-        } else {
+        } else if (!window.googleMapsApiLoading) { // TODO
             this.loadGoogleMapsApi();
+        } else {
+            // TODO: Wait until API is loaded
         }
     },
 
@@ -48,6 +50,8 @@ export const GoogleLayer = L.Google.extend({
 
     // Async loading of Google Maps API
     loadGoogleMapsApi() {
+        window.googleMapsApiLoading = true; // TODO
+
         // Create random callback function
         const callbackFunc = 'onGoogleMapsApiReady_' + (Math.random() + 1).toString(36).substring(7);
 
