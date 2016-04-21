@@ -9,6 +9,7 @@ export const GoogleLayer = L.Google.extend({
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
         version: '3.22',  // Google Maps API version
+        apiWait: 1000, // Milliseconds before checking if Google Maps API is loaded
     },
 
     initialize(opts = {}) {
@@ -16,13 +17,15 @@ export const GoogleLayer = L.Google.extend({
 
         this._type = options.style;
 
-        if (this.googleMapsApiLoaded()) {
+        if (this.googleMapsApiLoaded()) { // Google Maps API is loaded
             this._ready = google.maps.Map !== undefined;
-            if (!this._ready) L.Google.asyncWait.push(this);
-        } else if (!window.googleMapsApiLoading) { // TODO
+            if (!this._ready) {
+                L.Google.asyncWait.push(this);
+            }
+        } else if (GoogleLayer._mapsApiLoading) { // Google Maps API is currently loading
+            this.waitGoogleMapsApi();
+        } else { // Google Maps API is not loaded
             this.loadGoogleMapsApi();
-        } else {
-            // TODO: Wait until API is loaded
         }
     },
 
@@ -50,7 +53,7 @@ export const GoogleLayer = L.Google.extend({
 
     // Async loading of Google Maps API
     loadGoogleMapsApi() {
-        window.googleMapsApiLoading = true; // TODO
+        GoogleLayer._mapsApiLoading = true;
 
         // Create random callback function
         const callbackFunc = 'onGoogleMapsApiReady_' + (Math.random() + 1).toString(36).substring(7);
@@ -61,6 +64,15 @@ export const GoogleLayer = L.Google.extend({
         const script = document.createElement('script');
         script.src = `//maps.googleapis.com/maps/api/js?v=${this.options.version}&callback=${callbackFunc}`;
         document.getElementsByTagName('head')[0].appendChild(script);
+    },
+
+    // Called until Google Maps API is loaded
+    waitGoogleMapsApi() {
+        if (!this.googleMapsApiLoaded()) {
+            setTimeout(this.waitGoogleMapsApi.bind(this), this.options.apiWait);
+            return;
+        }
+        this.onGoogleMapsApiLoad();
     },
 
     // Add to map when Google Maps API is loaded
