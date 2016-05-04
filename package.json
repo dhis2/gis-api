@@ -32,6 +32,7 @@
     "d3-color": "^0.4.2",
     "d3-scale": "^0.6.4",
     "leaflet": "^1.0.0-rc.1",
+    "leaflet-geocoder-mapzen": "^1.5.2",
     "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
     "topojson": "^1.6.19",
     "turf": "^2.0.2",

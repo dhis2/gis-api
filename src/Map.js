@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import 'leaflet-geocoder-mapzen';
 import tileLayer from './TileLayer';
 import mapQuest from './MapQuest';
 import googleLayer from './GoogleLayer';
