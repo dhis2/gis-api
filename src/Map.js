@@ -12,6 +12,7 @@ import clientCluster from './cluster/ClientCluster';
 import serverCluster from './cluster/ServerCluster';
 import legend from './Legend';
 import fitBounds from './FitBounds';
+import earthEngine from './EarthEngine';
 
 /**
  * Creates a map instance.
@@ -39,6 +40,7 @@ export const Map = L.Map.extend({
             choropleth,     // Thematic layer
             clientCluster,  // Event layer
             serverCluster,  // Event layer
+            earthEngine,    // Google Earth Engine layer
         },
         controlTypes: {
             legend,
