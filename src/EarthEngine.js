@@ -24,13 +24,21 @@ export const EarthEngine = L.TileLayer.extend({
     },
 
     onAdd() {
-        // console.log('onAdd');
+        var accessToken = this.options.accessToken;
 
-        this.getToken(this.onValidToken.bind(this));
+        if (accessToken) {
+            if (accessToken instanceof Function) {
+                accessToken(this.onValidAccessToken.bind(this));
+            } else {
+                this.onValidAccessToken(accessToken);
+            }
+        }
+
+        this._initContainer();
     },
 
     // TODO: Call on token expiry
-    onValidToken(token) {
+    onValidAccessToken(token) {
         const options = this.options;
 
         // https://github.com/google/earthengine-api/blob/07052aa5c168639f134501765df2a2a7ae2f1d6f/javascript/src/data.js#L174
@@ -46,18 +54,22 @@ export const EarthEngine = L.TileLayer.extend({
         // console.log("addToMap");
 
         L.TileLayer.prototype.onAdd.call(this);
+        this.fire('initialized');
+
         //console.log(options, this._map);
     },
 
     // Check validity of token
     // https://play.dhis2.org/dev/api/tokens/google
+    /*
     getToken(callback) {
         callback({
-            "access_token": "ya29.CjbgAsVhOCHSqFcmokdkRYl0yKciWuY6Br5pp9MAslr6euPpyqV995zdfOtv9UOEvZjCY2cJCL0",
-            "expires_in": 3599,
+            "access_token": "ya29.CjbhAoAidecNEDUboG33aMlCYd2mxPDwHUEdTctB17JwX5nqGfldRDqGky2SvtfrH1ipG3tkiYg",
+            "expires_in": 3600,
             "client_id": "101611861269198612525"
         });
     },
+    */
 
 });
 
