@@ -18,6 +18,7 @@ webpackBaseConfig.plugins = [
         compress: {
             warnings: false // Includes many warnings from 3rd party libraries
         },
+        mangle: false,
         sourceMap: true,
     }),
 ];

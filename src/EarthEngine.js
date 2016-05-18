@@ -3,12 +3,10 @@
 import L from 'leaflet';
 
 // https://github.com/dhis2/dhis2-gis-api/issues/3
-import ee_api from 'exports?goog&ee!../temp/ee_api_js_debug'; // https://github.com/webpack/docs/wiki/shimming-modules
+import eeApi from 'exports?goog&ee!../temp/ee_api_js_debug'; // https://github.com/webpack/docs/wiki/shimming-modules
 
-const goog = ee_api.goog;
-const ee = ee_api.ee;
-
-// console.log("###", goog, ee);
+const goog = eeApi.goog; // eslint-disable-line
+const ee = eeApi.ee;
 
 export const EarthEngine = L.TileLayer.extend({
 
@@ -24,7 +22,7 @@ export const EarthEngine = L.TileLayer.extend({
     },
 
     onAdd() {
-        var accessToken = this.options.accessToken;
+        const accessToken = this.options.accessToken;
 
         if (accessToken) {
             if (accessToken instanceof Function) {
@@ -46,30 +44,15 @@ export const EarthEngine = L.TileLayer.extend({
 
         ee.initialize();
 
-        var eeMapConfig = ee.Image(options.id).getMap(options.config || {});
+        const eeImage = ee.Image(options.id); // eslint-disable-line
+        const eeMapConfig = eeImage.getMap(options.config || {});
 
         options.token = eeMapConfig.token;
         options.mapid = eeMapConfig.mapid;
 
-        // console.log("addToMap");
-
         L.TileLayer.prototype.onAdd.call(this);
         this.fire('initialized');
-
-        //console.log(options, this._map);
     },
-
-    // Check validity of token
-    // https://play.dhis2.org/dev/api/tokens/google
-    /*
-    getToken(callback) {
-        callback({
-            "access_token": "ya29.CjbhAoAidecNEDUboG33aMlCYd2mxPDwHUEdTctB17JwX5nqGfldRDqGky2SvtfrH1ipG3tkiYg",
-            "expires_in": 3600,
-            "client_id": "101611861269198612525"
-        });
-    },
-    */
 
 });
 
