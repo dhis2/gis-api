@@ -37,18 +37,34 @@ export const EarthEngine = L.TileLayer.extend({
 
     // TODO: Call on token expiry
     onValidAccessToken(token) {
-        const options = this.options;
-
         // https://github.com/google/earthengine-api/blob/07052aa5c168639f134501765df2a2a7ae2f1d6f/javascript/src/data.js#L174
         ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in); // (token.expiryDate - Date.now()) / 1000
 
         ee.initialize();
+        this.createLayer();
+    },
 
-        const eeImage = ee.Image(options.id); // eslint-disable-line
+    createLayer() {
+        const options = this.options;
+        let eeImage;
+
+        if (!options.filter) { // Single image
+            eeImage = ee.Image(options.id); // eslint-disable-line
+        } else { // Image collection
+            let collection = ee.ImageCollection('WorldPop/POP'); // eslint-disable-line
+
+            for (const filter of options.filter) {
+                collection = collection.filter(ee.Filter[filter.type].apply(this, filter.arguments));  // eslint-disable-line
+                eeImage = collection.mosaic();
+            }
+        }
+
         const eeMapConfig = eeImage.getMap(options.config || {});
 
         options.token = eeMapConfig.token;
         options.mapid = eeMapConfig.mapid;
+
+        // console.log("mapid", options.mapid, options.token);
 
         L.TileLayer.prototype.onAdd.call(this);
         this.fire('initialized');
