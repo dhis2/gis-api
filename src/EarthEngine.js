@@ -3,7 +3,7 @@
 import L from 'leaflet';
 
 // https://github.com/dhis2/dhis2-gis-api/issues/3
-import eeApi from 'exports?goog&ee!../temp/ee_api_js_debug'; // https://github.com/webpack/docs/wiki/shimming-modules
+import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';  // https://github.com/webpack/docs/wiki/shimming-modules
 
 const goog = eeApi.goog; // eslint-disable-line
 const ee = eeApi.ee;
@@ -38,7 +38,7 @@ export const EarthEngine = L.TileLayer.extend({
     // TODO: Call on token expiry
     onValidAccessToken(token) {
         // https://github.com/google/earthengine-api/blob/07052aa5c168639f134501765df2a2a7ae2f1d6f/javascript/src/data.js#L174
-        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in); // (token.expiryDate - Date.now()) / 1000
+        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false); // (token.expiryDate - Date.now()) / 1000
 
         ee.initialize();
         this.createLayer();
@@ -66,8 +66,9 @@ export const EarthEngine = L.TileLayer.extend({
 
         // console.log("mapid", options.mapid, options.token);
 
+
         L.TileLayer.prototype.onAdd.call(this);
-        this.fire('initialized');
+        // this.fire('initialized');
     },
 
 });
@@ -75,3 +76,4 @@ export const EarthEngine = L.TileLayer.extend({
 export default function earthEngine(options) {
     return new EarthEngine(options);
 }
+
