@@ -1,6 +1,7 @@
 // TODO: Load on demand
 
 import L from 'leaflet';
+import {scaleLinear} from 'd3-scale';
 
 // https://github.com/dhis2/dhis2-gis-api/issues/3
 import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';  // https://github.com/webpack/docs/wiki/shimming-modules
@@ -68,7 +69,38 @@ export const EarthEngine = L.TileLayer.extend({
 
 
         L.TileLayer.prototype.onAdd.call(this);
-        // this.fire('initialized');
+        this.fire('initialized');
+    },
+
+    getLegend() {
+        const options = this.options;
+        const config = this.options.config;
+        const palette = config.palette.split(',');
+        const ticks = scaleLinear().domain([config.min, config.max]).ticks(palette.length);
+        const colorScale = scaleLinear().domain(ticks).range(palette);
+
+        let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
+
+        if (options.description) {
+            legend += '<p>' +  options.description + '</p>';
+        }
+
+        legend += '<dl>';
+
+        for (let value of ticks) {
+            legend += '<dt style="background-color:' + colorScale(value) + ';box-shadow:1px 1px 2px #aaa;"></dt>';
+            legend += '<dd>' + value + ' ' + (options.unit || '') + '</dd>';
+        }
+
+        legend += '</dl>';
+
+        if (options.attribution) {
+            legend += '<p>Data: ' + options.attribution + '</p>';
+        }
+
+        legend += '<div>';
+
+        return legend;
     },
 
 });
