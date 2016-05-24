@@ -60,6 +60,7 @@ export const Boundary = GeoJson.extend({
 
     // Use circle markers for point features
     pointToLayer(geojson, latlng) {
+        this.options.style.pane = this.options.pane;
         return new L.CircleMarker(latlng, this.options.style);
     },
 
