@@ -23,26 +23,40 @@ export const EarthEngine = L.TileLayer.extend({
     },
 
     onAdd() {
-        const accessToken = this.options.accessToken;
-
-        if (accessToken) {
-            if (accessToken instanceof Function) {
-                accessToken(this.onValidAccessToken.bind(this));
-            } else {
-                this.onValidAccessToken(accessToken);
-            }
-        }
-
+        this.getAuthToken(this.onValidAuthToken.bind(this));
         this._initContainer();
     },
 
-    // TODO: Call on token expiry
-    onValidAccessToken(token) {
+    getAuthToken(callback) {
+        const accessToken = this.options.accessToken;
+
+        if (accessToken) {
+            if (accessToken instanceof Function) { // Callback function returning auth obect
+                accessToken(callback);
+            } else { // Auth token as object
+                callback(accessToken);
+            }
+        }
+    },
+
+    onValidAuthToken(token) {
         // https://github.com/google/earthengine-api/blob/07052aa5c168639f134501765df2a2a7ae2f1d6f/javascript/src/data.js#L174
         ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false); // (token.expiryDate - Date.now()) / 1000
-
+        ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
         ee.initialize();
         this.createLayer();
+    },
+
+    refreshAccessToken(authArgs, callback) {
+        var self = this;
+        this.getAuthToken(function(token) {
+            callback({
+                token_type: self.options.tokenType,
+                access_token: token.access_token,
+                state: authArgs.scope,
+                expires_in: token.expires_in
+            });
+        });
     },
 
     createLayer() {
