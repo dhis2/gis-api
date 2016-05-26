@@ -1,4 +1,4 @@
-// TODO: Load on demand
+// Leaflet plugin to add map layers from Google Earth Engine
 
 import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
