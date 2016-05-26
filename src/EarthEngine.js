@@ -2,9 +2,7 @@
 
 import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
-
-// https://github.com/dhis2/dhis2-gis-api/issues/3
-import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';  // https://github.com/webpack/docs/wiki/shimming-modules
+import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';
 
 const goog = eeApi.goog; // eslint-disable-line
 const ee = eeApi.ee;
@@ -13,7 +11,6 @@ export const EarthEngine = L.TileLayer.extend({
 
     options: {
         url: 'https://earthengine.googleapis.com/map/{mapid}/{z}/{x}/{y}?token={token}',
-        // view-source:http://server-auth-dot-ee-demos.appspot.com/
         tokenType: 'Bearer',
     },
 
@@ -27,6 +24,7 @@ export const EarthEngine = L.TileLayer.extend({
         this._initContainer();
     },
 
+    // Get OAuth2 token needed to create and load Google Earth Engine layers
     getAuthToken(callback) {
         const accessToken = this.options.accessToken;
 
@@ -39,14 +37,15 @@ export const EarthEngine = L.TileLayer.extend({
         }
     },
 
+    // Configures client-side authentication of EE API calls by providing a OAuth2 token to use.
     onValidAuthToken(token) {
-        // https://github.com/google/earthengine-api/blob/07052aa5c168639f134501765df2a2a7ae2f1d6f/javascript/src/data.js#L174
-        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false); // (token.expiryDate - Date.now()) / 1000
+        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false);
         ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
         ee.initialize();
         this.createLayer();
     },
 
+    // Refresh OAuth2 token when expired
     refreshAccessToken(authArgs, callback) {
         var self = this;
         this.getAuthToken(function(token) {
@@ -59,6 +58,7 @@ export const EarthEngine = L.TileLayer.extend({
         });
     },
 
+    // Create EE tile layer from config options
     createLayer() {
         const options = this.options;
         let eeImage;
@@ -83,6 +83,7 @@ export const EarthEngine = L.TileLayer.extend({
         this.fire('initialized');
     },
 
+    // Returns a HTML legend for this EE layer
     getLegend() {
         const options = this.options;
         const config = this.options.config;
