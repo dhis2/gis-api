@@ -79,9 +79,6 @@ export const EarthEngine = L.TileLayer.extend({
         options.token = eeMapConfig.token;
         options.mapid = eeMapConfig.mapid;
 
-        // console.log("mapid", options.mapid, options.token);
-
-
         L.TileLayer.prototype.onAdd.call(this);
         this.fire('initialized');
     },
