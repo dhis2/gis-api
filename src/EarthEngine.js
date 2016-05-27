@@ -66,7 +66,7 @@ export const EarthEngine = L.TileLayer.extend({
         if (!options.filter) { // Single image
             eeImage = ee.Image(options.id); // eslint-disable-line
         } else { // Image collection
-            let collection = ee.ImageCollection('WorldPop/POP'); // eslint-disable-line
+            let collection = ee.ImageCollection(options.id); // eslint-disable-line
 
             for (const filter of options.filter) {
                 collection = collection.filter(ee.Filter[filter.type].apply(this, filter.arguments));  // eslint-disable-line
