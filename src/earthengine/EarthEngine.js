@@ -2,7 +2,7 @@
 
 import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
-import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';
+import eeApi from 'imports?this=>window!exports?goog&ee!../../temp/ee_api_js_debug';
 
 const goog = eeApi.goog; // eslint-disable-line
 const ee = eeApi.ee;
@@ -41,10 +41,20 @@ export const EarthEngine = L.TileLayer.extend({
 
     // Configures client-side authentication of EE API calls by providing a OAuth2 token to use.
     onValidAuthToken(token) {
-        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false);
+        const options = this.options;
+
+        ee.data.setAuthToken(token.client_id, options.tokenType, token.access_token, token.expires_in, null, null, false);
         ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
         ee.initialize();
-        this.createLayer();
+
+        this.eeImage = this.createImage();
+        this.eeMap = this.eeImage.getMap(options.config || {});
+
+        options.token = this.eeMap.token;
+        options.mapid = this.eeMap.mapid;
+
+        L.TileLayer.prototype.onAdd.call(this);
+        this.fire('initialized');
     },
 
     // Refresh OAuth2 token when expired
@@ -60,53 +70,9 @@ export const EarthEngine = L.TileLayer.extend({
         });
     },
 
-    // Create EE tile layer from config options
-    createLayer() {
-        const options = this.options;
-        let eeImage;
-
-        if (!options.filter) { // Single image
-            eeImage = ee.Image(options.id); // eslint-disable-line
-
-            console.log(options.id);
-
-            console.log(ee.Kernel);
-
-            const elevation = 1000;
-
-            /*
-            const contour = eeImage
-                .resample('bicubic')
-                .convolve(ee.Kernel.gaussian(5, 3))
-                .subtract(ee.Image.constant(elevation)).zeroCrossing() // elevation contour
-                // .gt(ee.Image.constatn(level)) // area
-                .multiply(ee.Image.constant(elevation)).toFloat();
-                */
-
-            // eeImage = contour;
-
-            console.log('contour', ee.Image.constant(elevation));
-
-
-        } else { // Image collection
-            let collection = ee.ImageCollection(options.id); // eslint-disable-line
-
-            for (const filter of options.filter) {
-                collection = collection.filter(ee.Filter[filter.type].apply(this, filter.arguments));  // eslint-disable-line
-                eeImage = collection.mosaic();
-            }
-        }
-
-        console.log(options.config);
-
-        const eeMapConfig = eeImage.getMap(options.config || {});
-        // const eeMapConfig = eeImage.getMap();
-
-        options.token = eeMapConfig.token;
-        options.mapid = eeMapConfig.mapid;
-
-        L.TileLayer.prototype.onAdd.call(this);
-        this.fire('initialized');
+    // Create EE tile layer from config options (override for each layer type)
+    createImage() {
+        return ee.Image(this.options.id);
     },
 
     // Returns a HTML legend for this EE layer
@@ -146,4 +112,3 @@ export const EarthEngine = L.TileLayer.extend({
 export default function earthEngine(options) {
     return new EarthEngine(options);
 }
-
