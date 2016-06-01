@@ -19,16 +19,21 @@ export const Elevation = EarthEngine.extend({
     createImage() {
         const options = this.options;
         const eeImage = ee.Image(options.id);
-
-        this.addImage(eeImage, options.config);
+        const eeImageRGB = eeImage.visualize(options.config);
 
         if (options.elevation) {
-            const contour = eeImage.resample('bicubic')
+            let contour = eeImage.resample('bicubic')
                 .convolve(ee.Kernel.gaussian(5, 3))
                 .subtract(ee.Image.constant(options.elevation)).zeroCrossing()
                 .multiply(ee.Image.constant(options.elevation)).toFloat();
 
-            this.addImage(contour.updateMask(contour), {palette:'000000'});
+            contour = contour.updateMask(contour);
+
+            const contourRGB = contour.visualize({palette:'000000'});
+
+            this.addLayer(ee.ImageCollection([eeImageRGB, contourRGB]).mosaic());
+        } else {
+            this.addLayer(eeImageRGB);
         }
     },
 

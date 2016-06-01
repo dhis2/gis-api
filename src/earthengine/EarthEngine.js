@@ -65,14 +65,27 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     // Add EE image to map as TileLayer
-    addImage(eeImage, config = {}) {
-        const eeMap = eeImage.getMap(config);
+    addLayer(eeImage) {
+        const eeMap = eeImage.getMap();
+        const layer = L.tileLayer(this.options.url, L.extend({
+            token: eeMap.token,
+            mapid: eeMap.mapid,
+        }, this.options));
+
+        L.LayerGroup.prototype.addLayer.call(this, layer);
+    },
+
+    // Add EE image to map as TileLayer
+    /*
+    addImage(eeImage) {
+        const eeMap = eeImage.getMap();
 
         this.addLayer(L.tileLayer(this.options.url, L.extend({
             token: eeMap.token,
             mapid: eeMap.mapid,
         }, this.options)));
     },
+    */
 
     // Returns a HTML legend for this EE layer
     getLegend() {

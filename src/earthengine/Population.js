@@ -31,7 +31,7 @@ export const Population = EarthEngine.extend({
             eeImage = collection.mosaic();
         }
 
-        this.addImage(eeImage, options.config);
+        this.addLayer(eeImage.visualize(options.config));
     },
 
 });
