@@ -4,32 +4,30 @@ import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
 import eeApi from 'imports?this=>window!exports?goog&ee!../../temp/ee_api_js_debug';
 
-const goog = eeApi.goog; // eslint-disable-line
-const ee = eeApi.ee;
+// Google requires these to be in the global scope
+window.goog = eeApi.goog;
+window.ee = eeApi.ee;
 
-window.ee = ee;
-
-export const EarthEngine = L.TileLayer.extend({
+// LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
+export const EarthEngine = L.LayerGroup.extend({
 
     options: {
         url: 'https://earthengine.googleapis.com/map/{mapid}/{z}/{x}/{y}?token={token}',
         tokenType: 'Bearer',
     },
 
-    initialize(opts = {}) {
-        const options = L.setOptions(this, opts);
-        L.TileLayer.prototype.initialize.call(this, options.url, options);
+    initialize(options = {}) {
+        L.setOptions(this, options);
+        this._layers = {};
     },
 
     onAdd() {
         this.getAuthToken(this.onValidAuthToken.bind(this));
-        this._initContainer();
     },
 
     // Get OAuth2 token needed to create and load Google Earth Engine layers
     getAuthToken(callback) {
         const accessToken = this.options.accessToken;
-
         if (accessToken) {
             if (accessToken instanceof Function) { // Callback function returning auth obect
                 accessToken(callback);
@@ -41,19 +39,10 @@ export const EarthEngine = L.TileLayer.extend({
 
     // Configures client-side authentication of EE API calls by providing a OAuth2 token to use.
     onValidAuthToken(token) {
-        const options = this.options;
-
-        ee.data.setAuthToken(token.client_id, options.tokenType, token.access_token, token.expires_in, null, null, false);
+        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false);
         ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
         ee.initialize();
-
-        this.eeImage = this.createImage();
-        this.eeMap = this.eeImage.getMap(options.config || {});
-
-        options.token = this.eeMap.token;
-        options.mapid = this.eeMap.mapid;
-
-        L.TileLayer.prototype.onAdd.call(this);
+        this.createImage();
         this.fire('initialized');
     },
 
@@ -72,7 +61,17 @@ export const EarthEngine = L.TileLayer.extend({
 
     // Create EE tile layer from config options (override for each layer type)
     createImage() {
-        return ee.Image(this.options.id);
+        this.addImage(ee.Image(this.options.id), this.options.config);
+    },
+
+    // Add EE image to map as TileLayer
+    addImage(eeImage, config = {}) {
+        const eeMap = eeImage.getMap(config);
+
+        this.addLayer(L.tileLayer(this.options.url, L.extend({
+            token: eeMap.token,
+            mapid: eeMap.mapid,
+        }, this.options)));
     },
 
     // Returns a HTML legend for this EE layer
