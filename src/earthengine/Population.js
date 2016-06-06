@@ -23,15 +23,61 @@ export const Population = EarthEngine.extend({
 
     createImage() {
         const options = this.options;
+        const legend = this._legend;
         let eeImage;
         let collection = ee.ImageCollection(options.id); // eslint-disable-line
+        let zones;
 
         for (const filter of options.filter) {
             collection = collection.filter(ee.Filter[filter.type].apply(this, filter.arguments));  // eslint-disable-line
             eeImage = collection.mosaic();
         }
 
-        this.addLayer(eeImage.visualize(options.config));
+        for (let i = 0, item; i < legend.length - 1; i++) {
+            item = legend[i];
+            if (!zones) {
+                zones = eeImage.gt(item.to);
+            } else {
+                zones = zones.add(eeImage.gt(item.to));
+            }
+        }
+
+        const eeImageRGB = zones.visualize({
+            min: 0,
+            max: legend.length - 1,
+            palette: options.config.palette
+        });
+
+        this.addLayer(eeImageRGB);
+
+        // this.addLayer(eeImage.visualize(options.config));
+    },
+
+    getLegend() {
+        const options = this.options;
+        let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
+
+        if (options.description) {
+            legend += '<p>' +  options.description + '</p>';
+        }
+
+        legend += '<dl>';
+
+        for (let i = 0, item; i < this._legend.length; i++) {
+            item = this._legend[i];
+            legend += '<dt style="background-color:' + item.color + ';box-shadow:1px 1px 2px #aaa;"></dt>';
+            legend += '<dd>' + item.name + ' ' + (options.unit || '') + '</dd>';
+        }
+
+        legend += '</dl>';
+
+        if (options.attribution) {
+            legend += '<p>Data: ' + options.attribution + '</p>';
+        }
+
+        legend += '<div>';
+
+        return legend;
     },
 
 });

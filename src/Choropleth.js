@@ -7,7 +7,7 @@ export const Choropleth = GeoJson.extend({
 
     options: {
         style: {
-            color: '#FFF',
+            color: '#333',
             weight: 1,
             fillOpacity: 0.8,
         },

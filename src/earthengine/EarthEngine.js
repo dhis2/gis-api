@@ -19,6 +19,7 @@ export const EarthEngine = L.LayerGroup.extend({
     initialize(options = {}) {
         L.setOptions(this, options);
         this._layers = {};
+        this.createLegend();
     },
 
     onAdd() {
@@ -87,10 +88,43 @@ export const EarthEngine = L.LayerGroup.extend({
     },
     */
 
+    createLegend() {
+        const config = this.options.config;
+        const palette = config.palette.split(',');
+        const step = (config.max - config.min) / (palette.length - (config.min > 0 ? 2 : 1));
+        let from = config.min;
+        let to = Math.round(config.min + step);
+
+        this._legend = palette.map((color, index) => {
+            const item = {
+                color: color
+            };
+
+            if (index === 0 && config.min > 0) { // Less than min
+                item.from = 0;
+                item.to = config.min;
+                item.name = '< ' + item.to;
+                to = config.min;
+            } else if (from < config.max) {
+                item.from = from;
+                item.to = to;
+                item.name = item.from + ' - ' + item.to;
+            } else { // Higher than max
+                item.from = from;
+                item.name = '> ' + item.from;
+            }
+
+            from = to;
+            to = Math.round(config.min + (step * (index + (config.min > 0 ? 1 : 2))));
+
+            return item;
+        });
+    },
+
     // Returns a HTML legend for this EE layer
     getLegend() {
         const options = this.options;
-        const config = this.options.config;
+        const config = options.config;
         const palette = config.palette.split(',');
         const ticks = scaleLinear().domain([config.min, config.max]).ticks(palette.length);
         const colorScale = scaleLinear().domain(ticks).range(palette);
@@ -117,6 +151,11 @@ export const EarthEngine = L.LayerGroup.extend({
         legend += '<div>';
 
         return legend;
+    },
+
+    setOpacity(opacity) {
+        this.options.opacity = opacity;
+        this.eachLayer(layer => layer.setOpacity(opacity));
     },
 
 });

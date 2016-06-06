@@ -1,4 +1,5 @@
 import {EarthEngine} from './EarthEngine';
+import {scaleLinear} from 'd3-scale';
 
 export const Elevation = EarthEngine.extend({
 
@@ -18,9 +19,36 @@ export const Elevation = EarthEngine.extend({
 
     createImage() {
         const options = this.options;
-        const eeImage = ee.Image(options.id);
-        const eeImageRGB = eeImage.visualize(options.config);
+        const config = options.config;
+        const legend = this._legend;
 
+        let eeImage = ee.Image(options.id);
+        let zones;
+
+        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out sea
+
+        for (let i = 0, item; i < legend.length - 1; i++) {
+            item = legend[i];
+            if (!zones) {
+                zones = eeImage.gt(item.to);
+            } else {
+                zones = zones.add(eeImage.gt(item.to));
+            }
+        }
+
+        // eeImage = eeImage.select(['elevation']);
+        //var eeImageMasked = eeImage.updateMask(eeImage.gt(options.config.min).and(eeImage.lt(options.config.max)));
+        //const eeImageRGB = eeImageMasked.visualize(options.config);
+
+        //const eeImageRGB = eeImage.visualize(options.config);
+        const eeImageRGB = zones.visualize({
+            min: 0,
+            max: legend.length - 1,
+            palette: config.palette
+        });
+
+
+        /*
         if (options.elevation) {
             let contour = eeImage.resample('bicubic')
                 .convolve(ee.Kernel.gaussian(5, 3))
@@ -32,9 +60,37 @@ export const Elevation = EarthEngine.extend({
             const contourRGB = contour.visualize({palette:'000000'});
 
             this.addLayer(ee.ImageCollection([eeImageRGB, contourRGB]).mosaic());
-        } else {
-            this.addLayer(eeImageRGB);
         }
+        */
+
+        this.addLayer(eeImageRGB);
+    },
+
+    getLegend() {
+        const options = this.options;
+        let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
+
+        if (options.description) {
+            legend += '<p>' +  options.description + '</p>';
+        }
+
+        legend += '<dl>';
+
+        for (let i = 0, item; i < this._legend.length; i++) {
+            item = this._legend[i];
+            legend += '<dt style="background-color:' + item.color + ';box-shadow:1px 1px 2px #aaa;"></dt>';
+            legend += '<dd>' + item.name + ' ' + (options.unit || '') + '</dd>';
+        }
+
+        legend += '</dl>';
+
+        if (options.attribution) {
+            legend += '<p>Data: ' + options.attribution + '</p>';
+        }
+
+        legend += '<div>';
+
+        return legend;
     },
 
 });
