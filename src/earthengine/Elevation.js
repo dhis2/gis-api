@@ -6,12 +6,6 @@ export const Elevation = EarthEngine.extend({
     options: {
         id: 'USGS/SRTMGL1_003',
         name: 'Elevation',
-        elevation: 500,
-        config: {
-            min: 0,
-            max: 1000,
-            palette: '#a50026,#d73027,#f46d43,#fdae61,#fee08b,#ffffbf,#d9ef8b,#a6d96a,#66bd63,#1a9850,#006837'
-        },
         unit: 'm',
         description: 'Metres above sea level.',
         attribution: '<a href="https://explorer.earthengine.google.com/#detail/USGS%2FSRTMGL1_003">NASA / USGS / JPL-Caltech</a>'
@@ -19,7 +13,7 @@ export const Elevation = EarthEngine.extend({
 
     createImage() {
         const options = this.options;
-        const config = options.config;
+        const params = options.params;
         const legend = this._legend;
 
         let eeImage = ee.Image(options.id);
@@ -37,14 +31,14 @@ export const Elevation = EarthEngine.extend({
         }
 
         // eeImage = eeImage.select(['elevation']);
-        //var eeImageMasked = eeImage.updateMask(eeImage.gt(options.config.min).and(eeImage.lt(options.config.max)));
-        //const eeImageRGB = eeImageMasked.visualize(options.config);
+        //var eeImageMasked = eeImage.updateMask(eeImage.gt(options.params.min).and(eeImage.lt(options.params.max)));
+        //const eeImageRGB = eeImageMasked.visualize(options.params);
 
-        //const eeImageRGB = eeImage.visualize(options.config);
+        //const eeImageRGB = eeImage.visualize(options.params);
         const eeImageRGB = zones.visualize({
             min: 0,
             max: legend.length - 1,
-            palette: config.palette
+            palette: params.palette
         });
 
 

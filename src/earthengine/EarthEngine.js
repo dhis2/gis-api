@@ -60,9 +60,9 @@ export const EarthEngine = L.LayerGroup.extend({
         });
     },
 
-    // Create EE tile layer from config options (override for each layer type)
+    // Create EE tile layer from params (override for each layer type)
     createImage() {
-        this.addImage(ee.Image(this.options.id), this.options.config);
+        this.addImage(ee.Image(this.options.id), this.options.params);
     },
 
     // Add EE image to map as TileLayer
@@ -89,23 +89,26 @@ export const EarthEngine = L.LayerGroup.extend({
     */
 
     createLegend() {
-        const config = this.options.config;
-        const palette = config.palette.split(',');
-        const step = (config.max - config.min) / (palette.length - (config.min > 0 ? 2 : 1));
-        let from = config.min;
-        let to = Math.round(config.min + step);
+        const params = this.options.params;
+        const min = params.min;
+        const max = params.max;
+        const palette = params.palette.split(',');
+        const step = (params.max - min) / (palette.length - (min > 0 ? 2 : 1));
+
+        let from = min;
+        let to = Math.round(min + step);
 
         this._legend = palette.map((color, index) => {
             const item = {
                 color: color
             };
 
-            if (index === 0 && config.min > 0) { // Less than min
+            if (index === 0 && min > 0) { // Less than min
                 item.from = 0;
-                item.to = config.min;
+                item.to = min;
                 item.name = '< ' + item.to;
-                to = config.min;
-            } else if (from < config.max) {
+                to = min;
+            } else if (from < max) {
                 item.from = from;
                 item.to = to;
                 item.name = item.from + ' - ' + item.to;
@@ -115,7 +118,7 @@ export const EarthEngine = L.LayerGroup.extend({
             }
 
             from = to;
-            to = Math.round(config.min + (step * (index + (config.min > 0 ? 1 : 2))));
+            to = Math.round(min + (step * (index + (min > 0 ? 1 : 2))));
 
             return item;
         });
@@ -124,9 +127,9 @@ export const EarthEngine = L.LayerGroup.extend({
     // Returns a HTML legend for this EE layer
     getLegend() {
         const options = this.options;
-        const config = options.config;
-        const palette = config.palette.split(',');
-        const ticks = scaleLinear().domain([config.min, config.max]).ticks(palette.length);
+        const params = options.params;
+        const palette = paramsg.palette.split(',');
+        const ticks = scaleLinear().domain([params.min, params.max]).ticks(palette.length);
         const colorScale = scaleLinear().domain(ticks).range(palette);
 
         let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';

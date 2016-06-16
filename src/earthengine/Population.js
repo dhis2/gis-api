@@ -12,11 +12,6 @@ export const Population = EarthEngine.extend({
             type: 'eq',
             arguments: ['UNadj', 'yes']
         }],
-        config: {
-            min: 0,
-            max: 100,
-            palette: '#fffff0,#ffffd4,#fee391,#fec44f,#fe9929,#ec7014,#cc4c02,#b44200,#9a3800,#7f2f00,#642500'
-        },
         description: 'Population in 100 x 100 m grid cells.',
         attribution: '<a href="https://explorer.earthengine.google.com/#detail/WorldPop%2FPOP">WorldPop</a>'
     },
@@ -45,12 +40,12 @@ export const Population = EarthEngine.extend({
         const eeImageRGB = zones.visualize({
             min: 0,
             max: legend.length - 1,
-            palette: options.config.palette
+            palette: options.params.palette
         });
 
         this.addLayer(eeImageRGB);
 
-        // this.addLayer(eeImage.visualize(options.config));
+        // this.addLayer(eeImage.visualize(options.params));
     },
 
     getLegend() {
