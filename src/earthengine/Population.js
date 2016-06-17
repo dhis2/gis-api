@@ -28,6 +28,8 @@ export const Population = EarthEngine.extend({
             eeImage = collection.mosaic();
         }
 
+        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
+
         for (let i = 0, item; i < legend.length - 1; i++) {
             item = legend[i];
             if (!zones) {
@@ -44,10 +46,9 @@ export const Population = EarthEngine.extend({
         });
 
         this.addLayer(eeImageRGB);
-
-        // this.addLayer(eeImage.visualize(options.params));
     },
 
+    // TODO: Use method in EarthEngine.js
     getLegend() {
         const options = this.options;
         let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';

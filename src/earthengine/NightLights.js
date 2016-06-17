@@ -20,6 +20,7 @@ export const NightLights = EarthEngine.extend({
         collection = collection.filterDate(options.filterDate[0], options.filterDate[1]); // eslint-disable-line
 
         eeImage = ee.Image(collection.select('stable_lights').first());
+        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
 
         for (let i = 0, item; i < legend.length - 1; i++) {
             item = legend[i];
@@ -39,6 +40,7 @@ export const NightLights = EarthEngine.extend({
         this.addLayer(eeImageRGB);
     },
 
+    // TODO: Use method in EarthEngine.js
     getLegend() {
         const options = this.options;
         let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';

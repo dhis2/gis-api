@@ -30,11 +30,6 @@ export const Elevation = EarthEngine.extend({
             }
         }
 
-        // eeImage = eeImage.select(['elevation']);
-        //var eeImageMasked = eeImage.updateMask(eeImage.gt(options.params.min).and(eeImage.lt(options.params.max)));
-        //const eeImageRGB = eeImageMasked.visualize(options.params);
-
-        //const eeImageRGB = eeImage.visualize(options.params);
         const eeImageRGB = zones.visualize({
             min: 0,
             max: legend.length - 1,
@@ -42,24 +37,10 @@ export const Elevation = EarthEngine.extend({
         });
 
 
-        /*
-        if (options.elevation) {
-            let contour = eeImage.resample('bicubic')
-                .convolve(ee.Kernel.gaussian(5, 3))
-                .subtract(ee.Image.constant(options.elevation)).zeroCrossing()
-                .multiply(ee.Image.constant(options.elevation)).toFloat();
-
-            contour = contour.updateMask(contour);
-
-            const contourRGB = contour.visualize({palette:'000000'});
-
-            this.addLayer(ee.ImageCollection([eeImageRGB, contourRGB]).mosaic());
-        }
-        */
-
         this.addLayer(eeImageRGB);
     },
 
+    // TODO: Use method in EarthEngine.js
     getLegend() {
         const options = this.options;
         let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
