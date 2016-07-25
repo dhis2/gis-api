@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import tileLayer from './TileLayer';
-import mapQuest from './MapQuest';
+import carto from './Carto';
 import googleLayer from './GoogleLayer';
 import boundary from './Boundary';
 import dots from './Dots';
@@ -29,7 +29,7 @@ export const Map = L.Map.extend({
         className: 'leaflet-dhis2',
         layerTypes: {
             tileLayer,      // CartoDB basemap
-            mapQuest,       // MapQuest basemap
+            carto,          // Carto Positron basemap
             googleLayer,    // Google basemap
             boundary,       // Boundary layer
             dots,           // Event layer without clustering
