@@ -16,6 +16,7 @@ import fitBounds from './FitBounds';
 import elevation from './earthengine/Elevation';
 import population from './earthengine/Population';
 import nightLights from './earthengine/NightLights';
+import precipitation from './earthengine/Precipitation';
 
 /**
  * Creates a map instance.
@@ -46,6 +47,7 @@ export const Map = L.Map.extend({
             elevation,      // Google Earth Engine layer
             population,     // Google Earth Engine layer
             nightLights,    // Google Earth Engine layer
+            precipitation,  // Google Earth Engine layer
         },
         controlTypes: {
             legend,
