@@ -10,10 +10,14 @@ export const Precipitation = EarthEngine.extend({
         name: 'Precipitation',
         //select: 'precipitation', // 'total_precipitation_surface',
         idProperty: 'system:index',
+
+        /*
         filter: [{
             type: 'eq',
             arguments: ['forecast_time', 1435719600000]
         }],
+        */
+
         sort: [{
             property: 'system:time_start',
             ascending: false,
@@ -26,12 +30,16 @@ export const Precipitation = EarthEngine.extend({
     createImage() {
         const options = this.options;
         const legend = this._legend;
-        let collection = ee.ImageCollection(options.id); // eslint-disable-line
-        let eeImage = ee.Image(collection.sort('system:time_start', false).first()); // Most recent image
-        let zones;
 
-        // this.getCollection(list => console.log('collection', list));
-        // console.log(eeImage.getInfo());
+        let collection = ee.ImageCollection(options.id); // eslint-disable-line
+
+        collection = this.applyFilter(collection);
+
+        console.log('####', collection.getInfo());
+
+        let eeImage = ee.Image(collection.sort('system:time_start', false).first()); // Most recent image
+
+        console.log('options', options);
 
         // Mask out 0-values
         eeImage = eeImage.updateMask(eeImage.gt(0));

@@ -5,6 +5,8 @@ export const Population = EarthEngine.extend({
     options: {
         id: 'WorldPop/POP',
         name: 'Population density 2010',
+        description: 'Population in 100 x 100 m grid cells.',
+        attribution: '<a href="https://explorer.earthengine.google.com/#detail/WorldPop%2FPOP">WorldPop</a>',
         filter: [{
             type: 'eq',
             arguments: ['year', 2010]
@@ -12,8 +14,6 @@ export const Population = EarthEngine.extend({
             type: 'eq',
             arguments: ['UNadj', 'yes']
         }],
-        description: 'Population in 100 x 100 m grid cells.',
-        attribution: '<a href="https://explorer.earthengine.google.com/#detail/WorldPop%2FPOP">WorldPop</a>'
     },
 
     createImage() {

@@ -62,7 +62,27 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Create EE tile layer from params (override for each layer type)
     createImage() {
-        this.addLayer(ee.Image(this.options.id), this.options.params);
+        const options = this.options;
+        const legend = this._legend;
+
+        let eeCollection;
+        let eeImage;
+
+        if (options.filter) { // Image collection
+            eeCollection = ee.ImageCollection(options.id); // eslint-disable-line
+            eeCollection = this.applyFilter(eeCollection);
+
+            // TODO: Only if collection bigger than 1?
+            eeImage = eeCollection.mosaic();
+        } else { // Single image
+
+        }
+
+        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
+
+        eeImage = this.classifyImage(eeImage);
+
+        this.addLayer(this.visualize(eeImage));
     },
 
     // Add EE image to map as TileLayer
@@ -74,6 +94,18 @@ export const EarthEngine = L.LayerGroup.extend({
         }, this.options));
 
         L.LayerGroup.prototype.addLayer.call(this, layer);
+    },
+
+    applyFilter(collection, filter) {
+        filter = filter || this.options.filter;
+
+        if (filter) {
+            for (const item of filter) {
+                collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
+            }
+        }
+
+        return collection;
     },
 
     // Classify image according to legend
@@ -91,6 +123,15 @@ export const EarthEngine = L.LayerGroup.extend({
         }
 
         return zones;
+    },
+
+    // Visualize image (turn into RGB)
+    visualize(eeImage) {
+        return eeImage.visualize({
+            min: 0,
+            max: this._legend.length - 1,
+            palette: this.options.params.palette
+        });
     },
 
     createLegend() {
@@ -132,12 +173,11 @@ export const EarthEngine = L.LayerGroup.extend({
     // Returns a HTML legend for this EE layer
     getLegend() {
         const options = this.options;
-        const params = options.params;
-        const palette = paramsg.palette.split(',');
-        const ticks = scaleLinear().domain([params.min, params.max]).ticks(palette.length);
-        const colorScale = scaleLinear().domain(ticks).range(palette);
+        let legend = '<div class="dhis2-legend">';
 
-        let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
+        if (options.name) {
+            legend += '<h2>' + options.name + '</h2>';
+        }
 
         if (options.description) {
             legend += '<p>' +  options.description + '</p>';
@@ -145,9 +185,10 @@ export const EarthEngine = L.LayerGroup.extend({
 
         legend += '<dl>';
 
-        for (let value of ticks) {
-            legend += '<dt style="background-color:' + colorScale(value) + ';box-shadow:1px 1px 2px #aaa;"></dt>';
-            legend += '<dd>' + value + ' ' + (options.unit || '') + '</dd>';
+        for (let i = 0, item; i < this._legend.length; i++) {
+            item = this._legend[i];
+            legend += '<dt style="background-color:' + item.color + ';box-shadow:1px 1px 2px #aaa;"></dt>';
+            legend += '<dd>' + item.name + ' ' + (options.unit || '') + '</dd>';
         }
 
         legend += '</dl>';

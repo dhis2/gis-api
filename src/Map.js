@@ -12,7 +12,7 @@ import clientCluster from './cluster/ClientCluster';
 import serverCluster from './cluster/ServerCluster';
 import legend from './Legend';
 import fitBounds from './FitBounds';
-// import earthEngine from './EarthEngine';
+import earthEngine from './earthengine/EarthEngine';
 import elevation from './earthengine/Elevation';
 import population from './earthengine/Population';
 import nightLights from './earthengine/NightLights';
@@ -44,6 +44,7 @@ export const Map = L.Map.extend({
             choropleth,     // Thematic layer
             clientCluster,  // Event layer
             serverCluster,  // Event layer
+            earthEngine,    // Google Earth Engine layer
             elevation,      // Google Earth Engine layer
             population,     // Google Earth Engine layer
             nightLights,    // Google Earth Engine layer
