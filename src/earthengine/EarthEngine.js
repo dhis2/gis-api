@@ -62,7 +62,7 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Create EE tile layer from params (override for each layer type)
     createImage() {
-        this.addImage(ee.Image(this.options.id), this.options.params);
+        this.addLayer(ee.Image(this.options.id), this.options.params);
     },
 
     // Add EE image to map as TileLayer
@@ -76,17 +76,22 @@ export const EarthEngine = L.LayerGroup.extend({
         L.LayerGroup.prototype.addLayer.call(this, layer);
     },
 
-    // Add EE image to map as TileLayer
-    /*
-    addImage(eeImage) {
-        const eeMap = eeImage.getMap();
+    // Classify image according to legend
+    classifyImage(eeImage) {
+        const legend = this._legend;
+        let zones;
 
-        this.addLayer(L.tileLayer(this.options.url, L.extend({
-            token: eeMap.token,
-            mapid: eeMap.mapid,
-        }, this.options)));
+        for (let i = 0, item; i < legend.length - 1; i++) {
+            item = legend[i];
+            if (!zones) {
+                zones = eeImage.gt(item.to);
+            } else {
+                zones = zones.add(eeImage.gt(item.to));
+            }
+        }
+
+        return zones;
     },
-    */
 
     createLegend() {
         const params = this.options.params;
