@@ -75,7 +75,7 @@ export const EarthEngine = L.LayerGroup.extend({
             // TODO: Only if collection bigger than 1?
             eeImage = eeCollection.mosaic();
         } else { // Single image
-
+            console.log('single image');
         }
 
         eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values

@@ -4,32 +4,32 @@ import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
 import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';
 
-const goog = eeApi.goog; // eslint-disable-line
-const ee = eeApi.ee;
+// Google requires these to be in the global scope
+window.goog = eeApi.goog;
+window.ee = eeApi.ee;
 
-window.ee = ee;
-
-export const EarthEngine = L.TileLayer.extend({
+// LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
+export const EarthEngine = L.LayerGroup.extend({
 
     options: {
         url: 'https://earthengine.googleapis.com/map/{mapid}/{z}/{x}/{y}?token={token}',
         tokenType: 'Bearer',
+        aggregation: 'none',
     },
 
-    initialize(opts = {}) {
-        const options = L.setOptions(this, opts);
-        L.TileLayer.prototype.initialize.call(this, options.url, options);
+    initialize(options = {}) {
+        L.setOptions(this, options);
+        this._layers = {};
+        this.createLegend();
     },
 
     onAdd() {
         this.getAuthToken(this.onValidAuthToken.bind(this));
-        this._initContainer();
     },
 
     // Get OAuth2 token needed to create and load Google Earth Engine layers
     getAuthToken(callback) {
         const accessToken = this.options.accessToken;
-
         if (accessToken) {
             if (accessToken instanceof Function) { // Callback function returning auth obect
                 accessToken(callback);
@@ -44,7 +44,8 @@ export const EarthEngine = L.TileLayer.extend({
         ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false);
         ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
         ee.initialize();
-        this.createLayer();
+        this.createImage();
+        this.fire('initialized');
     },
 
     // Refresh OAuth2 token when expired
@@ -60,64 +61,136 @@ export const EarthEngine = L.TileLayer.extend({
         });
     },
 
-    // Create EE tile layer from config options
-    createLayer() {
+    // Create EE tile layer from params (override for each layer type)
+    createImage() {
         const options = this.options;
+        const legend = this._legend;
+
+        let eeCollection;
         let eeImage;
 
-        if (!options.filter) { // Single image
-            eeImage = ee.Image(options.id); // eslint-disable-line
 
-            console.log(options.id);
-
-            console.log(ee.Kernel);
-
-            const elevation = 1000;
-
-            /*
-            const contour = eeImage
-                .resample('bicubic')
-                .convolve(ee.Kernel.gaussian(5, 3))
-                .subtract(ee.Image.constant(elevation)).zeroCrossing() // elevation contour
-                // .gt(ee.Image.constatn(level)) // area
-                .multiply(ee.Image.constant(elevation)).toFloat();
-                */
-
-            // eeImage = contour;
-
-            console.log('contour', ee.Image.constant(elevation));
+        //console.log(ee.ImageCollection(options.id).getInfo());
 
 
-        } else { // Image collection
-            let collection = ee.ImageCollection(options.id); // eslint-disable-line
+        if (options.filter) { // Image collection
+            eeCollection = ee.ImageCollection(options.id); // eslint-disable-line
 
-            for (const filter of options.filter) {
-                collection = collection.filter(ee.Filter[filter.type].apply(this, filter.arguments));  // eslint-disable-line
-                eeImage = collection.mosaic();
+            eeCollection = this.applyFilter(eeCollection);
+
+            if (options.aggregation === 'mosaic') {
+                eeImage = eeCollection.mosaic();
+            } else {
+                eeImage = ee.Image(eeCollection.first());
+            }
+        } else { // Single image
+            eeImage = ee.Image(options.id);
+        }
+
+        if (options.band) {
+            eeImage = eeImage.select(options.band);
+        }
+
+        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
+
+        eeImage = this.classifyImage(eeImage);
+
+        this.addLayer(this.visualize(eeImage));
+    },
+
+    // Add EE image to map as TileLayer
+    addLayer(eeImage) {
+        const eeMap = eeImage.getMap();
+        const layer = L.tileLayer(this.options.url, L.extend({
+            token: eeMap.token,
+            mapid: eeMap.mapid,
+        }, this.options));
+
+        L.LayerGroup.prototype.addLayer.call(this, layer);
+    },
+
+    applyFilter(collection, filter) {
+        filter = filter || this.options.filter;
+
+        if (filter) {
+            for (const item of filter) {
+                collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
             }
         }
 
-        console.log(options.config);
+        return collection;
+    },
 
-        const eeMapConfig = eeImage.getMap(options.config || {});
-        // const eeMapConfig = eeImage.getMap();
+    // Classify image according to legend
+    classifyImage(eeImage) {
+        const legend = this._legend;
+        let zones;
 
-        options.token = eeMapConfig.token;
-        options.mapid = eeMapConfig.mapid;
+        for (let i = 0, item; i < legend.length - 1; i++) {
+            item = legend[i];
+            if (!zones) {
+                zones = eeImage.gt(item.to);
+            } else {
+                zones = zones.add(eeImage.gt(item.to));
+            }
+        }
 
-        L.TileLayer.prototype.onAdd.call(this);
-        this.fire('initialized');
+        return zones;
+    },
+
+    // Visualize image (turn into RGB)
+    visualize(eeImage) {
+        return eeImage.visualize({
+            min: 0,
+            max: this._legend.length - 1,
+            palette: this.options.params.palette
+        });
+    },
+
+    createLegend() {
+        const params = this.options.params;
+        const min = params.min;
+        const max = params.max;
+        const palette = params.palette.split(',');
+        const step = (params.max - min) / (palette.length - (min > 0 ? 2 : 1));
+
+        let from = min;
+        let to = Math.round(min + step);
+
+        this._legend = palette.map((color, index) => {
+            const item = {
+                color: color
+            };
+
+            if (index === 0 && min > 0) { // Less than min
+                item.from = 0;
+                item.to = min;
+                item.name = '< ' + item.to;
+                to = min;
+            } else if (from < max) {
+                item.from = from;
+                item.to = to;
+                item.name = item.from + ' - ' + item.to;
+            } else { // Higher than max
+                item.from = from;
+                item.name = '> ' + item.from;
+            }
+
+            from = to;
+            to = Math.round(min + (step * (index + (min > 0 ? 1 : 2))));
+
+            return item;
+        });
     },
 
     // Returns a HTML legend for this EE layer
     getLegend() {
         const options = this.options;
-        const config = this.options.config;
-        const palette = config.palette.split(',');
-        const ticks = scaleLinear().domain([config.min, config.max]).ticks(palette.length);
-        const colorScale = scaleLinear().domain(ticks).range(palette);
+        let legend = '<div class="dhis2-legend">';
 
-        let legend = '<div class="dhis2-legend"><h2>' + options.name + '</h2>';
+        if (options.name) {
+            legend += '<h2>' + options.name + '</h2>';
+        }
 
         if (options.description) {
             legend += '<p>' +  options.description + '</p>';
@@ -125,9 +198,10 @@ export const EarthEngine = L.TileLayer.extend({
 
         legend += '<dl>';
 
-        for (let value of ticks) {
-            legend += '<dt style="background-color:' + colorScale(value) + ';box-shadow:1px 1px 2px #aaa;"></dt>';
-            legend += '<dd>' + value + ' ' + (options.unit || '') + '</dd>';
+        for (let i = 0, item; i < this._legend.length; i++) {
+            item = this._legend[i];
+            legend += '<dt style="background-color:' + item.color + ';box-shadow:1px 1px 2px #aaa;"></dt>';
+            legend += '<dd>' + item.name + ' ' + (options.unit || '') + '</dd>';
         }
 
         legend += '</dl>';
@@ -141,9 +215,13 @@ export const EarthEngine = L.TileLayer.extend({
         return legend;
     },
 
+    setOpacity(opacity) {
+        this.options.opacity = opacity;
+        this.eachLayer(layer => layer.setOpacity(opacity));
+    },
+
 });
 
 export default function earthEngine(options) {
     return new EarthEngine(options);
 }
-
