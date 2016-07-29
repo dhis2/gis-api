@@ -69,10 +69,6 @@ export const EarthEngine = L.LayerGroup.extend({
         let eeCollection;
         let eeImage;
 
-
-        //console.log(ee.ImageCollection(options.id).getInfo());
-
-
         if (options.filter) { // Image collection
             eeCollection = ee.ImageCollection(options.id); // eslint-disable-line
 
