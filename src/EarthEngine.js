@@ -87,6 +87,10 @@ export const EarthEngine = L.LayerGroup.extend({
             eeImage = eeImage.select(options.band);
         }
 
+        // https://code.earthengine.google.com/a19f5cec73720aba049b457d55672cee
+        // https://code.earthengine.google.com/37e4e9cc4436a22e5c3e0f63acb4c0bc
+        eeImage = eeImage.toFloat().multiply(0.02).subtract(273.15); // Temperature
+
         eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
 
         eeImage = this.classifyImage(eeImage);
