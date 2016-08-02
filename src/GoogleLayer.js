@@ -9,7 +9,7 @@ export const GoogleLayer = L.Google.extend({
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
         version: '3.24',  // Google Maps API version
-        apiKey: 'AIzaSyBjlDmwuON9lJbPMDlh_LI3zGpGtpK9erc',
+        apiKey: 'AIzaSyBjlDmwuON9lJbPMDlh_LI3zGpGtpK9erc', // Google Maps API key (should be overridden)
         apiWait: 500, // Milliseconds before checking if Google Maps API is loaded
     },
 
