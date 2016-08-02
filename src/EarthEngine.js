@@ -89,12 +89,10 @@ export const EarthEngine = L.LayerGroup.extend({
 
         eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
 
-        // https://code.earthengine.google.com/a19f5cec73720aba049b457d55672cee
-        // https://code.earthengine.google.com/37e4e9cc4436a22e5c3e0f63acb4c0bc
-        // eeImage = eeImage.toFloat().multiply(0.02).subtract(273.15); // Temperature - TODO
+        // Run methods on image
+        eeImage = this.runMethods(eeImage);
 
-
-
+        // Classify image
         eeImage = this.classifyImage(eeImage);
 
         this.addLayer(this.visualize(eeImage));
@@ -121,6 +119,23 @@ export const EarthEngine = L.LayerGroup.extend({
         }
 
         return collection;
+    },
+
+    // Run methods on image
+    // https://code.earthengine.google.com/a19f5cec73720aba049b457d55672cee
+    // https://code.earthengine.google.com/37e4e9cc4436a22e5c3e0f63acb4c0bc
+    runMethods(eeImage) {
+        const methods = this.options.methods;
+
+        if (methods) {
+            Object.keys(methods).forEach(method => {
+                if (eeImage[method]) { // Make sure method exist
+                    eeImage = eeImage[method].apply(eeImage, methods[method]);
+                }
+            });
+        }
+
+        return eeImage;
     },
 
     // Classify image according to legend
