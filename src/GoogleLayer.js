@@ -9,6 +9,7 @@ export const GoogleLayer = L.Google.extend({
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
         version: '3.22',  // Google Maps API version
+        apiKey: 'AIzaSyBjlDmwuON9lJbPMDlh_LI3zGpGtpK9erc', // Google Maps API key (should be overridden)
         apiWait: 500, // Milliseconds before checking if Google Maps API is loaded
     },
 
@@ -62,7 +63,7 @@ export const GoogleLayer = L.Google.extend({
         window[callbackFunc] = this.onGoogleMapsApiLoad.bind(this);
 
         const script = document.createElement('script');
-        script.src = `//maps.googleapis.com/maps/api/js?v=${this.options.version}&callback=${callbackFunc}`;
+        script.src = `//maps.googleapis.com/maps/api/js?key=${this.options.apiKey}&v=${this.options.version}&callback=${callbackFunc}`;
         document.getElementsByTagName('head')[0].appendChild(script);
     },
 
