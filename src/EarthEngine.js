@@ -215,10 +215,14 @@ export const EarthEngine = L.LayerGroup.extend({
 
         legend += '<dl>';
 
+        if (options.unit) {
+            legend += '<dt></dt><dd><strong>' + options.unit + '</strong></dd>';
+        }
+
         for (let i = 0, item; i < this._legend.length; i++) {
             item = this._legend[i];
             legend += '<dt style="background-color:' + item.color + ';box-shadow:1px 1px 2px #aaa;"></dt>';
-            legend += '<dd>' + item.name + ' ' + (options.unit || '') + '</dd>';
+            legend += '<dd>' + item.name;
         }
 
         legend += '</dl>';
