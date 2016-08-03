@@ -20,7 +20,7 @@ export const EarthEngine = L.LayerGroup.extend({
     initialize(options = {}) {
         L.setOptions(this, options);
         this._layers = {};
-        this.createLegend();
+        this._legend = options.legend || this.createLegend();
     },
 
     onAdd() {
@@ -87,13 +87,17 @@ export const EarthEngine = L.LayerGroup.extend({
             eeImage = eeImage.select(options.band);
         }
 
-        eeImage = eeImage.updateMask(eeImage.gt(0)); // Mask out 0-values
+        if (options.mask) { // Mask out 0-values
+            eeImage = eeImage.updateMask(eeImage.gt(0));
+        }
 
         // Run methods on image
         eeImage = this.runMethods(eeImage);
 
         // Classify image
-        eeImage = this.classifyImage(eeImage);
+        if (!options.legend) { // Don't classify if legend is provided
+            eeImage = this.classifyImage(eeImage);
+        }
 
         this.addLayer(this.visualize(eeImage));
     },
@@ -157,10 +161,12 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Visualize image (turn into RGB)
     visualize(eeImage) {
-        return eeImage.visualize({
+        const options = this.options;
+
+        return eeImage.visualize(options.legend ? options.params : {
             min: 0,
             max: this._legend.length - 1,
-            palette: this.options.params.palette
+            palette: options.params.palette
         });
     },
 
@@ -174,7 +180,7 @@ export const EarthEngine = L.LayerGroup.extend({
         let from = min;
         let to = Math.round(min + step);
 
-        this._legend = palette.map((color, index) => {
+        return palette.map((color, index) => {
             const item = {
                 color: color
             };
