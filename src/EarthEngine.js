@@ -211,9 +211,13 @@ export const EarthEngine = L.LayerGroup.extend({
         const options = this.options;
         let legend = '<div class="dhis2-legend">';
 
-        if (options.name) {
-            legend += '<h2>' + options.name + '</h2>';
+        legend += '<h2>' + options.name;
+
+        if (options.image) {
+            legend += ' ' + options.image;
         }
+
+        legend += '</h2>';
 
         if (options.description) {
             legend += '<p>' +  options.description + '</p>';
