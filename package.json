@@ -33,7 +33,7 @@
     "d3-scale": "^0.7.0",
     "leaflet": "^1.0.0-rc.3",
     "leaflet-geocoder-mapzen": "^1.5.2",
-    "leaflet.markercluster": "git+https://github.com/Leaflet/Leaflet.markercluster.git",
+    "leaflet.markercluster": "^1.0.0-rc.1.0",
     "topojson": "^1.6.19",
     "turf": "^2.0.2",
     "whatwg-fetch": "0.10.1"

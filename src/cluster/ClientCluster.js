@@ -2,7 +2,7 @@ import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import circleMarker from '../CircleMarker';
 import {scaleLog} from 'd3-scale';
-import '../../temp/leaflet.markercluster-src'; // TODO: Remove when cluster repo is compatible with Leaflet 1.0
+import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
 
