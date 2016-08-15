@@ -1,5 +1,6 @@
-import L from 'leaflet';
 import 'leaflet-geocoder-mapzen';
+import '../node_modules/leaflet-measure/dist/leaflet-measure';
+
 import tileLayer from './TileLayer';
 import mapQuest from './MapQuest';
 import googleLayer from './GoogleLayer';

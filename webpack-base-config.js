@@ -44,6 +44,12 @@ module.exports = {
                     'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
                 ]
             },
+            /*
+            {   // https://github.com/ljagis/leaflet-measure/issues/30
+                test: /leaflet-measure.+\.js$/,
+                loader: 'transform/cacheable?brfs',
+            },
+            */
         ],
     },
     plugins: [
@@ -51,4 +57,9 @@ module.exports = {
             'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
         }),
     ],
+    /*
+    node: {
+        fs: 'empty',
+    },
+    */
 };

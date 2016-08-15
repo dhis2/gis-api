@@ -33,6 +33,7 @@
     "d3-scale": "^0.7.0",
     "leaflet": "^1.0.0-rc.3",
     "leaflet-geocoder-mapzen": "^1.5.2",
+    "leaflet-measure": "^2.0.2",
     "leaflet-plugins": "github:shramov/leaflet-plugins#leaflet_one",
     "leaflet.markercluster": "^1.0.0-rc.1.0",
     "topojson": "^1.6.19",
