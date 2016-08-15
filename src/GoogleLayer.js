@@ -2,7 +2,7 @@
 // Handles Google API loading
 
 import L from 'leaflet';
-import '../temp/Google'; // TODO: Fix when Google repo is compatible with Leaflet 1.0
+import '../node_modules/leaflet-plugins/layer/tile/Google'; // Extends L above
 
 export const GoogleLayer = L.Google.extend({
 
