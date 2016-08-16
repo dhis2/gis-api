@@ -14,7 +14,7 @@ module.exports = {
     },
     devtool: 'source-map',
     output: {
-        path: __dirname + '/lib',
+        path: __dirname + '/build',
         filename: '[name]/index.js',
         libraryTarget: 'var',
     },
