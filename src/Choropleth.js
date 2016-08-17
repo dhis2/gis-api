@@ -78,7 +78,7 @@ export const Choropleth = GeoJson.extend({
 
     pointToLayer(feature, latlng) {
         return L.circleMarker(latlng, {
-            pane: this.options.pane
+            pane: this.options.pane,
         });
     },
 

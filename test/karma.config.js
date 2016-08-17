@@ -1,7 +1,6 @@
 var path = require('path');
 
-
-console.log(path.resolve('src/'));
+// console.log(path.resolve('src/'));
 module.exports = function karmaConfigHandler(config) {
     config.set({
         browsers: [ 'PhantomJS' ], // run in Headless browser PhantomJS

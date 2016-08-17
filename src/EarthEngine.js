@@ -1,12 +1,7 @@
 // Leaflet plugin to add map layers from Google Earth Engine
 
 import L from 'leaflet';
-import {scaleLinear} from 'd3-scale';
-import eeApi from 'imports?this=>window!exports?goog&ee!../lib/ee_api_js_debug';
-
-// Google requires these to be in the global scope
-window.goog = eeApi.goog;
-window.ee = eeApi.ee;
+import 'script!../lib/ee_api_js_debug';
 
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
 export const EarthEngine = L.LayerGroup.extend({
@@ -50,13 +45,13 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Refresh OAuth2 token when expired
     refreshAccessToken(authArgs, callback) {
-        var self = this;
-        this.getAuthToken(function(token) {
+        const self = this;
+        this.getAuthToken(token => {
             callback({
                 token_type: self.options.tokenType,
                 access_token: token.access_token,
                 state: authArgs.scope,
-                expires_in: token.expires_in
+                expires_in: token.expires_in,
             });
         });
     },
@@ -64,7 +59,6 @@ export const EarthEngine = L.LayerGroup.extend({
     // Create EE tile layer from params (override for each layer type)
     createImage() {
         const options = this.options;
-        const legend = this._legend;
 
         let eeCollection;
         let eeImage;
@@ -77,10 +71,10 @@ export const EarthEngine = L.LayerGroup.extend({
             if (options.aggregation === 'mosaic') {
                 eeImage = eeCollection.mosaic();
             } else {
-                eeImage = ee.Image(eeCollection.first());
+                eeImage = ee.Image(eeCollection.first()); // eslint-disable-line
             }
         } else { // Single image
-            eeImage = ee.Image(options.id);
+            eeImage = ee.Image(options.id); // eslint-disable-line
         }
 
         if (options.band) {
@@ -113,8 +107,8 @@ export const EarthEngine = L.LayerGroup.extend({
         L.LayerGroup.prototype.addLayer.call(this, layer);
     },
 
-    applyFilter(collection, filter) {
-        filter = filter || this.options.filter;
+    applyFilter(collection, filterOpt) {
+        const filter = filterOpt || this.options.filter;
 
         if (filter) {
             for (const item of filter) {
@@ -128,8 +122,9 @@ export const EarthEngine = L.LayerGroup.extend({
     // Run methods on image
     // https://code.earthengine.google.com/a19f5cec73720aba049b457d55672cee
     // https://code.earthengine.google.com/37e4e9cc4436a22e5c3e0f63acb4c0bc
-    runMethods(eeImage) {
+    runMethods(image) {
         const methods = this.options.methods;
+        let eeImage = image;
 
         if (methods) {
             Object.keys(methods).forEach(method => {
@@ -166,7 +161,7 @@ export const EarthEngine = L.LayerGroup.extend({
         return eeImage.visualize(options.legend ? options.params : {
             min: 0,
             max: this._legend.length - 1,
-            palette: options.params.palette
+            palette: options.params.palette,
         });
     },
 
@@ -182,7 +177,7 @@ export const EarthEngine = L.LayerGroup.extend({
 
         return palette.map((color, index) => {
             const item = {
-                color: color
+                color: color,
             };
 
             if (index === 0 && min > 0) { // Less than min
