@@ -2,6 +2,7 @@ import 'leaflet-geocoder-mapzen';
 import '../node_modules/leaflet-measure/dist/leaflet-measure';
 
 import tileLayer from './TileLayer';
+import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
 import boundary from './Boundary';
 import dots from './Dots';
@@ -31,6 +32,7 @@ export const Map = L.Map.extend({
         className: 'leaflet-dhis2',
         layerTypes: {
             tileLayer,      // CartoDB basemap
+            wmsLayer,       // WMS layer
             googleLayer,    // Google basemap
             boundary,       // Boundary layer
             dots,           // Event layer without clustering
