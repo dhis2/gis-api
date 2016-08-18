@@ -10,6 +10,8 @@ http://leafletjs.com/reference-1.0.0.html
 import d2map from 'dhis2-gis-api/src/';
 ```
 
+const map = d2map('map', {});
+
 d2map is the same as [L.map](http://leafletjs.com/reference.html#map-class), with som extended features (more features will come!):
 https://github.com/dhis2/dhis2-gis-api/blob/master/src/Map.js
 
