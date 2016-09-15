@@ -1,4 +1,4 @@
 import map from './Map';
-import '../scss/dhis2-gis.scss';
+import '../scss/gis-api.scss';
 
 export default map;

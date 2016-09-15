@@ -7,11 +7,11 @@ http://leafletjs.com/reference-1.0.0.html
 ## How to use? 
 
 ```
-import d2map from 'dhis2-gis-api/src/';
+import d2map from 'gis-api/src/';
 ```
 
 d2map is the same as [L.map](http://leafletjs.com/reference.html#map-class), with som extended features (more features will come!):
-https://github.com/dhis2/dhis2-gis-api/blob/master/src/Map.js
+https://github.com/dhis2/gis-api/blob/master/src/Map.js
 
 ```
 const map = d2map('map');

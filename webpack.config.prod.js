@@ -18,7 +18,7 @@ webpackBaseConfig.plugins = [
         compress: {
             warnings: false // Includes many warnings from 3rd party libraries
         },
-        mangle: false, // https://github.com/dhis2/dhis2-gis-api/issues/3
+        mangle: false, // https://github.com/dhis2/gis-api/issues/3
         sourceMap: true,
     }),
 ];
