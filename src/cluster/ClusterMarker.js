@@ -100,11 +100,11 @@ export const ClusterMarker = L.Marker.extend({
         evt.layer.showPopup();
     },
 
-    onRemove() {
+    onRemove(map) {
         if (this._spiderified) {
             this.unspiderify();
         }
-        L.Marker.prototype.onRemove.call(this);
+        L.Marker.prototype.onRemove.call(this, map);
     },
 
 });
