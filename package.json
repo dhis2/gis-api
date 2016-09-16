@@ -1,5 +1,5 @@
 {
-  "name": "dhis2-gis-api",
+  "name": "gis-api",
   "version": "23.0.0",
   "description": "GIS API for DHIS 2 based on Leaflet",
   "main": "lib/main/index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhis2/dhis2-gis-api.git"
+    "url": "git+https://github.com/dhis2/gis-api.git"
   },
   "keywords": [
     "DHIS2",
@@ -25,9 +25,9 @@
   "author": "Bjørn Sandvik",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/dhis2/dhis2-gis-api/issues"
+    "url": "https://github.com/dhis2/gis-api/issues"
   },
-  "homepage": "https://github.com/dhis2/dhis2-gis-api#readme",
+  "homepage": "https://github.com/dhis2/gis-api#readme",
   "dependencies": {
     "d3-color": "^0.4.2",
     "d3-scale": "^0.7.0",
