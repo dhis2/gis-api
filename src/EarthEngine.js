@@ -77,6 +77,8 @@ export const EarthEngine = L.LayerGroup.extend({
             eeImage = ee.Image(options.id); // eslint-disable-line
         }
 
+        this.eeImage = eeImage;
+
         if (options.band) {
             eeImage = eeImage.select(options.band);
         }
@@ -244,6 +246,16 @@ export const EarthEngine = L.LayerGroup.extend({
     setOpacity(opacity) {
         this.options.opacity = opacity;
         this.eachLayer(layer => layer.setOpacity(opacity));
+    },
+
+    // Returns value at location
+    getValue(latlng, callback) {
+        const point = ee.Geometry.Point(latlng.lng, latlng.lat);
+        const mean = this.eeImage.reduceRegion(ee.Reducer.mean(), point); // Returns ee.Dictionary
+
+        mean.getInfo(valueObj => {
+            callback(valueObj[Object.keys(valueObj)[0]]);
+        });
     },
 
 });
