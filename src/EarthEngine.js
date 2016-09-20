@@ -10,6 +10,7 @@ export const EarthEngine = L.LayerGroup.extend({
         url: 'https://earthengine.googleapis.com/map/{mapid}/{z}/{x}/{y}?token={token}',
         tokenType: 'Bearer',
         aggregation: 'none',
+        popup: '{name}: {value} {unit}',
     },
 
     initialize(options = {}) {
@@ -18,8 +19,15 @@ export const EarthEngine = L.LayerGroup.extend({
         this._legend = options.legend || this.createLegend();
     },
 
-    onAdd() {
+    onAdd(map) {
         this.getAuthToken(this.onValidAuthToken.bind(this));
+    },
+
+    onRemove(map) {
+        if (this._popup) {
+            map.closePopup(this._popup);
+        }
+        L.GeoJSON.prototype.onRemove.call(this, map);
     },
 
     // Get OAuth2 token needed to create and load Google Earth Engine layers
@@ -69,6 +77,7 @@ export const EarthEngine = L.LayerGroup.extend({
             eeCollection = this.applyFilter(eeCollection);
 
             if (options.aggregation === 'mosaic') {
+                this.eeCollection = eeCollection;
                 eeImage = eeCollection.mosaic();
             } else {
                 eeImage = ee.Image(eeCollection.first()); // eslint-disable-line
@@ -76,8 +85,6 @@ export const EarthEngine = L.LayerGroup.extend({
         } else { // Single image
             eeImage = ee.Image(options.id); // eslint-disable-line
         }
-
-        this.eeImage = eeImage;
 
         if (options.band) {
             eeImage = eeImage.select(options.band);
@@ -89,6 +96,8 @@ export const EarthEngine = L.LayerGroup.extend({
 
         // Run methods on image
         eeImage = this.runMethods(eeImage);
+
+        this.eeImage = eeImage;
 
         // Classify image
         if (!options.legend) { // Don't classify if legend is provided
@@ -248,13 +257,42 @@ export const EarthEngine = L.LayerGroup.extend({
         this.eachLayer(layer => layer.setOpacity(opacity));
     },
 
-    // Returns value at location
+    // Returns value at location in a callback
     getValue(latlng, callback) {
         const point = ee.Geometry.Point(latlng.lng, latlng.lat);
-        const mean = this.eeImage.reduceRegion(ee.Reducer.mean(), point); // Returns ee.Dictionary
+        const options = this.options;
+        let dictionary
 
-        mean.getInfo(valueObj => {
-            callback(valueObj[Object.keys(valueObj)[0]]);
+        if (options.aggregation === 'mosaic') {
+            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point, options.resolution, options.projection);
+        } else {
+            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point);
+        }
+
+        dictionary.getInfo(valueObj => {
+            const band = options.band || Object.keys(valueObj)[0];
+            let value = valueObj[band];
+
+            if (options.legend && options.legend[value]) {
+                value = options.legend[value].name;
+            } else if (options.value) { // Needs calculation
+                value = options.value(value);
+            }
+
+            callback(value);
+        });
+    },
+
+    // Shows the value at location (popup)
+    showValue(latlng) {
+        const options = this.options;
+        this.getValue(latlng, value => {
+            this._popup = L.popup()
+                .setLatLng(latlng)
+                .setContent(L.Util.template(options.popup, L.extend({}, options, {
+                    value: value
+                })))
+                .openOn(this._map);
         });
     },
 
