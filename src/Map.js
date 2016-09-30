@@ -62,7 +62,7 @@ export const Map = L.Map.extend({
 
         L.DomUtil.addClass(this.getContainer(), options.className);
 
-        L.Icon.Default.imagePath = '/images';
+        L.Icon.Default.imagePath = '/images/';
 
         // Stop propagation to prevent dashboard dragging
         this.on('mousedown', e => {
