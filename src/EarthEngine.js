@@ -19,7 +19,7 @@ export const EarthEngine = L.LayerGroup.extend({
         this._legend = options.legend || this.createLegend();
     },
 
-    onAdd(map) {
+    onAdd() {
         this.getAuthToken(this.onValidAuthToken.bind(this));
     },
 
@@ -259,9 +259,9 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Returns value at location in a callback
     getValue(latlng, callback) {
-        const point = ee.Geometry.Point(latlng.lng, latlng.lat);
+        const point = ee.Geometry.Point(latlng.lng, latlng.lat); // eslint-disable-line
         const options = this.options;
-        let dictionary
+        let dictionary;
 
         if (options.aggregation === 'mosaic') {
             dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point, options.resolution, options.projection);
@@ -290,7 +290,7 @@ export const EarthEngine = L.LayerGroup.extend({
             this._popup = L.popup()
                 .setLatLng(latlng)
                 .setContent(L.Util.template(options.popup, L.extend({}, options, {
-                    value: value
+                    value: value,
                 })))
                 .openOn(this._map);
         });
