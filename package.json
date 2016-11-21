@@ -34,7 +34,7 @@
     "leaflet": "^1.0.1",
     "leaflet-geocoder-mapzen": "^1.5.2",
     "leaflet-measure": "^2.0.2",
-    "leaflet-plugins": "^3.0.0",
+    "leaflet.gridlayer.googlemutant": "^0.4.3",
     "leaflet.markercluster": "^1.0.0-rc.1.0",
     "topojson": "^1.6.19",
     "turf": "^2.0.2",
