@@ -75,7 +75,7 @@ map('map', {
         popup(feature) {
             return 'Popup content for ' + feature.properties.na;
         },
-    },/* {
+    }, /* {
         type: 'features',
         name: 'Facilities',
         overlay: true,

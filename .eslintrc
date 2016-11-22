@@ -1,3 +1,8 @@
 {
-  "extends": "dhis2"
+  "extends": "dhis2",
+  "rules": {
+    "space-after-keywords": "off",
+    "space-return-throw-case": "off",
+    "consistent-return": "off",
+  },
 }

@@ -26,7 +26,7 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
     },
 
     onAdd(map) {
-        L.DomUtil.addClass(map.getContainer(), 'leaflet-google');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-google'); // Used to move scale control
         L.GridLayer.GoogleMutant.prototype.onAdd.call(this, map);
     },
 
