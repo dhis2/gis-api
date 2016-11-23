@@ -47,12 +47,14 @@
 .dhis2-legend {
   display: block;
   padding-top: 15px;
+  min-height: 80px;
 
   h2 {
     font-weight: bold;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 13px;
     margin: 0;
+    background: green;
     span {
       display: block;
       font-weight: normal;
@@ -60,7 +62,8 @@
   }
 
   p {
-
+    margin: 5px 0;
+    background: yellow;
   }
 
   dl {
