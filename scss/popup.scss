@@ -1,5 +1,13 @@
 .leaflet-dhis2 {
   .leaflet-popup-content-wrapper {
     border-radius: 0;
+
+    .leaflet-popup-content {
+
+      em {
+        font-style: normal;
+      }
+
+    }
   }
 }
