@@ -1,6 +1,9 @@
 // Base class for most vector layers
 
 import L from 'leaflet';
+import label from './Label';
+import polylabel from 'polylabel';
+const geojsonArea = require('geojson-area');
 
 export const GeoJson = L.GeoJSON.extend({
 
@@ -14,12 +17,18 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     initialize(options = {}) {
+        this._labels = L.layerGroup();
         L.GeoJSON.prototype.initialize.call(this, options.data, options);
     },
 
     addLayer(layer) {
         const options = this.options;
         const feature = layer.feature;
+
+        // Add text label
+        if (this.options.label) {
+            this.addLabel(layer, L.Util.template(this.options.label, feature.properties));
+        }
 
         if (options.hoverLabel || options.label) {
             layer.bindTooltip(L.Util.template(options.hoverLabel || options.label, feature.properties), {
@@ -32,6 +41,25 @@ export const GeoJson = L.GeoJSON.extend({
         }
 
         L.GeoJSON.prototype.addLayer.call(this, layer);
+    },
+
+    // Add label to layer
+    addLabel(layer, text) {
+        const prop = layer.feature.properties;
+        const geometry = layer.feature.geometry;
+        const labelStyle = L.extend(prop.labelStyle || {}, this.options.labelStyle);
+        const latlng = this._getLabelLatlng(geometry);
+
+        if (prop.style && prop.style.color) {
+            labelStyle.color = prop.style.color;
+        }
+
+        layer._label = label(latlng, {
+            html: text,
+            labelStyle: labelStyle,
+        });
+
+        this._labels.addLayer(layer._label);
     },
 
     setOpacity(opacity) {
@@ -53,6 +81,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     onAdd(map) {
         L.GeoJSON.prototype.onAdd.call(this, map);
+        map.addLayer(this._labels);
 
         if (this.options.highlightStyle) {
             this.on('mouseover', this.onMouseOver, this);
@@ -66,6 +95,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     onRemove(map) {
         L.GeoJSON.prototype.onRemove.call(this, map);
+        map.removeLayer(this._labels);
 
         if (this.options.highlightStyle) {
             this.off('mouseover', this.onMouseOver, this);
@@ -85,6 +115,37 @@ export const GeoJson = L.GeoJSON.extend({
     // Reset style
     onMouseOut(evt) {
         evt.layer.setStyle(this.options.resetStyle);
+    },
+
+    // Returns the best label placement
+    _getLabelLatlng(geometry) {
+        const coords = geometry.coordinates;
+        let biggestRing;
+
+        if (geometry.type === 'Point') {
+            return [coords[1], coords[0]];
+        } else if (geometry.type === 'Polygon') {
+            biggestRing = coords;
+        } else if (geometry.type === 'MultiPolygon') {
+            biggestRing = coords[0];
+
+            // If more than one polygon, place the label on the polygon with the biggest area
+            if (coords.length > 1) {
+                let biggestSize = 0;
+
+                coords.forEach(ring => {
+                    const size = geojsonArea.ring(ring[0]); // Area calculation
+
+                    if (size > biggestSize) {
+                        biggestRing = ring;
+                        biggestSize = size;
+                    }
+                });
+            }
+        }
+
+        // Returns pole of inaccessibility, the most distant internal point from the polygon outline
+        return polylabel(biggestRing, 2).reverse();
     },
 
 });

@@ -1,7 +1,6 @@
 // Boundary layer
 
 import {GeoJson} from './GeoJson';
-import label from './Label';
 
 export const Boundary = GeoJson.extend({
 
@@ -20,7 +19,6 @@ export const Boundary = GeoJson.extend({
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
-        this._labels = L.layerGroup();
         GeoJson.prototype.initialize.call(this, options);
     },
 
@@ -29,23 +27,6 @@ export const Boundary = GeoJson.extend({
 
         if (prop.style) {
             layer.setStyle(prop.style);
-        }
-
-        // Add text label
-        if (this.options.label) {
-            const labelStyle = L.extend(prop.labelStyle || {}, this.options.labelStyle);
-            const latlng = (layer.getBounds ? layer.getBounds().getCenter() : layer.getLatLng());
-
-            if (prop.style.color) {
-                labelStyle.color = prop.style.color;
-            }
-
-            layer._label = label(latlng, {
-                html: L.Util.template(this.options.label, prop),
-                labelStyle: labelStyle,
-            });
-
-            this._labels.addLayer(layer._label);
         }
 
         GeoJson.prototype.addLayer.call(this, layer);
@@ -85,18 +66,6 @@ export const Boundary = GeoJson.extend({
                 fillOpacity: 0,
             });
         }
-    },
-
-    // Add labels
-    onAdd(map) {
-        map.addLayer(this._labels);
-        GeoJson.prototype.onAdd.call(this, map);
-    },
-
-    // Roemove labels
-    onRemove(map) {
-        map.removeLayer(this._labels);
-        GeoJson.prototype.onRemove.call(this, map);
     },
 
 });
