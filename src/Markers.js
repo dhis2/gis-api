@@ -1,5 +1,5 @@
 import {GeoJson} from './GeoJson';
-import marker from './Marker';
+// import marker from './Marker';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
@@ -33,7 +33,8 @@ export const Markers = GeoJson.extend({
             markerOptions.icon = L.icon(feature.properties[iconProperty]);
         }
 
-        return marker(latlng, markerOptions);
+        // return marker(latlng, markerOptions);
+        return L.marker(latlng, markerOptions);
     },
 
     setOpacity(opacity) {

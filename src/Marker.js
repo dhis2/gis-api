@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-// Marker with label support
+// This class is no longer in use
 export const Marker = L.Marker.extend({
 
     options: {

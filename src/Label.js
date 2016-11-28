@@ -8,7 +8,7 @@ export const Label = L.Marker.extend({
     options: {
         html: 'Label',
         className: 'leaflet-div-label',
-        iconSize: [160, 16],
+        iconSize: null,
     },
 
     initialize(latlng, opts) {
@@ -20,8 +20,18 @@ export const Label = L.Marker.extend({
     onAdd(map) {
         L.Marker.prototype.onAdd.call(this, map);
 
-        if (this.options.labelStyle) {
-            L.extend(this._icon.style, this.options.labelStyle);
+        const options = this.options;
+        const iconDiv = this._icon;
+
+        if (options.labelStyle) {
+            L.extend(iconDiv.style, options.labelStyle);
+        }
+
+        // Center div
+        iconDiv.style.marginLeft = '-' + (iconDiv.offsetWidth / 2) + 'px';
+
+        if (options.position !== 'below') {
+            iconDiv.style.marginTop = '-' + (iconDiv.offsetHeight / 2) + 'px';
         }
     },
 

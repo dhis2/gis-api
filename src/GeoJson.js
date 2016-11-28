@@ -3,6 +3,8 @@
 import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
+import 'script!../node_modules/rbush/rbush'; // Required by Leaflet.LayerGroup.Collision
+import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
 const geojsonArea = require('geojson-area');
 
 export const GeoJson = L.GeoJSON.extend({
@@ -17,7 +19,10 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     initialize(options = {}) {
-        this._labels = L.layerGroup();
+        if (options.label) {
+            this._labels = L.layerGroup.collision({ margin: 2 });
+        }
+
         L.GeoJSON.prototype.initialize.call(this, options.data, options);
     },
 
@@ -56,6 +61,7 @@ export const GeoJson = L.GeoJSON.extend({
 
         layer._label = label(latlng, {
             html: text,
+            position: geometry.type === 'Point' ? 'below' : 'middle',
             labelStyle: labelStyle,
         });
 
@@ -81,7 +87,10 @@ export const GeoJson = L.GeoJSON.extend({
 
     onAdd(map) {
         L.GeoJSON.prototype.onAdd.call(this, map);
-        map.addLayer(this._labels);
+
+        if (this._labels) {
+            map.addLayer(this._labels);
+        }
 
         if (this.options.highlightStyle) {
             this.on('mouseover', this.onMouseOver, this);
@@ -95,7 +104,10 @@ export const GeoJson = L.GeoJSON.extend({
 
     onRemove(map) {
         L.GeoJSON.prototype.onRemove.call(this, map);
-        map.removeLayer(this._labels);
+
+        if (this._labels) {
+            map.removeLayer(this._labels);
+        }
 
         if (this.options.highlightStyle) {
             this.off('mouseover', this.onMouseOver, this);
