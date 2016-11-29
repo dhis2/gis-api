@@ -1,6 +1,5 @@
 import 'leaflet-geocoder-mapzen';
 import '../node_modules/leaflet-measure/dist/leaflet-measure';
-
 import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
@@ -49,6 +48,7 @@ export const Map = L.Map.extend({
         },
         zoomControl: false,
         controls: [],
+        worldCopyJump: true,
     },
 
     initialize(id, opts) {
