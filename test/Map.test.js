@@ -18,21 +18,21 @@ describe('DHIS2 map', () => {
         expect(map).to.be.instanceOf(L.Map);
     });
 
-    it('should have a addLayer method', () => {
+    it('should have an addLayer method', () => {
         expect(map.addLayer).to.be.a('function');
     });
 
-    it('should create a TileLayer from config object', () => {
+    it('should create a L.TileLayer from config object', () => {
         const layer = map.addLayer({ type: 'tileLayer' });
         expect(layer).to.be.instanceOf(L.TileLayer);
     });
 
-    it('should create a TileLayer.WMS from config object', () => {
+    it('should create a L.TileLayer.WMS from config object', () => {
         const layer = map.addLayer({ type: 'wmsLayer' });
         expect(layer).to.be.instanceOf(L.TileLayer.WMS);
     });
 
-    it('should create a TileLayer.WMS from config object', () => {
+    it('should create a L.TileLayer.WMS from config object', () => {
         const layer = map.addLayer({ type: 'wmsLayer' });
         expect(layer).to.be.instanceOf(L.TileLayer.WMS);
     });
@@ -42,37 +42,37 @@ describe('DHIS2 map', () => {
         expect(layer).to.be.instanceOf(L.GridLayer.GoogleMutant);
     });
 
-    it('should create a GeoJson layer from boundary config object', () => {
+    it('should create a L.GeoJson layer from boundary config object', () => {
         const layer = map.addLayer({ type: 'boundary' });
         expect(layer).to.be.instanceOf(L.GeoJSON);
     });
 
-    it('should create a GeoJson layer from dots config object', () => {
+    it('should create a L.GeoJson layer from dots config object', () => {
         const layer = map.addLayer({ type: 'dots' });
         expect(layer).to.be.instanceOf(L.GeoJSON);
     });
 
-    it('should create a GeoJson layer from markers config object', () => {
+    it('should create a L.GeoJson layer from markers config object', () => {
         const layer = map.addLayer({ type: 'markers' });
         expect(layer).to.be.instanceOf(L.GeoJSON);
     });
 
-    it('should create a GeoJson layer from circles config object', () => {
+    it('should create a L.GeoJson layer from circles config object', () => {
         const layer = map.addLayer({ type: 'circles' });
         expect(layer).to.be.instanceOf(L.GeoJSON);
     });
 
-    it('should create a GeoJson layer from choropleth config object', () => {
+    it('should create a L.GeoJson layer from choropleth config object', () => {
         const layer = map.addLayer({ type: 'choropleth' });
         expect(layer).to.be.instanceOf(L.GeoJSON);
     });
 
-    it('should create a MarkerClusterGroup from client cluster config object', () => {
+    it('should create a L.MarkerClusterGroup from client cluster config object', () => {
         const layer = map.addLayer({ type: 'clientCluster' });
         expect(layer).to.be.instanceOf(L.MarkerClusterGroup);
     });
 
-    it('should create a GridLayer from server cluster config object', () => {
+    it('should create a L.GridLayer from server cluster config object', () => {
         const layer = map.addLayer({ type: 'serverCluster' });
         expect(layer).to.be.instanceOf(L.GridLayer);
     });
@@ -89,7 +89,7 @@ describe('DHIS2 map', () => {
         expect(map.createLayer).to.be.a('function');
     });
 
-    it('createLayer method should create a layer from a config object', () => {
+    it('createLayer method should create a L.Layer from a config object', () => {
         const layer = map.createLayer({ type: 'tileLayer' });
         expect(layer).to.be.instanceOf(L.Layer);
     });
@@ -98,12 +98,12 @@ describe('DHIS2 map', () => {
         expect(map.addControl).to.be.a('function');
     });
 
-    it('should create a control from a legend config object', () => {
+    it('should create a L.Control from a legend config object', () => {
         const layer = map.addControl({ type: 'legend' });
         expect(layer).to.be.instanceOf(L.Control);
     });
 
-    it('should create a control from a fit bounds config object', () => {
+    it('should create a L.Control from a fit bounds config object', () => {
         const layer = map.addControl({ type: 'fitBounds' });
         expect(layer).to.be.instanceOf(L.Control);
     });
@@ -112,7 +112,7 @@ describe('DHIS2 map', () => {
         expect(map.getLayersBounds).to.be.a('function');
     });
 
-    it('getLayersBounds should return a LatLngBounds instance', () => {
+    it('getLayersBounds should return a L.LatLngBounds instance', () => {
         const bounds = map.getLayersBounds();
         expect(bounds).to.be.instanceOf(L.LatLngBounds);
     });
