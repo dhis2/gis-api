@@ -18,7 +18,6 @@ describe('DHIS2 map', () => {
         expect(map).to.be.instanceOf(L.Map);
     });
 
-
     it('should have a addLayer method', () => {
         expect(map.addLayer).to.be.a('function');
     });
@@ -78,7 +77,7 @@ describe('DHIS2 map', () => {
         expect(layer).to.be.instanceOf(L.GridLayer);
     });
 
-    // TODO: Change to TileLayer
+    // TODO: Test don't pass - change to TileLayer
     /*
     it('should create a LayerGroup from earth engine config object', () => {
         const layer = map.addLayer({ type: 'earthEngine' });
@@ -86,14 +85,41 @@ describe('DHIS2 map', () => {
     });
     */
 
+    it('should have a createLayer method', () => {
+        expect(map.createLayer).to.be.a('function');
+    });
+
+    it('createLayer method should create a layer from a config object', () => {
+        const layer = map.createLayer({ type: 'tileLayer' });
+        expect(layer).to.be.instanceOf(L.Layer);
+    });
+
+    it('should have an addControl method', () => {
+        expect(map.addControl).to.be.a('function');
+    });
+
+    it('should create a control from a legend config object', () => {
+        const layer = map.addControl({ type: 'legend' });
+        expect(layer).to.be.instanceOf(L.Control);
+    });
+
+    it('should create a control from a fit bounds config object', () => {
+        const layer = map.addControl({ type: 'fitBounds' });
+        expect(layer).to.be.instanceOf(L.Control);
+    });
+
     it('should have a getLayersBounds method', () => {
         expect(map.getLayersBounds).to.be.a('function');
+    });
+
+    it('getLayersBounds should return a LatLngBounds instance', () => {
+        const bounds = map.getLayersBounds();
+        expect(bounds).to.be.instanceOf(L.LatLngBounds);
     });
 
     /*
     it('should have set the basemap layer', () => {
         map = new Map('map', {basemap: 'mapquest'});
-
         expect(map.hasLayer('mapquest')).to.be.true;
     });
     */
