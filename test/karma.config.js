@@ -51,12 +51,16 @@ module.exports = function karmaConfigHandler(config) {
                         include: path.resolve('src/'),
                         loader: 'isparta',
                     },
+                    {
+                        test: /isIterable/,
+                        loader: 'imports?Symbol=>false'
+                    }
                 ],
             },
         },
 
         webpackServer: {
-            noInfo: true, // please don't spam the console when running in karma!
+            noInfo: false, // please don't spam the console when running in karma!
         },
     });
 };
