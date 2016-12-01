@@ -10,9 +10,10 @@ import circles from './Circles';
 import choropleth from './Choropleth';
 import clientCluster from './cluster/ClientCluster';
 import serverCluster from './cluster/ServerCluster';
+import earthEngine from './EarthEngine';
 import legend from './Legend';
 import fitBounds from './FitBounds';
-import earthEngine from './EarthEngine';
+
 
 /**
  * Creates a map instance.
@@ -53,8 +54,9 @@ export const Map = L.Map.extend({
 
     initialize(id, opts) {
         const options = L.setOptions(this, opts);
-        const baseLayers = this._baseLayers = {};
-        const overlays = this._overlays = {};
+
+        this._baseLayers = {};
+        this._overlays = {};
 
         L.Map.prototype.initialize.call(this, id, options);
 
@@ -65,6 +67,7 @@ export const Map = L.Map.extend({
         L.Icon.Default.imagePath = '/images/';
 
         // Stop propagation to prevent dashboard dragging
+        // TODO: Move to dashboard map
         this.on('mousedown', e => {
             e.originalEvent.stopPropagation();
         });
@@ -73,15 +76,12 @@ export const Map = L.Map.extend({
             this.fitBounds(options.bounds);
         }
 
-        if (Object.keys(baseLayers).length || Object.keys(overlays).length) {
-            L.control.layers(baseLayers, overlays).addTo(this);
-        }
-
         for (const control of options.controls) {
             this.addControl(control);
         }
     },
 
+    // Override method to accept nye layer as config object
     addLayer(layer) {
         const layerTypes = this.options.layerTypes;
         let newLayer = layer;

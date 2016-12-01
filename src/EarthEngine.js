@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'script!../lib/ee_api_js_debug';
 
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
+// TODO: Change to TileLayer
 export const EarthEngine = L.LayerGroup.extend({
 
     options: {

@@ -1,28 +1,93 @@
 import L from 'leaflet';
-import {Map} from '../src/Map'; // Gives error
+import {Map} from '../src/Map';
 
 describe('DHIS2 map', () => {
-    let mapDiv;
     let map;
 
     beforeEach(() => {
-        mapDiv = document.createElement('div');
-        mapDiv.id = 'map';
-        document.body.appendChild(mapDiv);
+        map = new Map(document.createElement('div'));
     });
 
+    /*
     afterEach(function () {
         document.body.removeChild(mapDiv);
     });
+    */
 
     it('should export the Leaflet instance', () => {
-        map = new Map('map');
         expect(map).to.be.instanceOf(L.Map);
     });
 
+
     it('should have a addLayer method', () => {
-        map = new Map('map');
         expect(map.addLayer).to.be.a('function');
+    });
+
+    it('should create a TileLayer from config object', () => {
+        const layer = map.addLayer({ type: 'tileLayer' });
+        expect(layer).to.be.instanceOf(L.TileLayer);
+    });
+
+    it('should create a TileLayer.WMS from config object', () => {
+        const layer = map.addLayer({ type: 'wmsLayer' });
+        expect(layer).to.be.instanceOf(L.TileLayer.WMS);
+    });
+
+    it('should create a TileLayer.WMS from config object', () => {
+        const layer = map.addLayer({ type: 'wmsLayer' });
+        expect(layer).to.be.instanceOf(L.TileLayer.WMS);
+    });
+
+    it('should create a L.GridLayer.GoogleMutant from config object', () => {
+        const layer = map.addLayer({ type: 'googleLayer' });
+        expect(layer).to.be.instanceOf(L.GridLayer.GoogleMutant);
+    });
+
+    it('should create a GeoJson layer from boundary config object', () => {
+        const layer = map.addLayer({ type: 'boundary' });
+        expect(layer).to.be.instanceOf(L.GeoJSON);
+    });
+
+    it('should create a GeoJson layer from dots config object', () => {
+        const layer = map.addLayer({ type: 'dots' });
+        expect(layer).to.be.instanceOf(L.GeoJSON);
+    });
+
+    it('should create a GeoJson layer from markers config object', () => {
+        const layer = map.addLayer({ type: 'markers' });
+        expect(layer).to.be.instanceOf(L.GeoJSON);
+    });
+
+    it('should create a GeoJson layer from circles config object', () => {
+        const layer = map.addLayer({ type: 'circles' });
+        expect(layer).to.be.instanceOf(L.GeoJSON);
+    });
+
+    it('should create a GeoJson layer from choropleth config object', () => {
+        const layer = map.addLayer({ type: 'choropleth' });
+        expect(layer).to.be.instanceOf(L.GeoJSON);
+    });
+
+    it('should create a MarkerClusterGroup from client cluster config object', () => {
+        const layer = map.addLayer({ type: 'clientCluster' });
+        expect(layer).to.be.instanceOf(L.MarkerClusterGroup);
+    });
+
+    it('should create a GridLayer from server cluster config object', () => {
+        const layer = map.addLayer({ type: 'serverCluster' });
+        expect(layer).to.be.instanceOf(L.GridLayer);
+    });
+
+    // TODO: Change to TileLayer
+    /*
+    it('should create a LayerGroup from earth engine config object', () => {
+        const layer = map.addLayer({ type: 'earthEngine' });
+        expect(layer).to.be.instanceOf(L.LayerGroup);
+    });
+    */
+
+    it('should have a getLayersBounds method', () => {
+        expect(map.getLayersBounds).to.be.a('function');
     });
 
     /*
