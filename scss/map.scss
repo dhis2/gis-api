@@ -10,6 +10,20 @@
         }
     }
 
+    &.leaflet-touch {
+        .leaflet-control {
+            border: 0;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+        }
+
+        .leaflet-control-zoom a, .leaflet-pelias-control, .leaflet-pelias-control a {
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            font-size: 20px;
+        }
+    }
+
     .leaflet-control-attribution {
         font-size: 9px;
         a {
