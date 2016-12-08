@@ -7,7 +7,7 @@ webpackBaseConfig.devServer = {
     colors: true,
     port: 8083,
     inline: true,
-    devtool: 'source-map',
+    devtool: 'source-map'
 };
 
 module.exports = webpackBaseConfig;

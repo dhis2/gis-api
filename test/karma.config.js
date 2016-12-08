@@ -31,7 +31,7 @@ module.exports = function karmaConfigHandler(config) {
         webpack: { // kind of a copy of your webpack config
             devtool: 'inline-source-map', // just do inline source maps instead of the default
             module: {
-                preLoaders: [
+                loaders: [
                     // transpile layers files except testing sources with babel as usual
                     {
                         test: /\.js$/,
@@ -39,7 +39,7 @@ module.exports = function karmaConfigHandler(config) {
                             path.resolve('src/'),
                             path.resolve('node_modules/')
                         ],
-                        loader: 'babel',
+                        loader: 'babel-loader',
                         query: {
                             cacheDirectory: true,
                             presets: ['es2015', 'stage-2'],
@@ -49,11 +49,11 @@ module.exports = function karmaConfigHandler(config) {
                     {
                         test: /\.js$/,
                         include: path.resolve('src/'),
-                        loader: 'isparta',
+                        loader: 'isparta-loader',
                     },
                     {
                         test: /isIterable/,
-                        loader: 'imports?Symbol=>false'
+                        loader: 'imports-loader?Symbol=>false'
                     }
                 ],
             },

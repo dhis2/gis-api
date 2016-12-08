@@ -8,7 +8,7 @@
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.config.prod.js",
     "lint": "./node_modules/eslint/bin/eslint.js src example",
-    "test": "./node_modules/karma-cli/bin/karma start test/karma.config.js --single-run",
+    "test": "./node_modules/karma-cli/bin/karma start test/karma.config.js --single-run true",
     "test-watch": "./node_modules/karma-cli/bin/karma start test/karma.config.js",
     "test-cov": "npm test",
     "posttest-cov": "open ./coverage/phantomjs/lcov-report/index.html"
