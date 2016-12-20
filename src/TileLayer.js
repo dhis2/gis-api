@@ -9,6 +9,14 @@ export const TileLayer = L.TileLayer.extend({
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
         L.TileLayer.prototype.initialize.call(this, options.url, options);
+
+        this.on('load', this.onLoad, this);
+    },
+
+    // Fire ready event when all tiles are loaded
+    onLoad() {
+        this.fire('ready');
+        this.off('load', this.onLoad, this);
     },
 
 });

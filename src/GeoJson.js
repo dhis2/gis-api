@@ -100,6 +100,8 @@ export const GeoJson = L.GeoJSON.extend({
         if (this.options.contextmenu) {
             this.on('contextmenu', this.options.contextmenu);
         }
+
+        this.fire('ready');
     },
 
     onRemove(map) {
