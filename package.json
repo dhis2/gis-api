@@ -32,6 +32,7 @@
     "d3-color": "^1.0.2",
     "d3-scale": "^1.0.4",
     "geojson-area": "^0.2.1",
+    "rbush": "^1.4.3",
     "leaflet": "^1.0.2",
     "leaflet-geocoder-mapzen": "^1.7.1",
     "leaflet-measure": "^2.0.5",
