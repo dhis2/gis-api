@@ -1,5 +1,4 @@
 import {GeoJson} from './GeoJson';
-// import marker from './Marker';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
