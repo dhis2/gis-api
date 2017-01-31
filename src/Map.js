@@ -124,7 +124,8 @@ export const Map = L.Map.extend({
         const bounds = new L.LatLngBounds();
 
         this.eachLayer(layer => {
-            if (layer.getBounds) {
+            // TODO: Calculating bounds for circles layer (radius around facilitites) gives errors. Happends for dashboard maps
+            if (layer.getBounds && layer.options.type !== 'circles') {
                 bounds.extend(layer.getBounds());
             }
         });
