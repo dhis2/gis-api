@@ -2,7 +2,7 @@
 
 import L from 'leaflet';
 import {scaleLinear} from 'd3-scale';
-import eeApi from 'imports?this=>window!exports?goog&ee!../temp/ee_api_js_debug';
+import eeApi from 'imports-loader?this=>window!exports-loader?goog&ee!../temp/ee_api_js_debug';
 
 // Google requires these to be in the global scope
 window.goog = eeApi.goog;
