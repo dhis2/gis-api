@@ -1,6 +1,6 @@
 {
   "name": "gis-api",
-  "version": "25.0.2",
+  "version": "25.0.3",
   "description": "GIS API for DHIS 2 based on Leaflet",
   "main": "lib/main/index.js",
   "scripts": {
