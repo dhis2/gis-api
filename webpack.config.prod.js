@@ -12,7 +12,7 @@ webpackBaseConfig.plugins = [
             NODE_ENV: '\'production\'',
         },
     }),
-    new webpack.optimize.UglifyJsPlugin({
+        new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false // Includes many warnings from 3rd party libraries
         },
