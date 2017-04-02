@@ -20,7 +20,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     initialize(options = {}) {
         if (options.label) {
-            this._labels = L.layerGroup.collision({ margin: 2 });
+            this._labels = L.layerGroup({ margin: 2 });
         }
 
         L.GeoJSON.prototype.initialize.call(this, options.data, options);
@@ -31,8 +31,8 @@ export const GeoJson = L.GeoJSON.extend({
         const feature = layer.feature;
 
         // Add text label
-        if (this.options.label) {
-            this.addLabel(layer, L.Util.template(this.options.label, feature.properties));
+        if (options.label) {
+            this.addLabel(layer, L.Util.template(options.label, feature.properties));
         }
 
         if (options.hoverLabel || options.label) {
@@ -63,6 +63,7 @@ export const GeoJson = L.GeoJSON.extend({
             html: text,
             position: geometry.type === 'Point' ? 'below' : 'middle',
             labelStyle: labelStyle,
+            pane: this.options.labelPane || 'markerPane',
         });
 
         this._labels.addLayer(layer._label);
