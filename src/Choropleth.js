@@ -26,7 +26,8 @@ export const Choropleth = GeoJson.extend({
     },
 
     addLayer(layer) {
-        const prop = layer.feature.properties;
+        const feature = layer.feature;
+        const prop = feature.properties;
         const color = prop[this.options.colorKey];
         const radius = prop[this.options.radiusKey];
 
@@ -36,6 +37,10 @@ export const Choropleth = GeoJson.extend({
             });
         }
 
+        if (feature.isSelected) {
+            layer.setStyle(this.options.highlightStyle);
+        }
+
         if (radius && layer.setRadius) {
             layer.setRadius(radius);
         }
@@ -43,21 +48,21 @@ export const Choropleth = GeoJson.extend({
         GeoJson.prototype.addLayer.call(this, layer);
     },
 
-    // Higlight feature based on id
+    // Highlight feature based on id
     highlight(id) {
         const layer = this.findById(id);
 
-        this.removeHighlight();
-
         if (layer) {
-            this._highlight = layer.setStyle(this.options.highlightStyle);
-            return layer;
+            return layer.setStyle(this.options.highlightStyle);
         }
     },
 
-    removeHighlight() {
-        if (this._highlight) {
-            this._highlight.setStyle(this.options.resetStyle);
+    // Remove highlight of feature based on id
+    removeHighlight(id) {
+        const layer = this.findById(id);
+
+        if (layer) {
+            return layer.setStyle(this.options.resetStyle);
         }
     },
 

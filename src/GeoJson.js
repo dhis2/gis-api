@@ -129,7 +129,9 @@ export const GeoJson = L.GeoJSON.extend({
 
     // Reset style
     onMouseOut(evt) {
-        evt.layer.setStyle(this.options.resetStyle);
+        if (!evt.layer.feature.isSelected) {
+            evt.layer.setStyle(this.options.resetStyle);
+        }
     },
 
     // Returns the best label placement
