@@ -244,8 +244,12 @@ export const EarthEngine = L.LayerGroup.extend({
 
         legend += '</dl>';
 
-        if (options.attribution) {
-            legend += '<p>Data: ' + options.attribution + '</p>';
+        if (options.source) {
+            if (options.sourceUrl) {
+                legend += '<p>Source: <a href="' + options.sourceUrl + '">' + options.source + '</a></p>';
+            } else {
+                legend += '<p>Source: ' + options.source + '</p>';
+            }
         }
 
         legend += '<div>';
