@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 // console.log(path.resolve('src/'));
 module.exports = function karmaConfigHandler(config) {
@@ -9,15 +10,15 @@ module.exports = function karmaConfigHandler(config) {
             'mocha', // Test runner
             'chai',  // Assertion library
             'sinon', // Mocking library
-            'sinon-chai' // Assertions for mocks and spies
+            'sinon-chai', // Assertions for mocks and spies
         ],
         files: [
             '../node_modules/phantomjs-polyfill/bind-polyfill.js',
-            './googlemapsapi.js',
-            'tests.webpack.js', // just load this file
+            '../node_modules/babel-polyfill/dist/polyfill.js',
+            'tests.webpack.js',
         ],
         preprocessors: {
-            'tests.webpack.js': [ 'webpack' ], // preprocess with webpack and our sourcemap loader
+            'tests.webpack.js': [ 'webpack', 'sourcemap' ], // preprocess with webpack and our sourcemap loader
         },
         reporters: [ 'dots', 'coverage' ], // report results in this format
         coverageReporter: {
@@ -35,9 +36,8 @@ module.exports = function karmaConfigHandler(config) {
                     // transpile layers files except testing sources with babel as usual
                     {
                         test: /\.js$/,
-                        exclude: [
-                            path.resolve('src/'),
-                            path.resolve('node_modules/')
+                        include: [
+                            path.resolve('test')
                         ],
                         loader: 'babel-loader',
                         query: {
@@ -45,16 +45,15 @@ module.exports = function karmaConfigHandler(config) {
                             presets: ['es2015', 'stage-2'],
                         },
                     },
-                    // transpile and instrument only testing sources with isparta
                     {
                         test: /\.js$/,
-                        include: path.resolve('src/'),
-                        loader: 'isparta-loader',
+                        include: path.resolve('src'),
+                        loader: 'babel-loader',
+                        query: {
+                            cacheDirectory: true,
+                            presets: ['es2015', 'stage-2'],
+                        },
                     },
-                    {
-                        test: /isIterable/,
-                        loader: 'imports-loader?Symbol=>false'
-                    }
                 ],
             },
         },
