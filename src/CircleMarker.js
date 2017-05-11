@@ -40,7 +40,7 @@ export const CircleMarker = L.CircleMarker.extend({
 
     setOpacity(opacity) {
         this.setStyle({
-            opacity: opacity,
+            opacity,
             fillOpacity: opacity,
         });
     },

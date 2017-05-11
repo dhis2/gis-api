@@ -1,8 +1,8 @@
 import L from 'leaflet';
+import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
 import clusterIcon from './ClusterIcon';
 import circleMarker from '../CircleMarker';
-import {scaleLog} from 'd3-scale';
-import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+import { scaleLog } from 'd3-scale';
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
 
@@ -18,7 +18,7 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
                 color: this.color,
                 opacity: this.opacity,
                 size: this.scale(count),
-                count: count,
+                count,
             });
         },
         domain: [1, 1000],

@@ -1,5 +1,5 @@
 // Dot density map - event layer
-import {GeoJson} from './GeoJson';
+import { GeoJson } from './GeoJson';
 import circleMarker from './CircleMarker';
 
 // Layer of circle markers

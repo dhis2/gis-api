@@ -1,6 +1,7 @@
 // Boundary layer
 
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
 
 export const Boundary = GeoJson.extend({
 
@@ -36,7 +37,7 @@ export const Boundary = GeoJson.extend({
     // Set opacity for all features
     setOpacity(opacity) {
         this.setStyle({
-            opacity: opacity,
+            opacity,
         });
     },
 

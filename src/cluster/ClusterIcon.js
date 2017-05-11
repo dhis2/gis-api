@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {hcl} from 'd3-color';
+import { hcl } from 'd3-color';
 
 export const ClusterIcon = L.Icon.extend({
     options: {
@@ -8,7 +8,7 @@ export const ClusterIcon = L.Icon.extend({
 
     createIcon(oldIcon) {
         const options = this.options;
-        this._div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div');
+        this._div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'); // eslint-disable-line
 
         this.setSize(options.size);
         this.setCount(options.count);
@@ -23,7 +23,7 @@ export const ClusterIcon = L.Icon.extend({
         this._setIconStyles(this._div, 'icon');
     },
 
-    setCount(count) {
+    setCount(count) { // eslint-disable-line
         let num;
 
         if (count >= 1000 && count < 9500) {

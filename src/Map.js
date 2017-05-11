@@ -1,3 +1,4 @@
+import L from 'leaflet';
 import 'leaflet-geocoder-mapzen';
 import '../node_modules/leaflet-measure/dist/leaflet-measure';
 import tileLayer from './TileLayer';
@@ -68,7 +69,7 @@ export const Map = L.Map.extend({
 
         // Stop propagation to prevent dashboard dragging
         // TODO: Move to dashboard map
-        this.on('mousedown', e => {
+        this.on('mousedown', (e) => {
             e.originalEvent.stopPropagation();
         });
 
@@ -123,7 +124,7 @@ export const Map = L.Map.extend({
     getLayersBounds() {
         const bounds = new L.LatLngBounds();
 
-        this.eachLayer(layer => {
+        this.eachLayer((layer) => {
             // TODO: Calculating bounds for circles layer (radius around facilitites) gives errors. Happends for dashboard maps
             if (layer.getBounds && layer.options.type !== 'circles') {
                 bounds.extend(layer.getBounds());

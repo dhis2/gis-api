@@ -1,4 +1,5 @@
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
@@ -37,7 +38,7 @@ export const Markers = GeoJson.extend({
     },
 
     setOpacity(opacity) {
-        this.eachLayer(layer => {
+        this.eachLayer((layer) => {
             layer.setOpacity(opacity);
         });
     },

@@ -49,16 +49,16 @@ export const ClusterMarker = L.Marker.extend({
             this._spiderMarkers.on('click', this.onSpiderMarkerClick, this);
 
             for (let i = count - 1, angle, point, id, newPos; i >= 0; i--) {
-                angle = startAngle + i * angleStep;
-                point = L.point(center.x + legLength * Math.cos(angle), center.y + legLength * Math.sin(angle))._round();
+                angle = startAngle + (i * angleStep);
+                point = L.point(center.x + (legLength * Math.cos(angle)), center.y + (legLength * Math.sin(angle)))._round(); // eslint-disable-line
                 id = ids[i];
                 newPos = map.layerPointToLatLng(point);
 
                 this._spiderLegs.addLayer(L.polyline([latlng, newPos], legOptions));
 
                 this._spiderMarkers.addLayer(circleMarker({
+                    id,
                     type: 'Feature',
-                    id: id,
                     geometry: {
                         type: 'Point',
                         coordinates: [newPos.lng, newPos.lat],

@@ -5,6 +5,7 @@ import label from './Label';
 import polylabel from 'polylabel';
 import 'script-loader!../node_modules/rbush/rbush'; // Required by Leaflet.LayerGroup.Collision
 import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
+
 const geojsonArea = require('geojson-area');
 
 export const GeoJson = L.GeoJSON.extend({
@@ -26,7 +27,7 @@ export const GeoJson = L.GeoJSON.extend({
         L.GeoJSON.prototype.initialize.call(this, options.data, options);
     },
 
-    addLayer(layer) {
+    addLayer(layer) { // eslint-disable-line
         const options = this.options;
         const feature = layer.feature;
 
@@ -62,7 +63,7 @@ export const GeoJson = L.GeoJSON.extend({
         layer._label = label(latlng, {
             html: text,
             position: geometry.type === 'Point' ? 'below' : 'middle',
-            labelStyle: labelStyle,
+            labelStyle,
         });
 
         this._labels.addLayer(layer._label);
@@ -70,13 +71,13 @@ export const GeoJson = L.GeoJSON.extend({
 
     setOpacity(opacity) {
         this.setStyle({
-            opacity: opacity,
+            opacity,
             fillOpacity: opacity,
         });
     },
 
     findById(id) {
-        for (const i in this._layers) {
+        for (const i in this._layers) { // eslint-disable-line
             if (this._layers[i].feature.id === id) {
                 return this._layers[i];
             }
@@ -147,7 +148,7 @@ export const GeoJson = L.GeoJSON.extend({
             if (coords.length > 1) {
                 let biggestSize = 0;
 
-                coords.forEach(ring => {
+                coords.forEach((ring) => {
                     const size = geojsonArea.ring(ring[0]); // Area calculation
 
                     if (size > biggestSize) {

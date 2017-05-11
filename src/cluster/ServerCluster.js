@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {scaleLog} from 'd3-scale';
+import { scaleLog } from 'd3-scale';
 import clusterMarker from './ClusterMarker';
 import circleMarker from '../CircleMarker';
 
@@ -18,7 +18,11 @@ export const ServerCluster = L.GridLayer.extend({
         const options = L.setOptions(this, opts);
         this._clusters = L.featureGroup(); // Clusters shown on map
         this._tileClusters = {}; // Cluster cache
-        this._scale = scaleLog().base(Math.E).domain(options.domain).range(options.range).clamp(true);
+        this._scale = scaleLog()
+            .base(Math.E)
+            .domain(options.domain)
+            .range(options.range)
+            .clamp(true);
         this._clusters.on('click', this.onClusterClick, this);
         this._bounds = options.bounds;
     },
@@ -56,7 +60,7 @@ export const ServerCluster = L.GridLayer.extend({
         const bounds = this._tileCoordsToBounds(coords);
 
         const params = {
-            tileId: tileId,
+            tileId,
             bbox: bounds.toBBoxString(),
             clusterSize: Math.round(this.getResolution(coords.z) * options.clusterSize),
             includeClusterPoints: (map.getZoom() === map.getMaxZoom()),
@@ -71,15 +75,15 @@ export const ServerCluster = L.GridLayer.extend({
         const key = this._tileCoordsToKey(coords);
 
         this._tiles[key] = {
-            coords: coords,
+            coords,
             current: true,
         };
 
         this.createTile(this._wrapCoords(coords));
 
         this.fire('tileloadstart', {
-            key: key,
-            coords: coords,
+            key,
+            coords,
         });
     },
 
@@ -105,7 +109,7 @@ export const ServerCluster = L.GridLayer.extend({
     addClusters(tileId, clusters) {
         const tileClusters = [];
 
-        clusters.forEach(d => {
+        clusters.forEach((d) => {
             const cluster = this.createCluster(d);
             if (this._tiles[tileId]) { // If tile still present
                 this._clusters.addLayer(cluster);
@@ -132,7 +136,7 @@ export const ServerCluster = L.GridLayer.extend({
 
     // Meters per pixel
     getResolution(zoom) {
-        return (Math.PI * L.Projection.SphericalMercator.R * 2 / 256) / Math.pow(2, zoom);
+        return ((Math.PI * L.Projection.SphericalMercator.R * 2) / 256) / Math.pow(2, zoom);
     },
 
     // Returns bounds for all clusters
@@ -146,7 +150,7 @@ export const ServerCluster = L.GridLayer.extend({
         let tileId;
         let layer;
 
-        for (tileId in tileClusters) {
+        for (tileId in tileClusters) { // eslint-disable-line
             if (tileClusters.hasOwnProperty(tileId)) {
                 for (layer of tileClusters[tileId]) {
                     layer.setOpacity(opacity);
@@ -189,5 +193,3 @@ export const ServerCluster = L.GridLayer.extend({
 export default function serverCluster(options) {
     return new ServerCluster(options);
 }
-
-

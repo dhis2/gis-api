@@ -10,7 +10,7 @@ export const Marker = L.Marker.extend({
     _initIcon() {
         if (this.options.label) {
             const classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
-            const label = this._label = document.createElement('div');
+            const label = this._label = document.createElement('div'); // eslint-disable-line
 
             label.innerHTML = this.options.label;
 

@@ -37,16 +37,16 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
 
     // Check if Google Maps API is loaded
     googleMapsApiLoaded() {
-        return (typeof google !== 'undefined' && typeof google.maps !== 'undefined');
+        return (typeof google !== 'undefined' && typeof google.maps !== 'undefined'); // eslint-disable-line
     },
 
     // Loading of Google Maps API
     loadGoogleMapsApi() {
         GoogleLayer._mapsApiLoading = true;
 
-        const script = document.createElement('script');
+        const script = document.createElement('script'); // eslint-disable-line
         script.src = `//maps.googleapis.com/maps/api/js?key=${this.options.apiKey}&v=${this.options.version}`;
-        document.getElementsByTagName('head')[0].appendChild(script);
+        document.getElementsByTagName('head')[0].appendChild(script); // eslint-disable-line
     },
 
 });

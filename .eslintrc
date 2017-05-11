@@ -4,5 +4,12 @@
     "space-after-keywords": "off",
     "space-return-throw-case": "off",
     "consistent-return": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
+    "import/imports-first": "off",
+    "prefer-template": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
   },
 }

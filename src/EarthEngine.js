@@ -45,9 +45,9 @@ export const EarthEngine = L.LayerGroup.extend({
 
     // Configures client-side authentication of EE API calls by providing a OAuth2 token to use.
     onValidAuthToken(token) {
-        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false);
-        ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
-        ee.initialize();
+        ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false); // eslint-disable-line
+        ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this)); // eslint-disable-line
+        ee.initialize(); // eslint-disable-line
         this.createImage();
         this.fire('initialized');
     },
@@ -55,7 +55,7 @@ export const EarthEngine = L.LayerGroup.extend({
     // Refresh OAuth2 token when expired
     refreshAccessToken(authArgs, callback) {
         const self = this;
-        this.getAuthToken(token => {
+        this.getAuthToken((token) => {
             callback({
                 token_type: self.options.tokenType,
                 access_token: token.access_token,
@@ -66,7 +66,7 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     // Create EE tile layer from params (override for each layer type)
-    createImage() {
+    createImage() { // eslint-disable-line
         const options = this.options;
 
         let eeCollection;
@@ -139,9 +139,9 @@ export const EarthEngine = L.LayerGroup.extend({
         let eeImage = image;
 
         if (methods) {
-            Object.keys(methods).forEach(method => {
+            Object.keys(methods).forEach((method) => {
                 if (eeImage[method]) { // Make sure method exist
-                    eeImage = eeImage[method].apply(eeImage, methods[method]);
+                    eeImage = eeImage[method].apply(eeImage, methods[method]); // eslint-disable-line
                 }
             });
         }
@@ -189,7 +189,7 @@ export const EarthEngine = L.LayerGroup.extend({
 
         return palette.map((color, index) => {
             const item = {
-                color: color,
+                color,
             };
 
             if (index === 0 && min > 0) { // Less than min
@@ -214,7 +214,7 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     // Returns a HTML legend for this EE layer
-    getLegend() {
+    getLegend() { // eslint-disable-line
         const options = this.options;
         let legend = '<div class="dhis2-legend">';
 
@@ -227,7 +227,7 @@ export const EarthEngine = L.LayerGroup.extend({
         legend += '</h2>';
 
         if (options.description) {
-            legend += '<p>' +  options.description + '</p>';
+            legend += '<p>' + options.description + '</p>';
         }
 
         legend += '<dl>';
@@ -265,12 +265,12 @@ export const EarthEngine = L.LayerGroup.extend({
         let dictionary;
 
         if (options.aggregation === 'mosaic') {
-            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point, options.resolution, options.projection);
+            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point, options.resolution, options.projection); // eslint-disable-line
         } else {
-            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point);
+            dictionary = this.eeImage.reduceRegion(ee.Reducer.mean(), point); // eslint-disable-line
         }
 
-        dictionary.getInfo(valueObj => {
+        dictionary.getInfo((valueObj) => {
             const band = options.band || Object.keys(valueObj)[0];
             let value = valueObj[band];
 
@@ -285,13 +285,13 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     // Shows the value at location (popup)
-    showValue(latlng) {
+    showValue() {
         const options = this.options;
-        this.getValue(latlng, value => {
+        this.getValue((latlng, value) => {
             this._popup = L.popup()
                 .setLatLng(latlng)
                 .setContent(L.Util.template(options.popup, L.extend({}, options, {
-                    value: value,
+                    value,
                 })))
                 .openOn(this._map);
         });

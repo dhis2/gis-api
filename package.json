@@ -7,7 +7,7 @@
     "validate": "npm ls --depth 0",
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.config.prod.js",
-    "lint": "./node_modules/eslint/bin/eslint.js src example",
+    "lint": "./node_modules/eslint/bin/eslint.js src",
     "test": "./node_modules/karma-cli/bin/karma start test/karma.config.js --single-run true",
     "test-watch": "./node_modules/karma-cli/bin/karma start test/karma.config.js",
     "test-cov": "npm test",
