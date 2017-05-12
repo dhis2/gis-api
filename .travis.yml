@@ -1,6 +1,12 @@
 language: node_js
 node_js:
   - "6"
+test:
+  override:
+    # force yarn to install phantomjs https://github.com/karma-runner/karma-phantomjs-launcher/issues/120#issuecomment-296924189
+    - yarn --force
+    - yarn test
+    - yarn run lint
 env:
   - CXX=g++-4.8
 addons:
