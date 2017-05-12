@@ -13,12 +13,13 @@ addons:
 before_install: 
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
-  - yarn global add bower gulp-cli
+  - yarn global add bower gulp-cli karma-cli
 install: 
   - mkdir travis-phantomjs
   - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
   - tar -xvf $PWD/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C $PWD/travis-phantomjs
   - export PATH=$PWD/travis-phantomjs:$PATH
+  --yarn install
   - yarn link
   - yarn run test
 before_script:
