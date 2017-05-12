@@ -1,32 +1,33 @@
 language: node_js
 node_js:
-  - "6"
+- '6'
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 before_script:
-  - npm rebuild phantomjs-prebuilt
-  - node node_modules/optipng-bin/lib/install.js
-  - node node_modules/pngquant-bin/lib/install.js
-  - node node_modules/gifsicle/lib/install.js
+- npm rebuild phantomjs-prebuilt
+- node node_modules/optipng-bin/lib/install.js
+- node node_modules/pngquant-bin/lib/install.js
+- node node_modules/gifsicle/lib/install.js
 env:
-  - CXX=g++-4.8
+- CXX=g++-4.8
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-      - pngquant
+    - g++-4.8
+    - pngquant
 script:
 - npm rebuild node-sass
 - npm run build
 deploy:
   provider: npm
-  email: jason.p.pickering@gmail.com"
+  email: jason.p.pickering@gmail.com
   api_key:
-    secure: g9eulKU+Rfto0jrn9CH+Pgl5pd/0PmK9jNKJj9d+EVExtQY9jy9MlHVv/F55+2Zh6wgsUA6LdAIM3J1VUQNrq5A0mLkxSbvotVgXLQfzz2F2pltLQyyxg5ZANYzqdxVIoo9WMtDWXSaSBZDKxqb5B+mOQGgYba00ZTD2vi4xbMbfLF/eFMXL45hmo1xaIogi6JaqJH8NuHdtaoiXqj23R56b2x7H4zFlG9epwWARDHK/UbjQ8RWCOYoRwRZaKXNShurErhIPCUlDhUNw/WHD+0SekypZGSALUgPd84qlJTbCtzY2HG62HM8dKwV2szebihOUCNPJVXyKC3+gsS0kMThj3uLjoOPAn1xaot4yhbWjDqki4PqNq3DUhcTqIO3nswZbyQMme9Ol0tiBmMEvwLcUJRFTopF/atUd63neyaF9SV5gyfzpV5g8ZYzB4RLaBzw3NErr8laynuy+KuBKFkpUbxv14XYEXQZWCIZupzO4RVP3ObQS349knEu34QePk3hNmQcvSjyHZ7wcrXCJi/jrAMb4pp7unFrTQoaFifZ+EtA01tpCrkXvgGFZJoq+iinPGSsMLp5AYgrrCkTW5bcFrVnSMdh67HIGE1RXdlkWicYyNStxhLpRm8gJxUpgWR3iKPyIuoNK9GpgNRMrGd3bI89V0I9CYp4PacBrLHU=
+    secure: BjJt0q62S00zRNf0JrBmXllfNuVMhbR7yK4hG2FgKGRcxyMgBlnU5BH2A9cjyPQ8H+UKuuyiF1OqwWbl5jkFM2H+B3u16Fzn0qajLdna92UvML2vBZJVRBU1isfyKjbkbjI5boSQUPmvGQXpWWgqfv3qxFuFOXoIoXJtOEA8iSlzAWguGM3kD+B1BrGMpaZWiw7ykhpDxw01fmsuaLo9Cu6qxz/e+MBUAPfJRHODt81fyWoFyS0bZrw4s5gHaG4bmwheFRZuGwPjcwr4K5fPD0brLOseA+X6CxmOK2WRT91UFq4WmEvrKkchfvBQW0KjZpbhTKPt1l7SGLySeiGfHtrWJ1eepUBr8q0HqX7dpvCqMihfK176sjDYwHPtFIKH607sQZGKxgVkWHpqUeSISC+dYCBaMFsR8wmj5evO0atD0Ya9VA52X5zya75IKHC5myVs4Egp521CqgUkRUHBxmPKJB04VLvYtm86NBHxRWSWYqm5jT375B9Cz+h3Pj6pRWvclppi9txqgvMSTZkMlkrIL5h6iXaWSyGZx1JyQzPMEy865IT5/7cV568FJ2jkufLuk5KqCQWKLEarHo/djZb0TrEMuJ23NuGif3xbStG9cGAPxSR1tFt+pJfZ2SZhs1fvkrK2cidVv5Cp1U40f86EH5ubMV19C+J5J9+CbwE=
   on:
     tags: true
+    repo: dhis2/gis-api
   skip_cleanup: true
