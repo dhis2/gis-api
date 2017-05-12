@@ -1,6 +1,8 @@
 language: node_js
 node_js:
   - "5"
+before_install: 
+  -  export "PHANTOMJS_BIN=`which phantomjs`"
 env:
   - CXX=g++-4.8
 addons:
