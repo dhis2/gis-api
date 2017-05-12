@@ -285,9 +285,9 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     // Shows the value at location (popup)
-    showValue() {
+    showValue(latlng) {
         const options = this.options;
-        this.getValue((latlng, value) => {
+        this.getValue(latlng, (value) => {
             this._popup = L.popup()
                 .setLatLng(latlng)
                 .setContent(L.Util.template(options.popup, L.extend({}, options, {
