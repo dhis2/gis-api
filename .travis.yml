@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "6"
+cache:
+  yarn: true
+  directories:
+    - node_modules
 before_script:
   - npm rebuild phantomjs-prebuilt
   - node node_modules/optipng-bin/lib/install.js
@@ -18,3 +22,11 @@ addons:
 script:
 - npm rebuild node-sass
 - npm run build
+deploy:
+  provider: npm
+  email: jason.p.pickering@gmail.com"
+  api_key:
+    secure: g9eulKU+Rfto0jrn9CH+Pgl5pd/0PmK9jNKJj9d+EVExtQY9jy9MlHVv/F55+2Zh6wgsUA6LdAIM3J1VUQNrq5A0mLkxSbvotVgXLQfzz2F2pltLQyyxg5ZANYzqdxVIoo9WMtDWXSaSBZDKxqb5B+mOQGgYba00ZTD2vi4xbMbfLF/eFMXL45hmo1xaIogi6JaqJH8NuHdtaoiXqj23R56b2x7H4zFlG9epwWARDHK/UbjQ8RWCOYoRwRZaKXNShurErhIPCUlDhUNw/WHD+0SekypZGSALUgPd84qlJTbCtzY2HG62HM8dKwV2szebihOUCNPJVXyKC3+gsS0kMThj3uLjoOPAn1xaot4yhbWjDqki4PqNq3DUhcTqIO3nswZbyQMme9Ol0tiBmMEvwLcUJRFTopF/atUd63neyaF9SV5gyfzpV5g8ZYzB4RLaBzw3NErr8laynuy+KuBKFkpUbxv14XYEXQZWCIZupzO4RVP3ObQS349knEu34QePk3hNmQcvSjyHZ7wcrXCJi/jrAMb4pp7unFrTQoaFifZ+EtA01tpCrkXvgGFZJoq+iinPGSsMLp5AYgrrCkTW5bcFrVnSMdh67HIGE1RXdlkWicYyNStxhLpRm8gJxUpgWR3iKPyIuoNK9GpgNRMrGd3bI89V0I9CYp4PacBrLHU=
+  on:
+    tags: true
+  skip_cleanup: true
