@@ -4,6 +4,7 @@ node_js:
 before_script:
   - npm rebuild phantomjs-prebuilt
   - node node_modules/optipng-bin/lib/install.js
+  - node node_modules/pngquant-bin/lib/install.js
 env:
   - CXX=g++-4.8
 addons:
