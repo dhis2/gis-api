@@ -5,6 +5,9 @@ before_script:
   - npm rebuild phantomjs-prebuilt
 env:
   - CXX=g++-4.8
+script:
+  - npm rebuild node-sass
+  - npm run build
 addons:
   apt:
     sources:
