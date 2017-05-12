@@ -9,15 +9,14 @@ before_script:
 - npm rebuild phantomjs-prebuilt
 env:
 - CXX=g++-4.8
-script:
-- npm rebuild node-sass
-- npm run build
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
+script:
+- npm run build
 deploy:
   provider: npm
   email: jason.p.pickering@gmail.com"
