@@ -12,6 +12,7 @@ addons:
     packages:
     - g++-4.8
 script:
+- npm rebuild node-sass
 - npm run build
 deploy:
   provider: npm
