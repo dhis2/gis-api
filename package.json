@@ -38,7 +38,6 @@
     "leaflet.gridlayer.googlemutant": "^0.6.1",
     "leaflet.layergroup.collision": "^0.3.1",
     "leaflet.markercluster": "^1.0.5",
-    "pngquant-bin": "^3.1.1",
     "polylabel": "^1.0.2",
     "rbush": "^2.0.1",
     "whatwg-fetch": "^2.0.3"
@@ -76,6 +75,7 @@
     "node-sass": "^4.5.2",
     "phantomjs": "^2.1.7",
     "phantomjs-polyfill": "^0.0.2",
+    "pngquant-bin": "^3.1.1",
     "precommit-hook": "3.0.0",
     "sass-loader": "^6.0.5",
     "script-loader": "^0.7.0",
