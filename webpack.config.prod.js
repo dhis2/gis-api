@@ -6,7 +6,6 @@ webpackBaseConfig.output.libraryTarget = 'commonjs2';
 
 webpackBaseConfig.plugins = [
     // Replace any occurance of process.env.NODE_ENV with the string 'production'
-
     new webpack.DefinePlugin({
         'process.env': {
             NODE_ENV: '\'production\'',
