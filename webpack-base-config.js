@@ -41,39 +41,6 @@ module.exports = {
                 test: /\.(jpe?g|png|gif)$/i,
                 loader: 'url-loader',
             },
-
-            /*
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loaders: [
-                    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
-                    {
-                        loader: 'image-webpack-loader',
-                        query: {
-                            mozjpeg: {
-                                progressive: true,
-                            },
-                            gifsicle: {
-                                interlaced: false,
-                            },
-                            optipng: {
-                                optimizationLevel: 4,
-                            },
-                            pngquant: {
-                                quality: '75-90',
-                                speed: 3,
-                            },
-                        },
-                    },
-                ]
-            },
-            */
-            /*
-            {   // https://github.com/ljagis/leaflet-measure/issues/30
-                test: /leaflet-measure.+\.js$/,
-                loader: 'transform/cacheable?brfs',
-            },
-            */
         ],
     },
     plugins: [
@@ -81,9 +48,4 @@ module.exports = {
             'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
         }),
     ],
-    /*
-    node: {
-        fs: 'empty',
-    },
-    */
 };
