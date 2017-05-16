@@ -38,6 +38,12 @@ module.exports = {
                 loader: 'style-loader!css-loader!sass-loader',
             },
             {
+                test: /\.(jpe?g|png|gif)$/i,
+                loader: 'url-loader',
+            },
+
+            /*
+            {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 loaders: [
                     'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
@@ -61,6 +67,7 @@ module.exports = {
                     },
                 ]
             },
+            */
             /*
             {   // https://github.com/ljagis/leaflet-measure/issues/30
                 test: /leaflet-measure.+\.js$/,
