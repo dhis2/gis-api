@@ -25,6 +25,15 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         L.GridLayer.GoogleMutant.prototype.initialize.call(this);
     },
 
+    // Set opacity only works if map layer is redrawn
+    setOpacity(opacity) {
+        if (opacity !== this.options.opacity) {
+            this.options.opacity = opacity;
+            this.onRemove(this._map);
+            this.onAdd(this._map);
+        }
+    },
+
     onAdd(map) {
         L.DomUtil.addClass(map.getContainer(), 'leaflet-google'); // Used to move scale control
         L.GridLayer.GoogleMutant.prototype.onAdd.call(this, map);
