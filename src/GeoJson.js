@@ -38,7 +38,7 @@ export const GeoJson = L.GeoJSON.extend({
         if (options.hoverLabel || options.label) {
             layer.bindTooltip(L.Util.template(options.hoverLabel || options.label, feature.properties), {
                 sticky: true,
-            });
+            }); 
         }
 
         if (options.popup && !(options.popup instanceof Function)) {
