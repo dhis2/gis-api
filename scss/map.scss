@@ -4,6 +4,14 @@
 
     .leaflet-bar {
         border-radius: 0;
+        border: 0;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+
+        a {
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+        }
 
         a:first-child, a:last-child {
             border-radius: 0;
@@ -31,6 +39,11 @@
 
     .leaflet-control-scale-line {
         padding: 2px 2px 1px;
+    }
+
+    .leaflet-pelias-control {
+        width: 26px;
+        height: 26px;
     }
 
     .leaflet-loader {
