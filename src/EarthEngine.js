@@ -123,8 +123,16 @@ export const EarthEngine = L.LayerGroup.extend({
         const filter = filterOpt || this.options.filter;
 
         if (filter) {
+            /* Don't work in IE11
             for (const item of filter) {
                 collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
+            }
+            */
+
+            for (const item in filter) { // eslint-disable-line
+                if (filter.hasOwnProperty(item)) {
+                    collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
+                }
             }
         }
 
