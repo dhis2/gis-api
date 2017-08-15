@@ -76,8 +76,16 @@ export const D2Map = L.Map.extend({
             this.fitBounds(options.bounds);
         }
 
+        /* Don't work in IE11
         for (const control of options.controls) {
             this.addControl(control);
+        }
+        */
+
+        for (const control in options.controls) { // eslint-disable-line
+            if (options.controls.hasOwnProperty(control)) {
+                this.addControl(control);
+            }
         }
     },
 
