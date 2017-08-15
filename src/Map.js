@@ -15,10 +15,9 @@ import earthEngine from './EarthEngine';
 import legend from './Legend';
 import fitBounds from './FitBounds';
 
-
 /**
  * Creates a map instance.
- * @class Map
+ * @class D2Map
  * @param {string|Element} id HTML element to initialize the map in (or element id as string)
  * @param {Object} options
  * @param {number} [options.minZoom=0] Minimum zoom of the map
@@ -28,7 +27,7 @@ import fitBounds from './FitBounds';
  *   bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
  * });
  */
-export const Map = L.Map.extend({
+export const D2Map = L.Map.extend({
     options: {
         className: 'leaflet-dhis2',
         layerTypes: {
@@ -137,5 +136,5 @@ export const Map = L.Map.extend({
 });
 
 export default function map(id, options) {
-    return new Map(id, options);
+    return new D2Map(id, options);
 }

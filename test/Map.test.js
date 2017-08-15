@@ -1,10 +1,10 @@
-import {Map} from '../src/Map';
+import {D2Map} from '../src/Map';
 
 describe('DHIS2 map', () => {
     let map;
 
     beforeEach(() => {
-        map = new Map(document.createElement('div'));
+        map = new D2Map(document.createElement('div'));
     });
 
     /*
