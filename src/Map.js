@@ -26,7 +26,7 @@ import measure from './Measure';
  *   bounds: [[6.9679, -13.29096], [9.9432, -10.4887]],
  * });
  */
-export const Map = L.Map.extend({
+export const D2Map = L.Map.extend({
     options: {
         className: 'leaflet-dhis2',
         layerTypes: {
@@ -77,8 +77,16 @@ export const Map = L.Map.extend({
             this.fitBounds(options.bounds);
         }
 
+        /* Don't work in IE 11
         for (const control of options.controls) {
             this.addControl(control);
+        }
+        */
+
+        for (const control in options.controls) { // eslint-disable-line
+            if (options.controls.hasOwnProperty(control)) {
+                this.addControl(control);
+            }
         }
     },
 
@@ -137,5 +145,5 @@ export const Map = L.Map.extend({
 });
 
 export default function map(id, options) {
-    return new Map(id, options);
+    return new D2Map(id, options);
 }
