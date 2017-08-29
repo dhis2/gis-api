@@ -14,7 +14,7 @@ export const CircleMarker = L.CircleMarker.extend({
     initialize(feature, opts) {
         const options = L.setOptions(this, opts);
 
-        options.fillColor = options.color;
+        options.fillColor = feature.properties.color || options.color;
         options.fillOpacity = options.opacity;
         options.color = options.strokeColor;
 
