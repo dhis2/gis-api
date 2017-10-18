@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'script-loader!../lib/ee_api_js_debug';
 
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
+// LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
 // TODO: Change to TileLayer
 export const EarthEngine = L.LayerGroup.extend({
 
@@ -123,17 +124,9 @@ export const EarthEngine = L.LayerGroup.extend({
         const filter = filterOpt || this.options.filter;
 
         if (filter) {
-            /* Don't work in IE11
-            for (const item of filter) {
+            filter.forEach((item) => {
                 collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
-            }
-            */
-
-            for (const item in filter) { // eslint-disable-line
-                if (filter.hasOwnProperty(item)) {
-                    collection = collection.filter(ee.Filter[item.type].apply(this, item.arguments));  // eslint-disable-line
-                }
-            }
+            });
         }
 
         return collection;
