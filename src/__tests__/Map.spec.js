@@ -7,9 +7,7 @@ describe('DHIS2 map', () => {
     beforeEach(() => {
         map = new Map(document.createElement('div'));
     });
-    */
 
-    /*
     afterEach(function () {
         document.body.removeChild(mapDiv);
     });

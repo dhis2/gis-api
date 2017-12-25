@@ -3,7 +3,6 @@
 import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
-import 'script-loader!../node_modules/rbush/rbush'; // Required by Leaflet.LayerGroup.Collision
 import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
 const geojsonArea = require('geojson-area');
 
