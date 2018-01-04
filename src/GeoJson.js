@@ -1,11 +1,10 @@
-// Base class for most vector layers
-
 import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
 import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
 const geojsonArea = require('geojson-area');
 
+// Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
 
     options: {
