@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 import '../node_modules/leaflet-measure/dist/leaflet-measure';
 
 // Wrapper for the leaflet-measure control: https://github.com/ljagis/leaflet-measure

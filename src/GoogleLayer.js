@@ -1,7 +1,7 @@
 // Extending https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant
 // Handles Google API loading
 
-import L from 'leaflet';
+// import L from 'leaflet';
 import '../node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant';
 
 export const GoogleLayer = L.GridLayer.GoogleMutant.extend({

@@ -1,3 +1,4 @@
+import L from 'leaflet';
 import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
@@ -94,6 +95,8 @@ export const D2Map = L.Map.extend({
     addLayer(layer) {
         const layerTypes = this.options.layerTypes;
         let newLayer = layer;
+
+        // console.log('layer', layer.type, layer);
 
         if (layer.type && layerTypes[layer.type]) {
             newLayer = this.createLayer(layer);

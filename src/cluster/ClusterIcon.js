@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 import {hcl} from 'd3-color';
 
 export const ClusterIcon = L.Icon.extend({

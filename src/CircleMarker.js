@@ -1,7 +1,7 @@
+// import L from 'leaflet';
+
 // Creates a circle marker from a GeoJSON feature
 // Used for dots, client and server cluster
-
-import L from 'leaflet';
 
 export const CircleMarker = L.CircleMarker.extend({
 

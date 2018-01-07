@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
 import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
@@ -34,9 +34,10 @@ export const GeoJson = L.GeoJSON.extend({
         }
 
         if (options.hoverLabel || options.label) {
-            layer.bindTooltip(L.Util.template(options.hoverLabel || options.label, feature.properties), {
+            const tooltip = L.Util.template(options.hoverLabel || options.label, feature.properties);
+            layer.bindTooltip(tooltip, {
                 sticky: true,
-            }); 
+            });
         }
 
         if (options.popup && !(options.popup instanceof Function)) {

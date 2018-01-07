@@ -1,6 +1,6 @@
 // Proportional symbols
 // Currently not i use
-
+// import L from 'leaflet';
 import {GeoJson} from './GeoJson';
 import {linear} from 'd3-scale';
 

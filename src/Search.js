@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 import 'leaflet-geocoder-mapzen';
 
 // Wrapper for Mapzen Search geocoder: https://github.com/mapzen/leaflet-geocoder

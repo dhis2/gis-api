@@ -1,6 +1,6 @@
-// Adds a fit map to contents button
-import L from 'leaflet';
+// import L from 'leaflet';
 
+// Adds a fit map to contents button
 export const FitBounds = L.Control.extend({
 
     options: {

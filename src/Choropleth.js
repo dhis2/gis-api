@@ -1,5 +1,5 @@
 // Thematic layer
-
+// import L from 'leaflet';
 import {GeoJson} from './GeoJson';
 
 export const Choropleth = GeoJson.extend({

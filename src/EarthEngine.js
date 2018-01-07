@@ -1,7 +1,6 @@
+// import L from 'leaflet';
+
 // Leaflet plugin to add map layers from Google Earth Engine
-
-import L from 'leaflet';
-
 
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer

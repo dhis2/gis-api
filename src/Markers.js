@@ -1,3 +1,4 @@
+// import L from 'leaflet';
 import {GeoJson} from './GeoJson';
 
 // Markers with label support
@@ -15,6 +16,8 @@ export const Markers = GeoJson.extend({
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
+
+        console.log('initialize');
 
         GeoJson.prototype.initialize.call(this, options);
     },

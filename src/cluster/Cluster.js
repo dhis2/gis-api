@@ -1,6 +1,6 @@
 // Support both client and server clustering
 // Currently not in use
-import L from 'leaflet';
+// import L from 'leaflet';
 import clientCluster from './ClientCluster';
 import serverCluster from './ServerCluster';
 

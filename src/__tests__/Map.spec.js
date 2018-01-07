@@ -1,3 +1,4 @@
+import L from 'leaflet';
 import { D2Map } from '../Map';
 
 describe('DHIS2 map', () => {

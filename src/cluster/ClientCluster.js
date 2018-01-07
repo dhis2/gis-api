@@ -1,8 +1,13 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import circleMarker from '../CircleMarker';
 import {scaleLog} from 'd3-scale';
+// import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
 import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+
+// https://github.com/Leaflet/Leaflet/issues/4847
+
+// console.log('L.MarkerClusterGroup', L.MarkerClusterGroup, L);
 
 
 // Problematic: https://github.com/Leaflet/Leaflet/blob/master/src/geo/LatLngBounds.js#L246
