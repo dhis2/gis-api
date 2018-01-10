@@ -17,8 +17,6 @@ export const Markers = GeoJson.extend({
             options.pointToLayer = this.pointToLayer.bind(this);
         }
 
-        console.log('initialize');
-
         GeoJson.prototype.initialize.call(this, options);
     },
 
