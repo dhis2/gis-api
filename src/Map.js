@@ -52,6 +52,7 @@ export const D2Map = L.Map.extend({
         zoomControl: false,
         controls: [],
         worldCopyJump: true,
+        maxZoom: 18,
     },
 
     initialize(id, opts) {
