@@ -1,5 +1,5 @@
-import L from 'leaflet';
-import { GeoJson } from './GeoJson';
+// import L from 'leaflet';
+import {GeoJson} from './GeoJson';
 
 // Markers with label support
 export const Markers = GeoJson.extend({

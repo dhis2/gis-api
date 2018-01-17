@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 
 export const WmsLayer = L.TileLayer.WMS.extend({
 

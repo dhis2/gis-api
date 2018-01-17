@@ -1,4 +1,4 @@
-import L from 'leaflet';
+// import L from 'leaflet';
 
 // This class is no longer in use
 export const Marker = L.Marker.extend({

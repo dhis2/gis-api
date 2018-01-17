@@ -1,13 +1,11 @@
-// Base class for most vector layers
-
-import L from 'leaflet';
+// import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
-import 'script-loader!../node_modules/rbush/rbush'; // Required by Leaflet.LayerGroup.Collision
 import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
 
 const geojsonArea = require('geojson-area');
 
+// Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
 
     options: {
@@ -21,7 +19,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     initialize(options = {}) {
         if (options.label) {
-            this._labels = L.layerGroup.collision({ margin: 2 });
+            this._labels = L.layerGroup({ margin: 2 });
         }
 
         L.GeoJSON.prototype.initialize.call(this, options.data, options);
@@ -32,12 +30,13 @@ export const GeoJson = L.GeoJSON.extend({
         const feature = layer.feature;
 
         // Add text label
-        if (this.options.label) {
-            this.addLabel(layer, L.Util.template(this.options.label, feature.properties));
+        if (options.label) {
+            this.addLabel(layer, L.Util.template(options.label, feature.properties));
         }
 
         if (options.hoverLabel || options.label) {
-            layer.bindTooltip(L.Util.template(options.hoverLabel || options.label, feature.properties), {
+            const tooltip = L.Util.template(options.hoverLabel || options.label, feature.properties);
+            layer.bindTooltip(tooltip, {
                 sticky: true,
             });
         }
@@ -63,7 +62,8 @@ export const GeoJson = L.GeoJSON.extend({
         layer._label = label(latlng, {
             html: text,
             position: geometry.type === 'Point' ? 'below' : 'middle',
-            labelStyle,
+            labelStyle: labelStyle,
+            pane: this.options.labelPane || 'markerPane',
         });
 
         this._labels.addLayer(layer._label);
@@ -129,7 +129,9 @@ export const GeoJson = L.GeoJSON.extend({
 
     // Reset style
     onMouseOut(evt) {
-        evt.layer.setStyle(this.options.resetStyle);
+        if (!evt.layer.feature.isSelected) {
+            evt.layer.setStyle(this.options.resetStyle);
+        }
     },
 
     // Returns the best label placement

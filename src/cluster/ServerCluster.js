@@ -1,5 +1,5 @@
-import L from 'leaflet';
-import { scaleLog } from 'd3-scale';
+// import L from 'leaflet';
+import {scaleLog} from 'd3-scale';
 import clusterMarker from './ClusterMarker';
 import circleMarker from '../CircleMarker';
 

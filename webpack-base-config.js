@@ -16,7 +16,7 @@ module.exports = {
     output: {
         path: __dirname + '/build',
         filename: 'index.js',
-        libraryTarget: 'lib',
+        libraryTarget: 'var',
     },
     module: {
         loaders: [
@@ -41,11 +41,22 @@ module.exports = {
                 test: /\.(jpe?g|png|gif)$/i,
                 loader: 'url-loader',
             },
+            {   // https://github.com/webpack-contrib/expose-loader
+                test: require.resolve('leaflet'),
+                loader: 'expose-loader?L',
+            },
+            /*
+            {   // https://github.com/ljagis/leaflet-measure/issues/30
+                test: /leaflet-measure.+\.js$/,
+                loader: 'transform/cacheable?brfs',
+            },
+            */
         ],
     },
     plugins: [
         new webpack.ProvidePlugin({
-            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+            'L': 'leaflet',
         }),
     ],
 };

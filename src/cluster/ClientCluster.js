@@ -1,8 +1,20 @@
-import L from 'leaflet';
-import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+// import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import circleMarker from '../CircleMarker';
-import { scaleLog } from 'd3-scale';
+import {scaleLog} from 'd3-scale';
+// import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+
+// https://github.com/Leaflet/Leaflet/issues/4847
+
+// console.log('L.MarkerClusterGroup', L.MarkerClusterGroup, L);
+
+
+// Problematic: https://github.com/Leaflet/Leaflet/blob/master/src/geo/LatLngBounds.js#L246
+
+
+// leaflet.markercluster-src.js line 1769
+// if (boundsToApplyTo.intersects([c._bounds.getSouthWest(), c._bounds.getNorthEast()])) {
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
 

@@ -1,14 +1,14 @@
 // Extending https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant
 // Handles Google API loading
 
-import L from 'leaflet';
+// import L from 'leaflet';
 import '../node_modules/leaflet.gridlayer.googlemutant/Leaflet.GoogleMutant';
 
 export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
 
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
-        version: '3.26',  // Google Maps API version
+        version: '3.30',  // Google Maps API version
         apiKey: 'AIzaSyBjlDmwuON9lJbPMDlh_LI3zGpGtpK9erc', // Google Maps API key (should be overridden)
     },
 
@@ -23,6 +23,15 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         }
 
         L.GridLayer.GoogleMutant.prototype.initialize.call(this);
+    },
+
+    // Set opacity only works if map layer is redrawn
+    setOpacity(opacity) {
+        if (opacity !== this.options.opacity) {
+            this.options.opacity = opacity;
+            this.onRemove(this._map);
+            this.onAdd(this._map);
+        }
     },
 
     onAdd(map) {

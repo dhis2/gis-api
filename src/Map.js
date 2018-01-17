@@ -1,6 +1,4 @@
 import L from 'leaflet';
-import 'leaflet-geocoder-mapzen';
-import '../node_modules/leaflet-measure/dist/leaflet-measure';
 import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
@@ -14,6 +12,8 @@ import serverCluster from './cluster/ServerCluster';
 import earthEngine from './EarthEngine';
 import legend from './Legend';
 import fitBounds from './FitBounds';
+import search from './Search';
+import measure from './Measure';
 
 /**
  * Creates a map instance.
@@ -46,10 +46,13 @@ export const D2Map = L.Map.extend({
         controlTypes: {
             legend,
             fitBounds,
+            search,
+            measure,
         },
         zoomControl: false,
         controls: [],
         worldCopyJump: true,
+        maxZoom: 18,
     },
 
     initialize(id, opts) {
@@ -76,7 +79,7 @@ export const D2Map = L.Map.extend({
             this.fitBounds(options.bounds);
         }
 
-        /* Don't work in IE11
+        /* Don't work in IE 11
         for (const control of options.controls) {
             this.addControl(control);
         }
@@ -93,6 +96,8 @@ export const D2Map = L.Map.extend({
     addLayer(layer) {
         const layerTypes = this.options.layerTypes;
         let newLayer = layer;
+
+        // console.log('layer', layer.type, layer);
 
         if (layer.type && layerTypes[layer.type]) {
             newLayer = this.createLayer(layer);

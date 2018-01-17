@@ -1,6 +1,5 @@
 // Custom cluster marker used for server clusters
-
-import L from 'leaflet';
+// import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import circleMarker from '../CircleMarker';
 
