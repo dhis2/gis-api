@@ -1,22 +1,9 @@
 // import L from 'leaflet';
-import 'leaflet-geocoder-mapzen';
+import 'leaflet-control-geocoder';
 
-// Wrapper for Mapzen Search geocoder: https://github.com/mapzen/leaflet-geocoder
-export const Search = L.Control.Geocoder.extend({
-
-    options: {
-        position: 'topright',
-        attribution: null,
-        panToPoint: null,
-    },
-
-    initialize (options) {
-        L.Util.setOptions(this, options);
-        L.Control.Geocoder.prototype.initialize.call(this, options.apiKey, options);
-    },
-
-});
+// Wrapper for leaflet-control-geocoder: https://github.com/perliedman/leaflet-control-geocoder
+export const Search = L.Control.Geocoder.extend({});
 
 export default function search(options) {
-    return new Search(options);
+  return new Search(options);
 }
