@@ -66,7 +66,7 @@ export const ServerCluster = L.GridLayer.extend({
             includeClusterPoints: (map.getZoom() === map.getMaxZoom()),
         };
 
-        if (options.load) {
+        if (options.load && this._isWithinWorldBounds(bounds)) {
             options.load(params, L.bind(this.addClusters, this), this);
         }
     },
@@ -187,6 +187,11 @@ export const ServerCluster = L.GridLayer.extend({
 
     // Disable zoom animation
     _animateZoom() {},
+
+    // We somtimes get cluster bounds outside valid range if requests are fired before the map dom el is properly sized
+    _isWithinWorldBounds(bounds) {
+        return bounds.getWest() >= -180 && bounds.getEast() <= 180 && bounds.getSouth() >= -90 && bounds.getNorth() <= 90;
+    },
 
 });
 
