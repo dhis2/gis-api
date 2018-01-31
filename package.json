@@ -1,6 +1,6 @@
 {
-  "name": "dhis2-gis-api",
-  "version": "26.0.3",
+  "name": "gis-api",
+  "version": "26.0.4",
   "description": "GIS API for DHIS 2 based on Leaflet",
   "main": "lib/main/index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "d3-scale": "^1.0.6",
     "geojson-area": "^0.2.1",
     "leaflet": "^1.1.0",
+    "leaflet-control-geocoder": "^1.5.8",
     "leaflet-geocoder-mapzen": "^1.9.2",
     "leaflet-measure": "^2.1.7",
     "leaflet.gridlayer.googlemutant": "^0.6.2",
@@ -77,7 +78,7 @@
     "phantomjs-polyfill": "^0.0.2",
     "precommit-hook": "3.0.0",
     "sass-loader": "^6.0.6",
-    "script-loader": "^0.7.0",
+    "script-loader": "^0.7.2",
     "sinon": "^2.3.5",
     "sinon-chai": "^2.11.0",
     "style-loader": "^0.18.2",
