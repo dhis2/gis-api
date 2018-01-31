@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@mapbox/corslite@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@mapbox/corslite/-/corslite-0.0.7.tgz#29f5b6a188ba946e514bdf0b6401ed4fbe13a39e"
-
 abbrev@1, abbrev@1.0.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
@@ -1535,10 +1531,6 @@ console-browserify@1.1.x, console-browserify@^1.1.0:
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
-
-console-polyfill@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/console-polyfill/-/console-polyfill-0.2.3.tgz#d455d3d574dbcdccf80e1631df21a486fe05f989"
 
 console-stream@^0.1.1:
   version "0.1.1"
@@ -4079,12 +4071,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet-geocoder-mapzen@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/leaflet-geocoder-mapzen/-/leaflet-geocoder-mapzen-1.9.2.tgz#b2411a4ad49c9332c8241d1e02e8c57974427646"
-  dependencies:
-    "@mapbox/corslite" "0.0.7"
-    console-polyfill "0.2.3"
+leaflet-control-geocoder@^1.5.8:
+  version "1.5.8"
+  resolved "https://registry.yarnpkg.com/leaflet-control-geocoder/-/leaflet-control-geocoder-1.5.8.tgz#c52dfbb9be5f6388d683346acb49bf017fd5b6a8"
 
 leaflet-measure@^2.1.7:
   version "2.1.7"
