@@ -1,6 +1,5 @@
-import 'leaflet-geocoder-mapzen';
+import L from 'leaflet';
 import '../node_modules/leaflet-measure/dist/leaflet-measure';
-
 import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
@@ -14,6 +13,7 @@ import serverCluster from './cluster/ServerCluster';
 import legend from './Legend';
 import fitBounds from './FitBounds';
 import earthEngine from './EarthEngine';
+import search from './Search';
 
 /**
  * Creates a map instance.
@@ -46,6 +46,7 @@ export const Map = L.Map.extend({
         controlTypes: {
             legend,
             fitBounds,
+            search,
         },
         zoomControl: false,
         controls: [],

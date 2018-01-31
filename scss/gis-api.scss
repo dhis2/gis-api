@@ -1,6 +1,6 @@
 @import "../node_modules/leaflet/dist/leaflet.css";
 @import "../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
-@import "../node_modules/leaflet-geocoder-mapzen/dist/leaflet-geocoder-mapzen.css";
+@import "../node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css";
 @import "../node_modules/leaflet-measure/dist/leaflet-measure.css";
 @import "./map.scss";
 @import "./marker.scss";
@@ -10,3 +10,4 @@
 @import "./measure.scss";
 @import "./fitbounds.scss";
 @import "./legend.scss";
+@import "./search.scss";
