@@ -1,6 +1,6 @@
 {
   "name": "dhis2-gis-api",
-  "version": "27.0.15",
+  "version": "27.0.16",
   "description": "GIS API for DHIS 2 based on Leaflet",
   "main": "build/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "geojson-area": "^0.2.1",
     "gifsicle": "^3.0.4",
     "leaflet": "^1.0.3",
-    "leaflet-geocoder-mapzen": "^1.9.2",
+    "leaflet-control-geocoder": "^1.5.8",
     "leaflet-measure": "^2.1.7",
     "leaflet.gridlayer.googlemutant": "^0.6.1",
     "leaflet.layergroup.collision": "^0.3.1",
