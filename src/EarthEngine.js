@@ -47,9 +47,10 @@ export const EarthEngine = L.LayerGroup.extend({
   onValidAuthToken(token) {
     ee.data.setAuthToken(token.client_id, this.options.tokenType, token.access_token, token.expires_in, null, null, false); // eslint-disable-line
     ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this)); // eslint-disable-line
-    ee.initialize(); // eslint-disable-line
-    this.createImage();
-    this.fire('initialized');
+    ee.initialize(null, null, () => {
+        this.createImage();
+        this.fire('initialized');
+    }); // eslint-disable-line
   },
 
   // Refresh OAuth2 token when expired
@@ -110,13 +111,14 @@ export const EarthEngine = L.LayerGroup.extend({
 
   // Add EE image to map as TileLayer
   addLayer(eeImage) {
-    const eeMap = eeImage.getMap();
-    const layer = L.tileLayer(this.options.url, L.extend({
-      token: eeMap.token,
-      mapid: eeMap.mapid,
-    }, this.options));
+    eeImage.getMap(null, (eeMap) => {
+      const layer = L.tileLayer(this.options.url, L.extend({
+        token: eeMap.token,
+        mapid: eeMap.mapid,
+      }, this.options));
 
-    L.LayerGroup.prototype.addLayer.call(this, layer);
+      L.LayerGroup.prototype.addLayer.call(this, layer);
+    });
   },
 
   applyFilter(collection, filterOpt) {
