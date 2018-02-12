@@ -21,7 +21,10 @@ export const Circles = GeoJson.extend({
     },
 
     pointToLayer(feature, latlng) {
-        return L.circle(latlng, this.options.radius);
+        return L.circle(latlng, {
+            radius: this.options.radius,
+            pane: this.options.pane,
+        });
     },
 
 });

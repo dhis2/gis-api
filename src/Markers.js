@@ -24,6 +24,10 @@ export const Markers = GeoJson.extend({
         const iconProperty = this.options.iconProperty;
         const markerOptions = L.extend({}, this.options.markerOptions);
 
+        if (this.options.pane) {
+            markerOptions.pane = this.options.pane;
+        }
+
         if (this.options.label) {
             markerOptions.label = L.Util.template(this.options.label, feature.properties);
             markerOptions.labelStyle = this.options.labelStyle;
@@ -33,7 +37,6 @@ export const Markers = GeoJson.extend({
             markerOptions.icon = L.icon(feature.properties[iconProperty]);
         }
 
-        // return marker(latlng, markerOptions);
         return L.marker(latlng, markerOptions);
     },
 

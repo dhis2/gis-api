@@ -22,6 +22,7 @@ export const Choropleth = GeoJson.extend({
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
+
         GeoJson.prototype.initialize.call(this, options);
     },
 
