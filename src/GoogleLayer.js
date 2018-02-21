@@ -25,12 +25,13 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         L.GridLayer.GoogleMutant.prototype.initialize.call(this);
     },
 
-    // Set opacity only works if map layer is redrawn
     setOpacity(opacity) {
         if (opacity !== this.options.opacity) {
             this.options.opacity = opacity;
-            this.onRemove(this._map);
-            this.onAdd(this._map);
+            if (this.googleMapsApiLoaded()) { // Opacity change only works if map layer is redrawn
+                this.onRemove(this._map);
+                this.onAdd(this._map);
+            }
         }
     },
 
@@ -41,7 +42,28 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
 
     onRemove(map) {
         L.DomUtil.removeClass(map.getContainer(), 'leaflet-google');
-        L.GridLayer.GoogleMutant.prototype.onRemove.call(this, map);
+        // L.GridLayer.GoogleMutant.prototype.onRemove.call(this, map); // See added check below
+
+        // Code below copied from Leaflet.GoogleMutant.js for added check (error when basemaps are switched fast)
+        L.GridLayer.prototype.onRemove.call(this, map);
+        map._container.removeChild(this._mutantContainer);
+        this._mutantContainer = undefined;
+
+        google.maps.event.clearListeners(map, 'idle');
+
+        if (this._mutant) { // Added check
+            google.maps.event.clearListeners(this._mutant, 'idle');
+        }
+
+        map.off('viewreset', this._reset, this);
+        map.off('move', this._update, this);
+        map.off('zoomend', this._handleZoomAnim, this);
+        map.off('resize', this._resize, this);
+
+        if (map._controlCorners) {
+            map._controlCorners.bottomright.style.marginBottom = '0em';
+            map._controlCorners.bottomleft.style.marginBottom = '0em';
+        }
     },
 
     // Check if Google Maps API is loaded
