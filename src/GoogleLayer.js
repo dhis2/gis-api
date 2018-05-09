@@ -37,6 +37,9 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
     onAdd(map) {
         L.DomUtil.addClass(map.getContainer(), 'leaflet-google'); // Used to move scale control
         L.GridLayer.GoogleMutant.prototype.onAdd.call(this, map);
+
+        // Hack to make sure function is called after map plugins is added to the DOM
+        setTimeout(() => this._initMutantContainer(), 100);
     },
 
     onRemove(map) {
