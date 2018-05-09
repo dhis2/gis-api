@@ -9,7 +9,6 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
         version: '3.30',  // Google Maps API version
-        apiKey: 'AIzaSyBjlDmwuON9lJbPMDlh_LI3zGpGtpK9erc', // Google Maps API key (should be overridden)
     },
 
     initialize(opts = {}) {
