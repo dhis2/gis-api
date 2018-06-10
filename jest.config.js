@@ -1,5 +1,5 @@
 module.exports = {
-  "setupTestFrameworkScriptFile": "<rootDir>/config/setup.js",
+  // "setupTestFrameworkScriptFile": "<rootDir>/config/setup.js",
   "testPathIgnorePatterns": [
     "/node_modules/",
     "<rootDir>/build/"

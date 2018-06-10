@@ -3,6 +3,7 @@ import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
 import boundary from './Boundary';
+import buffer from './Buffer';
 import dots from './Dots';
 import markers from './Markers';
 import circles from './Circles';
@@ -35,6 +36,7 @@ export const D2Map = L.Map.extend({
             wmsLayer,       // WMS layer
             googleLayer,    // Google basemap
             boundary,       // Boundary layer
+            buffer,         // Buffer layer
             dots,           // Event layer without clustering
             markers,        // Facility layer
             circles,        // Facility layer circular area

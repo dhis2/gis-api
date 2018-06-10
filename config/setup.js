@@ -1,1 +1,3 @@
-import 'jest-enzyme';
+import { configure } from 'enzyme';
+
+configure();
