@@ -2,6 +2,7 @@ import L from 'leaflet';
 import tileLayer from './TileLayer';
 import wmsLayer from './WmsLayer';
 import googleLayer from './GoogleLayer';
+import geoJson from './GeoJson';
 import boundary from './Boundary';
 import buffer from './Buffer';
 import dots from './Dots';
@@ -35,6 +36,7 @@ export const D2Map = L.Map.extend({
             tileLayer,      // CartoDB basemap
             wmsLayer,       // WMS layer
             googleLayer,    // Google basemap
+            geoJson,        // GeoJSON layer
             boundary,       // Boundary layer
             buffer,         // Buffer layer
             dots,           // Event layer without clustering
