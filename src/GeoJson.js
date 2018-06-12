@@ -9,8 +9,11 @@ const geojsonArea = require('geojson-area');
 export const GeoJson = L.GeoJSON.extend({
 
     options: {
+        style: {
+            weight: 1,
+        },
         highlightStyle: {
-            weight: 2,
+            weight: 3,
         },
         resetStyle: {
             weight: 1,
@@ -18,6 +21,10 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     initialize(options = {}) {
+        if (!options.pointToLayer) {
+            options.pointToLayer = this.pointToLayer.bind(this);
+        }
+
         if (options.label) {
             this._labels = L.layerGroup({ margin: 2 });
         }
@@ -67,6 +74,12 @@ export const GeoJson = L.GeoJSON.extend({
         });
 
         this._labels.addLayer(layer._label);
+    },
+
+    // Use circle markers for point features
+    pointToLayer(geojson, latlng) {
+        this.options.style.pane = this.options.pane;
+        return new L.CircleMarker(latlng, this.options.style);
     },
 
     setOpacity(opacity) {

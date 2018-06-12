@@ -16,12 +16,14 @@ export const Boundary = GeoJson.extend({
         },
     },
 
+    /*
     initialize(options = {}) {
         if (!options.pointToLayer) {
             options.pointToLayer = this.pointToLayer.bind(this);
         }
         GeoJson.prototype.initialize.call(this, options);
     },
+    */
 
     addLayer(layer) {
         const prop = layer.feature.properties;
