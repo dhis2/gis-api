@@ -1,23 +1,32 @@
 language: node_js
 node_js:
-  - "8"
+- '8'
 env:
+  matrix:
   - CXX=g++-4.8
+  global:
+  - secure: P0kmQuDF+GqsrTScLPip04Y0XMFisvF7cazwIbb/Q2M9cH8xJK0yqsrgBWW/EnLMXSv6NroxBtSk226c8oKuEVodAZ0C4Io9NZHde4sW7CQ36KIjqGTV409Nyp4lT4YM2tsYi/wxdq5g+FJwPOQYaitIU4wI2YDuqfjGRCvDhUKGzQ8F4EQuZcU/iGO4vhCBuVEfW6JbUZmZYiMmmkl2i3QEW1M4lL5rFB+hucsgWC4Iv3dwrrWt2sHw21fyeXU6TQlWqaJwomyz68DWz8yVfVvxTfqH7ZxlvNC39wjgJBk/H9BIaDrEO+hFdx1kUuIZc2WkgiVDwG496YGGkftOmJJ15Et/+MIrh69TFpNT11+IF4yXU1H4wc2MYO3ocORc0GsTpuUG/gZAt1Do7PXXp0Xo9k6tHANTpq7yA7SmjKOpVQ9n6uR+wPsBFLZqtGVxCbBu9yky5w7QJQ8xhlzMUgT3Qr1g3BKcCU0sHMc+qrw/2h77N/g3iTCjOzrzYO37izJvOBN0oOL2YdqsElHZHVwKSqWFATQWltQyiVLsZaZQQhYah/xkxnqJ7gHlGexnngL2TNXh7zt5eq2EzcsbZ8bu4hFKdGh877rb7PvqXjoWum1d7QWlHnV9NmSPgsBydLkJapLbSlgbwwi7F0Wm+7rOqTLo7RlseR0bDVmrubs=
+  - secure: T5kaV5L5uVhO/efC24gjbBraTQhIexO3YeU818wjv85yTJSWwDnRWom3YWdj1xayoiToqqVOpepLUBFVgGHGXtfytomD0m6siHoeXLCgSJQ2VuOlc04dxiO9Xo/w0qKcCiXFRcoww83SBcPjrHpePbKpXwHrh6114QjP3s0ZM43kW+7srC9Zlwj4ni0rEjNiCIjaCdsdJI152WSP2ibPsT0W7dWcihjD+9bX5nQuxWDzT5jZb4BLcM5QCfqmCloEHz05Ry03BQjZROlVfJYgEVbJzJi77Ahdqf5YWVObuPNTPOTEtouKO+tb5LqNq51wdTacGVjdafg1jefOG+j6arOX4N/2dpuqBdEbqkKtmeQuEe1V96PHy46Qof5NzVxmvdjYGBnuCqMoFoJChDm6iNgB/Vt7yB5vNMU0OoQd/nGmWvYoyn5R2aAgjX95s3eQ5RLcOdSGkKzvAAOG2UwXk56fpnocaMwMnha+ACtpWUA6fP7uJFPRQwfHKD+q0iPR3jipaCKh5332b2GrbTr772PTOkUlKA509OXNFUpqETCDqwMICjIVYp39E6s+jm+8P35VTA6BM8ylk2XFw/pH0Lx1eTfWuq78kqC8s8WK9jNrdfl2tR1BD96RPqNikQjZNj1W5010EUSAJ3Po1eE3o8W7X3Vnac49+UsaI6hmtGg=
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-      - pngquant
-script:
+    - g++-4.8
+    - pngquant
+before_script:
+- npm install --global @dhis2/deploy-build
 - npm rebuild node-sass
+script:
 - npm run build
 deploy:
-  provider: npm
-  email: jason.p.pickering@gmail.com"
-  api_key:
-    secure: g9eulKU+Rfto0jrn9CH+Pgl5pd/0PmK9jNKJj9d+EVExtQY9jy9MlHVv/F55+2Zh6wgsUA6LdAIM3J1VUQNrq5A0mLkxSbvotVgXLQfzz2F2pltLQyyxg5ZANYzqdxVIoo9WMtDWXSaSBZDKxqb5B+mOQGgYba00ZTD2vi4xbMbfLF/eFMXL45hmo1xaIogi6JaqJH8NuHdtaoiXqj23R56b2x7H4zFlG9epwWARDHK/UbjQ8RWCOYoRwRZaKXNShurErhIPCUlDhUNw/WHD+0SekypZGSALUgPd84qlJTbCtzY2HG62HM8dKwV2szebihOUCNPJVXyKC3+gsS0kMThj3uLjoOPAn1xaot4yhbWjDqki4PqNq3DUhcTqIO3nswZbyQMme9Ol0tiBmMEvwLcUJRFTopF/atUd63neyaF9SV5gyfzpV5g8ZYzB4RLaBzw3NErr8laynuy+KuBKFkpUbxv14XYEXQZWCIZupzO4RVP3ObQS349knEu34QePk3hNmQcvSjyHZ7wcrXCJi/jrAMb4pp7unFrTQoaFifZ+EtA01tpCrkXvgGFZJoq+iinPGSsMLp5AYgrrCkTW5bcFrVnSMdh67HIGE1RXdlkWicYyNStxhLpRm8gJxUpgWR3iKPyIuoNK9GpgNRMrGd3bI89V0I9CYp4PacBrLHU=
+- provider: script
+  script: deploy-build
+  skip_cleanup: true
+  on:
+    all_branches: true
+- provider: script
+  script: publish-build
+  skip_cleanup: true
   on:
     tags: true
-  skip_cleanup: true
