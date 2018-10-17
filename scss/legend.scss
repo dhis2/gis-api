@@ -54,9 +54,11 @@
     font-size: 13px;
     line-height: 13px;
     margin: 0;
+    padding-bottom: 8px;
 
     span {
       display: block;
+      padding-top: 4px;
       font-size: 12px;
       font-weight: normal;
     }
@@ -67,7 +69,7 @@
   }
 
   dl {
-    margin: 10px 0;
+    margin: 0 0 8px 0;
     dt {
       float: left;
       clear: left;
@@ -87,6 +89,16 @@
         display: block
       }
     }
+  }
+
+  .dhis2-legend-description,
+  .dhis2-legend-filters,
+  .dhis2-legend-explaination {
+    padding-bottom: 8px;
+  }
+
+  .dhis2-legend-unit {
+    padding-left: 38px;
   }
 
   .dhis2-legend-predefined {
