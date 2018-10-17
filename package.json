@@ -9,7 +9,7 @@
     "test": "jest",
     "test:watch": "yarn test -- --watch",
     "prebuild": "yarn test",
-    "build": "webpack --config webpack.config.prod.js",
+    "build": "webpack --config webpack.config.prod.js && cp ./package.json ./build/package.json",
     "validate": "npm ls --depth 0 || yarn list",
     "lint": "eslint ./src"
   },
