@@ -78,7 +78,7 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         GoogleLayer._mapsApiLoading = true;
 
         const script = document.createElement('script'); // eslint-disable-line
-        script.src = `//maps.googleapis.com/maps/api/js?key=${this.options.apiKey}&v=${this.options.version}`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${this.options.apiKey}&v=${this.options.version}`;
         document.getElementsByTagName('head')[0].appendChild(script); // eslint-disable-line
     },
 
