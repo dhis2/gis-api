@@ -1,4 +1,4 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 
 // Adds a fit map to contents button
 export const FitBounds = L.Control.extend({
@@ -10,7 +10,7 @@ export const FitBounds = L.Control.extend({
     onAdd(map) {
         this._map = map;
         this._initLayout();
-        this._toggleControl(map.getLayersBounds().isValid());
+        // this._toggleControl(map.getLayersBounds().isValid());
 
         map.on('layeradd', this._onLayerChange, this);
         map.on('layerremove', this._onLayerChange, this);
@@ -38,7 +38,7 @@ export const FitBounds = L.Control.extend({
     },
 
     _onClick() {
-        const bounds = this._map.getLayersBounds();
+        // const bounds = this._map.getLayersBounds();
 
         if (bounds.isValid()) {
             this._map.fitBounds(bounds);
@@ -47,7 +47,7 @@ export const FitBounds = L.Control.extend({
 
     _onLayerChange(evt) {
         if (evt.layer instanceof L.FeatureGroup) {
-            this._toggleControl(this._map.getLayersBounds().isValid());
+            // this._toggleControl(this._map.getLayersBounds().isValid());
         }
     },
 
