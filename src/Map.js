@@ -109,6 +109,10 @@ export class Map extends EventEmitter {
         return newLayer;
     }
 
+    removeLayer(layer) {
+        return this._map.removeLayer(layer);
+    }
+
     hasLayer(layer) {
         return this._map.hasLayer(layer);
     }
@@ -147,22 +151,6 @@ export class Map extends EventEmitter {
     // TODO: Probably not needed
     getLayers() {
         return [];
-    }
-
-    // Returns combined bounds for non-tile layers
-    getLayersBounds() {
-        const bounds = new L.LatLngBounds();
-
-        console.log('getLayersBounds');
-
-        this._map.eachLayer((layer) => {
-            // TODO: Calculating bounds for circles layer (radius around facilitites) gives errors. Happens for dashboard maps
-            if (layer.getBounds && layer.options.type !== 'circles') {
-              bounds.extend(layer.getBounds());
-            }
-        });
-
-        return bounds;
     }
 
     resize() {

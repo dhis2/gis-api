@@ -10,7 +10,7 @@ export const FitBounds = L.Control.extend({
     onAdd(map) {
         this._map = map;
         this._initLayout();
-        // this._toggleControl(map.getLayersBounds().isValid());
+        this._toggleControl(this._getLayersBounds().isValid());
 
         map.on('layeradd', this._onLayerChange, this);
         map.on('layerremove', this._onLayerChange, this);
@@ -37,8 +37,22 @@ export const FitBounds = L.Control.extend({
         L.DomEvent.on(container, 'click', this._onClick, this);
     },
 
+    // Returns combined bounds for non-tile layers
+    _getLayersBounds() {
+        const bounds = new L.LatLngBounds();
+
+        this._map.eachLayer((layer) => {
+            // TODO: Calculating bounds for circles layer (radius around facilitites) gives errors. Happens for dashboard maps
+            if (layer.getBounds && layer.options.type !== 'circles') {
+                bounds.extend(layer.getBounds());
+            }
+        });
+
+        return bounds;
+    },
+
     _onClick() {
-        // const bounds = this._map.getLayersBounds();
+        const bounds = this._getLayersBounds();
 
         if (bounds.isValid()) {
             this._map.fitBounds(bounds);
@@ -47,7 +61,7 @@ export const FitBounds = L.Control.extend({
 
     _onLayerChange(evt) {
         if (evt.layer instanceof L.FeatureGroup) {
-            // this._toggleControl(this._map.getLayersBounds().isValid());
+            this._toggleControl(this._getLayersBounds().isValid());
         }
     },
 
