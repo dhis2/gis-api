@@ -1,11 +1,10 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
-import circleMarker from '../CircleMarker';
-import {scaleLog} from 'd3-scale';
-import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+import circleMarker from './CircleMarker';
+import { scaleLog } from 'd3-scale';
+import 'leaflet.markercluster'; // Extends L above
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
-
     options: {
         maxClusterRadius: 40,
         showCoverageOnHover: false,

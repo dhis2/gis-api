@@ -12,10 +12,10 @@ import choropleth from './Choropleth';
 import clientCluster from './cluster/ClientCluster';
 import serverCluster from './cluster/ServerCluster';
 import earthEngine from './EarthEngine';
-import legend from './Legend';
-import fitBounds from './FitBounds';
-import search from './Search';
-import measure from './Measure';
+import legend from './controls/Legend';
+import fitBounds from './controls/FitBounds';
+import search from './controls/Search';
+import measure from './controls/Measure';
 
 /**
  * Creates a map instance.

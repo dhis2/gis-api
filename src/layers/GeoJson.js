@@ -1,7 +1,7 @@
 // import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
-import '../node_modules/leaflet.layergroup.collision/src/Leaflet.LayerGroup.Collision';
+import 'leaflet.layergroup.collision';
 
 const geojsonArea = require('geojson-area');
 
