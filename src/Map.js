@@ -153,15 +153,13 @@ export class Map extends EventEmitter {
         return [];
     }
 
-    resize() {
-      this._map.invalidateSize();
+    openPopup(content, latlng) {
+        console.log('openPopup');
+        this._map.openPopup(content, latlng);
     }
 
-    setPopup(latlng, content) {
-        return L.popup()
-          .setLatLng(latlng)
-          .setContent(content)
-          .openOn(this._map);
+    resize() {
+      this._map.invalidateSize();
     }
 
     onContextMenu(evt) {
@@ -177,6 +175,7 @@ export class Map extends EventEmitter {
             ],
         });
     }  
+
 }
 
 export default Map;
