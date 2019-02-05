@@ -32,7 +32,6 @@
     "@turf/buffer": "^5.1.5",
     "d3-color": "^1.2.3",
     "d3-scale": "^2.1.2",
-    "events": "^3.0.0",
     "geojson-area": "^0.2.1",
     "leaflet": "^1.4.0",
     "leaflet-control-geocoder": "^1.6.0",

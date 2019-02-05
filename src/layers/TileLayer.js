@@ -18,7 +18,6 @@ export const TileLayer = L.TileLayer.extend({
         this.fire('ready');
         this.off('load', this.onLoad, this);
     },
-
 });
 
 export default function tileLayer(options) {

@@ -1,4 +1,4 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
 import 'leaflet.layergroup.collision';
@@ -100,38 +100,50 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     onAdd(map) {
+        const { onClick, onRightClick, highlightStyle } = this.options;
+
         L.GeoJSON.prototype.onAdd.call(this, map);
 
         if (this._labels) {
             map.addLayer(this._labels);
         }
 
-        if (this.options.highlightStyle) {
-            this.on('mouseover', this.onMouseOver, this);
-            this.on('mouseout', this.onMouseOut, this);
+        if (onClick) {
+            this.on('click', this.onClick, this);
         }
 
-        if (this.options.contextmenu) {
-            this.on('contextmenu', this.options.contextmenu);
+        if (onRightClick) {
+            this.on('contextmenu', this.onRightClick, this);
+        }
+
+        if (highlightStyle) {
+            this.on('mouseover', this.onMouseOver, this);
+            this.on('mouseout', this.onMouseOut, this);
         }
 
         this.fire('ready');
     },
 
     onRemove(map) {
+        const { onClick, onRightClick, highlightStyle } = this.options;
+
         L.GeoJSON.prototype.onRemove.call(this, map);
 
         if (this._labels) {
             map.removeLayer(this._labels);
         }
 
-        if (this.options.highlightStyle) {
-            this.off('mouseover', this.onMouseOver, this);
-            this.off('mouseout', this.onMouseOut, this);
+        if (onClick) {
+            this.off('click', this.onClick, this);
         }
 
-        if (this.options.contextmenu) {
-            this.off('contextmenu', this.options.contextmenu);
+        if (onRightClick) {
+            this.off('contextmenu', this.onRightClick, this);
+        }
+
+        if (highlightStyle) {
+            this.off('mouseover', this.onMouseOver, this);
+            this.off('mouseout', this.onMouseOut, this);
         }
     },
 
@@ -145,6 +157,16 @@ export const GeoJson = L.GeoJSON.extend({
         if (!evt.layer.feature.isSelected) {
             evt.layer.setStyle(this.options.resetStyle);
         }
+    },
+
+    onClick(evt) {
+        L.DomEvent.stopPropagation(evt);
+        this.options.onClick(evt);
+    },
+
+    onRightClick(evt) {
+        L.DomEvent.stopPropagation(evt);
+        this.options.onRightClick(evt);
     },
 
     // Returns the best label placement
@@ -177,7 +199,6 @@ export const GeoJson = L.GeoJSON.extend({
         // Returns pole of inaccessibility, the most distant internal point from the polygon outline
         return polylabel(biggestRing, 2).reverse();
     },
-
 });
 
 export default function geoJson(options) {

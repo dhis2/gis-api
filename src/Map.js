@@ -18,7 +18,7 @@ import fitBounds from './controls/FitBounds';
 import search from './controls/Search';
 import measure from './controls/Measure';
 
-export class Map extends EventEmitter {
+export class Map extends L.Evented {
     options = {
         className: 'leaflet-dhis2',
         zoomControl: false,
@@ -154,7 +154,6 @@ export class Map extends EventEmitter {
     }
 
     openPopup(content, latlng) {
-        console.log('openPopup');
         this._map.openPopup(content, latlng);
     }
 
@@ -164,9 +163,8 @@ export class Map extends EventEmitter {
 
     onContextMenu(evt) {
         const { latlng, originalEvent } = evt; 
-        // L.DomEvent.stopPropagation(evt); // Proably not needed here
 
-        this.emit('contextmenu', {
+        this.fire('contextmenu', {
             coordinates: [latlng.lng, latlng.lat],
             latlng: evt.latlng,
             position: [
