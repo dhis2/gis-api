@@ -1,4 +1,3 @@
-import EventEmitter from "events";
 import L from 'leaflet';
 import tileLayer from './layers/TileLayer';
 import wmsLayer from './layers/WmsLayer';
@@ -63,6 +62,10 @@ export class Map extends L.Evented {
         L.DomUtil.addClass(this.getContainer(), options.className);
 
         L.Icon.Default.imagePath = '/images/';
+
+        if (options.onRightClick) {
+            this.on('contextmenu', this.onRightClick, this);
+        }
 
         // Stop propagation to prevent dashboard dragging
         // TODO: Move to dashboard map
@@ -153,8 +156,9 @@ export class Map extends L.Evented {
         return [];
     }
 
-    openPopup(content, latlng) {
-        this._map.openPopup(content, latlng);
+    openPopup(content, coordinates) {
+        const [lng, lat] = coordinates;
+        this._map.openPopup(content, [lat, lng]);
     }
 
     resize() {
@@ -162,16 +166,11 @@ export class Map extends L.Evented {
     }
 
     onContextMenu(evt) {
-        const { latlng, originalEvent } = evt; 
+        const { type, latlng, originalEvent } = evt; 
+        const coordinates = [latlng.lng, latlng.lat]; 
+        const position = [originalEvent.x, originalEvent.pageY || originalEvent.y];
 
-        this.fire('contextmenu', {
-            coordinates: [latlng.lng, latlng.lat],
-            latlng: evt.latlng,
-            position: [
-                originalEvent.x,
-                originalEvent.pageY || originalEvent.y,
-            ],
-        });
+        this.fire('contextmenu', { type, coordinates, position });
     }  
 
 }

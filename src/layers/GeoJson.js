@@ -159,14 +159,27 @@ export const GeoJson = L.GeoJSON.extend({
         }
     },
 
+    // "Normalise" event before passing back to app
     onClick(evt) {
         L.DomEvent.stopPropagation(evt);
-        this.options.onClick(evt);
+
+        const { type, layer, latlng } = evt;
+        const coordinates = [latlng.lng, latlng.lat]; 
+        const feature = layer.feature;
+
+        this.options.onClick({ type, coordinates, feature });
     },
 
+    // "Normalise" event before passing back to app
     onRightClick(evt) {
         L.DomEvent.stopPropagation(evt);
-        this.options.onRightClick(evt);
+
+        const { type, layer, latlng, originalEvent } = evt;
+        const coordinates = [latlng.lng, latlng.lat]; 
+        const position = [originalEvent.x, originalEvent.pageY || originalEvent.y];
+        const feature = layer.feature;
+
+        this.options.onRightClick({ type, coordinates, position, feature });
     },
 
     // Returns the best label placement
