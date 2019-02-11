@@ -3,6 +3,7 @@ import clusterIcon from './ClusterIcon';
 import circleMarker from './CircleMarker';
 import { scaleLog } from 'd3-scale';
 import 'leaflet.markercluster'; // Extends L above
+import layerMixin from './layerMixin';
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
     options: {
@@ -57,6 +58,7 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
     },
 
+    ...layerMixin,
 });
 
 export default function clientCluster(options) {

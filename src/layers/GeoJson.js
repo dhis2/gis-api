@@ -2,6 +2,7 @@ import L from 'leaflet';
 import label from './Label';
 import polylabel from 'polylabel';
 import 'leaflet.layergroup.collision';
+import layerMixin from './layerMixin';
 
 const geojsonArea = require('geojson-area');
 
@@ -82,6 +83,7 @@ export const GeoJson = L.GeoJSON.extend({
         return new L.CircleMarker(latlng, this.options.style);
     },
 
+    /*
     setVisibility(isVisible) {
         const pane = this._map.getPane(this.options.pane);
 
@@ -92,6 +94,7 @@ export const GeoJson = L.GeoJSON.extend({
             pane.style.display = 'none';
         }
     },
+    */
 
     setOpacity(opacity) {
         this.setStyle({
@@ -223,6 +226,8 @@ export const GeoJson = L.GeoJSON.extend({
         // Returns pole of inaccessibility, the most distant internal point from the polygon outline
         return polylabel(biggestRing, 2).reverse();
     },
+
+    ...layerMixin,
 });
 
 export default function geoJson(options) {

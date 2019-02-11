@@ -1,4 +1,5 @@
-//import L from 'leaflet';
+import L from 'leaflet';
+import layerMixin from './layerMixin';
 
 export const TileLayer = L.TileLayer.extend({
 
@@ -8,6 +9,7 @@ export const TileLayer = L.TileLayer.extend({
 
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
+
         L.TileLayer.prototype.initialize.call(this, options.url, options);
 
         this.on('load', this.onLoad, this);
@@ -18,6 +20,8 @@ export const TileLayer = L.TileLayer.extend({
         this.fire('ready');
         this.off('load', this.onLoad, this);
     },
+
+    ...layerMixin,
 });
 
 export default function tileLayer(options) {
