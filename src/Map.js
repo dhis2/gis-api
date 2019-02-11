@@ -63,10 +63,6 @@ export class Map extends L.Evented {
 
         L.Icon.Default.imagePath = '/images/';
 
-        if (options.onRightClick) {
-            this.on('contextmenu', this.onRightClick, this);
-        }
-
         // Stop propagation to prevent dashboard dragging
         // TODO: Move to dashboard map
         this._map.on('mousedown', evt => evt.originalEvent.stopPropagation());
