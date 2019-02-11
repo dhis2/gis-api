@@ -130,7 +130,7 @@ export class Map extends L.Evented {
 
     // TODO: Should not be exposed
     createPane(name, container) {
-        this._map.createPane(name, container);
+        return this._map.createPane(name, container);
     }
 
     addControl(control) {
@@ -153,7 +153,13 @@ export class Map extends L.Evented {
 
     // TODO: Probably not needed
     getLayers() {
+        console.log('getLayers');
         return [];
+    }
+
+    // Returns true if the layer type is supported
+    hasLayerSupport(type) {
+        return !!this.options.layerTypes[type];
     }
 
     openPopup(content, coordinates) {
