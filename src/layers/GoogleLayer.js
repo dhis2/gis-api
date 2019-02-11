@@ -1,3 +1,6 @@
+import L from 'leaflet';
+import layerMixin from './layerMixin';
+
 // Extending https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant
 // Handles Google API loading
 
@@ -82,6 +85,7 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         document.getElementsByTagName('head')[0].appendChild(script); // eslint-disable-line
     },
 
+    ...layerMixin,
 });
 
 export default function googleLayer(options) {
