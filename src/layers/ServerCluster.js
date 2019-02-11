@@ -5,6 +5,8 @@ import circleMarker from './CircleMarker';
 import layerMixin from './layerMixin';
 
 export const ServerCluster = L.GridLayer.extend({
+    ...layerMixin,
+
     options: {
         pane: 'markerPane',
         tileSize: 512,
@@ -193,8 +195,6 @@ export const ServerCluster = L.GridLayer.extend({
     _isWithinWorldBounds(bounds) {
         return bounds.getWest() >= -180 && bounds.getEast() <= 180 && bounds.getSouth() >= -90 && bounds.getNorth() <= 90;
     },
-
-    ...layerMixin,
 });
 
 export default function serverCluster(options) {

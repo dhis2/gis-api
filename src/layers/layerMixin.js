@@ -1,10 +1,16 @@
 const layerMixin = {
-    setIndex(index) {
-        this.options.index = index;
+    createPane(map) {
+        const { pane } = this.options;
+
+        if (pane && !map.getPane(pane)) {
+            map.createPane(pane);
+        }
     },
 
-    getIndex() {
-        return this.options.index || 0;
+    setIndex(index) {
+        const zIndex = 200 + (index * 10);
+
+        this.getPane().style.zIndex = zIndex;
     },
 
     setVisibility(isVisible) {

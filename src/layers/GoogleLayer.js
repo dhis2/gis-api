@@ -8,6 +8,7 @@ import layerMixin from './layerMixin';
 import 'leaflet.gridlayer.googlemutant';
 
 export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
+    ...layerMixin,
 
     options: {
         style: 'ROADMAP', // ROADMAP, SATELLITE, HYBRID, TERRAIN
@@ -84,8 +85,6 @@ export const GoogleLayer = L.GridLayer.GoogleMutant.extend({
         script.src = `https://maps.googleapis.com/maps/api/js?key=${this.options.apiKey}&v=${this.options.version}`;
         document.getElementsByTagName('head')[0].appendChild(script); // eslint-disable-line
     },
-
-    ...layerMixin,
 });
 
 export default function googleLayer(options) {

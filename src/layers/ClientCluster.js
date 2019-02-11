@@ -6,6 +6,8 @@ import 'leaflet.markercluster'; // Extends L above
 import layerMixin from './layerMixin';
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
+    ...layerMixin,
+
     options: {
         maxClusterRadius: 40,
         showCoverageOnHover: false,
@@ -57,8 +59,6 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         this.eachLayer(layer => layer.setOpacity(opacity)); // Circle markers
         this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
     },
-
-    ...layerMixin,
 });
 
 export default function clientCluster(options) {

@@ -8,6 +8,7 @@ const geojsonArea = require('geojson-area');
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
+    ...layerMixin,
 
     options: {
         style: {
@@ -213,8 +214,6 @@ export const GeoJson = L.GeoJSON.extend({
         // Returns pole of inaccessibility, the most distant internal point from the polygon outline
         return polylabel(biggestRing, 2).reverse();
     },
-
-    ...layerMixin,
 });
 
 export default function geoJson(options) {

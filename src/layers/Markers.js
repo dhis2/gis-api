@@ -1,5 +1,7 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 import {GeoJson} from './GeoJson';
+import {FeatureGroup} from './FeatureGroup';
+import {Circles} from './Circles';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
@@ -73,6 +75,28 @@ export const Markers = GeoJson.extend({
 
 });
 
+export const MarkersGroup = FeatureGroup.extend({
+
+    initialize(options = {}) {
+        FeatureGroup.prototype.initialize.call(this, null, options);
+
+        if (options.buffer) {
+            this.addLayer(new Circles({
+                pane: `${options.pane}-buffer`,
+                radius: 5000,
+                highlightStyle: false,
+                data: options.data,
+            }));
+        }
+
+        this.addLayer(new Markers(options));
+
+    },
+
+});
+
+
 export default function markers(options) {
-    return new Markers(options);
+    // return new Markers(options);
+    return new MarkersGroup(options);
 }

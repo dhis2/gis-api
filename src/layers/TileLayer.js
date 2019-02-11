@@ -2,6 +2,7 @@ import L from 'leaflet';
 import layerMixin from './layerMixin';
 
 export const TileLayer = L.TileLayer.extend({
+    ...layerMixin,
 
     options: {
         errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', // eslint-disable-line
@@ -20,8 +21,6 @@ export const TileLayer = L.TileLayer.extend({
         this.fire('ready');
         this.off('load', this.onLoad, this);
     },
-
-    ...layerMixin,
 });
 
 export default function tileLayer(options) {

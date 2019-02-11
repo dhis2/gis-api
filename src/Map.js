@@ -98,9 +98,7 @@ export class Map extends L.Evented {
             newLayer = this.createLayer(layer);
         }
 
-        if (newLayer.options.pane) {
-            this._map.createPane(newLayer.options.pane);
-        }
+        newLayer.createPane(this._map);
 
         this._map.addLayer(newLayer);
         this._layers.push(newLayer);
@@ -123,11 +121,6 @@ export class Map extends L.Evented {
 
     createLayer(layer) {
         return this.options.layerTypes[layer.type](layer);
-    }
-
-    // TODO: Should not be exposed
-    createPane(name, container) {
-        return this._map.createPane(name, container);
     }
 
     addControl(control) {
@@ -155,19 +148,6 @@ export class Map extends L.Evented {
     // Returns true if the layer type is supported
     hasLayerSupport(type) {
         return !!this.options.layerTypes[type];
-    }
-
-    // Order layers based on layer index
-    orderLayers() {
-        const outOfOrder = this._layers.some(
-            (layer, index) => layer.getIndex() !== index
-        );
-      
-        if (outOfOrder) {
-            const layers = this._layers;
-            layers.sort((a, b) => a.getIndex() - b.getIndex());
-            layers.forEach((l, i) =>  l.getPane().style.zIndex = 200 + i * 10);
-        } 
     }
 
     openPopup(content, coordinates) {

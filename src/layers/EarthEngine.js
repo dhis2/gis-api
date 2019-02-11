@@ -6,6 +6,7 @@ import layerMixin from './layerMixin';
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
 // TODO: Change to TileLayer
 export const EarthEngine = L.LayerGroup.extend({
+    ...layerMixin,
 
     options: {
         url: 'https://earthengine.googleapis.com/map/{mapid}/{z}/{x}/{y}?token={token}',
@@ -298,8 +299,6 @@ export const EarthEngine = L.LayerGroup.extend({
                 .openOn(this._map);
         });
     },
-
-    ...layerMixin,
 });
 
 export default function earthEngine(options) {
