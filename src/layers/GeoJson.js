@@ -83,19 +83,6 @@ export const GeoJson = L.GeoJSON.extend({
         return new L.CircleMarker(latlng, this.options.style);
     },
 
-    /*
-    setVisibility(isVisible) {
-        const pane = this._map.getPane(this.options.pane);
-
-        if (isVisible) {
-            pane.style.display = 'block';
-            this._map.addLayer(this);
-        } else {
-            pane.style.display = 'none';
-        }
-    },
-    */
-
     setOpacity(opacity) {
         this.setStyle({
             opacity,
