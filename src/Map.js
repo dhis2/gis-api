@@ -54,6 +54,7 @@ export class Map extends L.Evented {
 
         this._baseLayers = {};
         this._overlays = {};
+        this._layers = [];
 
         this._map = L.map(el, options);
 
@@ -96,19 +97,23 @@ export class Map extends L.Evented {
         if (layer.type && layerTypes[layer.type]) {
             newLayer = this.createLayer(layer);
 
+            /*
             if (layer.baseLayer === true) {
                 this._baseLayers[layer.name] = newLayer;
             } else if (layer.overlay === true) {
                 this._overlays[layer.name] = newLayer;
             }
+            */
         }
 
         this._map.addLayer(newLayer);
+        this._layers.push(newLayer);
 
         return newLayer;
     }
 
     removeLayer(layer) {
+        this._layers = this._layers.filter(l => l !== layer);
         return this._map.removeLayer(layer);
     }
 
@@ -147,15 +152,26 @@ export class Map extends L.Evented {
         this._map.fitBounds(bounds);
     }
 
-    // TODO: Probably not needed
     getLayers() {
-        console.log('getLayers');
-        return [];
+        return this._layers;
     }
 
     // Returns true if the layer type is supported
     hasLayerSupport(type) {
         return !!this.options.layerTypes[type];
+    }
+
+    // Order layers based on layer index
+    orderLayers() {
+        const outOfOrder = this._layers.some(
+            (layer, index) => layer.getIndex() !== index
+        );
+      
+        if (outOfOrder) {
+            const layers = this._layers;
+            layers.sort((a, b) => a.getIndex() - b.getIndex());
+            layers.forEach((l, i) =>  l.getPane().style.zIndex = 200 + i * 10);
+        } 
     }
 
     openPopup(content, coordinates) {
