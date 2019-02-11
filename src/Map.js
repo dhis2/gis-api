@@ -96,14 +96,10 @@ export class Map extends L.Evented {
 
         if (layer.type && layerTypes[layer.type]) {
             newLayer = this.createLayer(layer);
+        }
 
-            /*
-            if (layer.baseLayer === true) {
-                this._baseLayers[layer.name] = newLayer;
-            } else if (layer.overlay === true) {
-                this._overlays[layer.name] = newLayer;
-            }
-            */
+        if (newLayer.options.pane) {
+            this._map.createPane(newLayer.options.pane);
         }
 
         this._map.addLayer(newLayer);
