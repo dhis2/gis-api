@@ -5,7 +5,7 @@ export const FeatureGroup = L.FeatureGroup.extend({
     ...layerMixin,
 
     createPane(map) {
-        this.eachLayer(layer => layer.createPane(map));
+        this.invoke('createPane', map);
     },
 
     setIndex(index) {
@@ -14,10 +14,16 @@ export const FeatureGroup = L.FeatureGroup.extend({
         this.getLayers().forEach((layer, i) => {
             layer.getPane().style.zIndex = zIndex + i;
         });
+
+        this.options.index = index;
     },
 
     setOpacity(opacity) {
-        this.eachLayer(layer => layer.setOpacity(opacity));
+        this.invoke('setOpacity', opacity);
+    },
+
+    setVisibility(isVisible) {
+        this.invoke('setVisibility', isVisible);
     },
 });
 

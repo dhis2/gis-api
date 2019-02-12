@@ -90,7 +90,6 @@ export const MarkersGroup = FeatureGroup.extend({
         }
 
         this.addLayer(new Markers(options));
-
     },
 
 });

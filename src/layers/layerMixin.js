@@ -11,6 +11,8 @@ const layerMixin = {
         const zIndex = 200 + (index * 10);
 
         this.getPane().style.zIndex = zIndex;
+
+        this.options.index = index;
     },
 
     setVisibility(isVisible) {
