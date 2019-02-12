@@ -1,4 +1,4 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 
 // Used in boundary layer, choropleth,
 

@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import {GeoJson} from './GeoJson';
 import {FeatureGroup} from './FeatureGroup';
+import {LabelGroup} from './LabelGroup';
 import {Circles} from './Circles';
 
 // Markers with label support
@@ -28,11 +29,6 @@ export const Markers = GeoJson.extend({
 
         if (this.options.pane) {
             markerOptions.pane = this.options.pane;
-        }
-
-        if (this.options.label) {
-            markerOptions.label = L.Util.template(this.options.label, feature.properties);
-            markerOptions.labelStyle = this.options.labelStyle;
         }
 
         if (iconProperty && feature.properties[iconProperty]) {
@@ -80,22 +76,32 @@ export const MarkersGroup = FeatureGroup.extend({
     initialize(options = {}) {
         FeatureGroup.prototype.initialize.call(this, null, options);
 
-        if (options.buffer) {
+        const { data, buffer, pane, label, labelStyle } = options;
+
+        if (buffer) {
             this.addLayer(new Circles({
-                pane: `${options.pane}-buffer`,
-                radius: options.buffer,
+                pane: `${pane}-buffer`,
+                radius: buffer,
                 highlightStyle: false,
-                data: options.data,
+                data,
             }));
         }
 
         this.addLayer(new Markers(options));
+
+        if (label) {
+            this.addLayer(new LabelGroup({
+                pane: `${pane}-label`,
+                label,
+                data,
+                ...labelStyle,
+            }));
+        }
     },
 
 });
 
 
 export default function markers(options) {
-    // return new Markers(options);
     return new MarkersGroup(options);
 }
