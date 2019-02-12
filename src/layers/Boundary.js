@@ -66,25 +66,14 @@ export const Boundary = GeoJson.extend({
 
 });
 
+// Boundary layer with labels
 export const BoundaryGroup = FeatureGroup.extend({
-
     initialize(options = {}) {
         FeatureGroup.prototype.initialize.call(this, null, options);
 
-        const { data, pane, label, labelStyle } = options;
-
         this.addLayer(new Boundary(options));
-
-        if (label) {
-            this.addLayer(new LabelGroup({
-                pane: `${pane}-label`,
-                style: labelStyle,
-                label,
-                data,
-            }));
-        }
+        this.addLabels();
     },
-
 });
 
 export default function boundary(options) {

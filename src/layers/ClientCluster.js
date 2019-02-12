@@ -29,7 +29,10 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     },
 
     initialize(opts) {
-        const options = L.setOptions(this, opts);
+        const options = L.setOptions(this, {
+            ...opts,
+            pane: opts.id,
+        });
 
         L.MarkerClusterGroup.prototype.initialize.call(this, options);
 

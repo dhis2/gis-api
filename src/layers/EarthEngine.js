@@ -2,9 +2,7 @@ import L from 'leaflet';
 import layerMixin from './layerMixin';
 
 // Leaflet plugin to add map layers from Google Earth Engine
-
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
-// TODO: Change to TileLayer
 export const EarthEngine = L.LayerGroup.extend({
     ...layerMixin,
 
@@ -75,7 +73,7 @@ export const EarthEngine = L.LayerGroup.extend({
         let eeImage;
 
         if (options.filter) { // Image collection
-            eeCollection = ee.ImageCollection(options.id); // eslint-disable-line
+            eeCollection = ee.ImageCollection(options.datasetId); // eslint-disable-line
 
             eeCollection = this.applyFilter(eeCollection);
 
@@ -86,7 +84,7 @@ export const EarthEngine = L.LayerGroup.extend({
                 eeImage = ee.Image(eeCollection.first()); // eslint-disable-line
             }
         } else { // Single image
-            eeImage = ee.Image(options.id); // eslint-disable-line
+            eeImage = ee.Image(options.datasetId); // eslint-disable-line
         }
 
         if (options.band) {

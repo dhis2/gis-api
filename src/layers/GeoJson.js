@@ -1,10 +1,5 @@
 import L from 'leaflet';
-import label from './Label';
-import polylabel from 'polylabel';
-import 'leaflet.layergroup.collision';
 import layerMixin from './layerMixin';
-
-const geojsonArea = require('geojson-area');
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
@@ -22,12 +17,12 @@ export const GeoJson = L.GeoJSON.extend({
         },
     },
 
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-
-        L.GeoJSON.prototype.initialize.call(this, options.data, options);
+    initialize(options) {
+        L.GeoJSON.prototype.initialize.call(this, options.data, {
+            pane: options.id,
+            pointToLayer: this.pointToLayer.bind(this),
+            ...options,
+        });
     },
 
     addLayer(layer) { // eslint-disable-line

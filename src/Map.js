@@ -4,10 +4,8 @@ import wmsLayer from './layers/WmsLayer';
 import googleLayer from './layers/GoogleLayer';
 import geoJson from './layers/GeoJson';
 import boundary from './layers/Boundary';
-import buffer from './layers/Buffer';
 import dots from './layers/Dots';
 import markers from './layers/Markers';
-import circles from './layers/Circles';
 import choropleth from './layers/Choropleth';
 import clientCluster from './layers/ClientCluster';
 import serverCluster from './layers/ServerCluster';
@@ -16,6 +14,7 @@ import legend from './controls/Legend';
 import fitBounds from './controls/FitBounds';
 import search from './controls/Search';
 import measure from './controls/Measure';
+import { toLatLng, toLatLngBounds, toLngLatBounds } from './utils/geometry';
 
 export class Map extends L.Evented {
     options = {
@@ -30,10 +29,8 @@ export class Map extends L.Evented {
             googleLayer,    // Google basemap
             geoJson,        // GeoJSON layer
             boundary,       // Boundary layer
-            buffer,         // Buffer layer
             dots,           // Event layer without clustering
             markers,        // Facility layer
-            circles,        // Facility layer circular area
             choropleth,     // Thematic layer
             clientCluster,  // Event layer
             serverCluster,  // Event layer
@@ -65,11 +62,10 @@ export class Map extends L.Evented {
         L.Icon.Default.imagePath = '/images/';
 
         // Stop propagation to prevent dashboard dragging
-        // TODO: Move to dashboard map
         this._map.on('mousedown', evt => evt.originalEvent.stopPropagation());
 
         if (options.bounds) {
-            this.fitBounds(options.bounds);
+            this.fitBounds(toLatLngBounds(options.bounds));
         }
 
         for (const control in options.controls) { // eslint-disable-line
@@ -138,11 +134,30 @@ export class Map extends L.Evented {
     }
 
     fitBounds(bounds) {
-        this._map.fitBounds(bounds);
+        if (bounds) {
+            this._map.fitBounds(toLatLngBounds(bounds));
+        }
+    }
+
+    setView(lnglat, zoom) {
+        this._map.setView(toLatLng(lnglat), zoom);
     }
 
     getLayers() {
         return this._layers;
+    }
+
+    // Returns the combined bounds for all vector layers
+    getLayersBounds() {
+        const bounds = new L.LatLngBounds();
+
+        this._map.eachLayer((layer) => {
+            if (layer.options.index && layer.getBounds) {
+                bounds.extend(layer.getBounds());
+            }
+        });
+
+        return toLngLatBounds(bounds);
     }
 
     // Returns true if the layer type is supported
@@ -150,13 +165,12 @@ export class Map extends L.Evented {
         return !!this.options.layerTypes[type];
     }
 
-    openPopup(content, coordinates) {
-        const [lng, lat] = coordinates;
-        this._map.openPopup(content, [lat, lng]);
+    openPopup(content, lnglat) {
+        this._map.openPopup(content, toLatLng(lnglat));
     }
 
     resize() {
-      this._map.invalidateSize();
+        this._map.invalidateSize();
     }
 
     onContextMenu(evt) {

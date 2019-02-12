@@ -12,7 +12,7 @@ describe('DHIS2 GeoJSON layer', () => {
     */
 
     it('should extend L.GeoJSON', () => {
-        const layer = new GeoJson();
+        const layer = new GeoJson({});
         expect(layer).toBeInstanceOf(L.GeoJSON);
     });
 
