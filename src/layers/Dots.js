@@ -4,7 +4,7 @@ import { FeatureGroup } from './FeatureGroup';
 
 // Layer of circle markers
 export const Dots = GeoJson.extend({
-    initialize(options = {}) {
+    initialize(options) {
         GeoJson.prototype.initialize.call(this, options);
         this.on('click', this.onMarkerClick, this);
     },

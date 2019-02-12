@@ -13,7 +13,7 @@ export const EarthEngine = L.LayerGroup.extend({
         popup: '{name}: {value} {unit}',
     },
 
-    initialize(options = {}) {
+    initialize(options) {
         L.setOptions(this, options);
         this._layers = {};
         this._legend = options.legend || this.createLegend();

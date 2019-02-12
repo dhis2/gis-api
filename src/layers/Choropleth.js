@@ -20,14 +20,6 @@ export const Choropleth = GeoJson.extend({
         radiusKey: 'radius',
     },
 
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-
-        GeoJson.prototype.initialize.call(this, options);
-    },
-
     addLayer(layer) {
         const feature = layer.feature;
         const prop = feature.properties;
@@ -79,7 +71,7 @@ export const Choropleth = GeoJson.extend({
 
 // Choropleth layer with labels
 export const ChoroplethGroup = FeatureGroup.extend({
-    initialize(options = {}) {
+    initialize(options) {
         FeatureGroup.prototype.initialize.call(this, options);
 
         this.addLayer(new Choropleth(options));

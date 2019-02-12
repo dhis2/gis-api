@@ -22,7 +22,7 @@ export const FeatureGroup = L.FeatureGroup.extend({
             this.addLayer(new Circles({
                 pane: `${pane}-buffer`,
                 radius: buffer,
-                style: bufferStyle,
+                ...(bufferStyle && { style: bufferStyle }),
                 data,
             }));
         }

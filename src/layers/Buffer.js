@@ -2,7 +2,7 @@ import turfBuffer from '@turf/buffer';
 import {GeoJson} from './GeoJson';
 
 export const Buffer = GeoJson.extend({
-  initialize(options = {}) {
+  initialize(options) {
     // Replace polygons with buffered geometries
     options.data = options.data
       .map(feature => 

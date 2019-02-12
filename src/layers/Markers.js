@@ -13,14 +13,6 @@ export const Markers = GeoJson.extend({
         iconProperty: 'icon',
     },
 
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-
-        GeoJson.prototype.initialize.call(this, options);
-    },
-
     pointToLayer(feature, latlng) {
         const iconProperty = this.options.iconProperty;
         const markerOptions = L.extend({}, this.options.markerOptions);
@@ -71,8 +63,8 @@ export const Markers = GeoJson.extend({
 
 // Markers layer with labels and buffers
 export const MarkersGroup = FeatureGroup.extend({
-    initialize(options = {}) {
-        FeatureGroup.prototype.initialize.call(this, null, options);
+    initialize(options) {
+        FeatureGroup.prototype.initialize.call(this, options);
 
         this.addBuffers();
         this.addLayer(new Markers(options));

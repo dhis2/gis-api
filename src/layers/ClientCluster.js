@@ -4,6 +4,7 @@ import circleMarker from './CircleMarker';
 import { scaleLog } from 'd3-scale';
 import 'leaflet.markercluster'; // Extends L above
 import layerMixin from './layerMixin';
+import { toLngLatBounds } from '../utils/geometry';
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
     ...layerMixin,
@@ -61,6 +62,12 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         this.options.opacity = opacity;
         this.eachLayer(layer => layer.setOpacity(opacity)); // Circle markers
         this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
+    },
+
+    // Convert bounds before returning
+    getBounds() {
+        const bounds = L.MarkerClusterGroup.prototype.getBounds.call(this);
+        return toLngLatBounds(bounds);
     },
 });
 

@@ -9,7 +9,7 @@ const geojsonArea = require('geojson-area');
 export const LabelGroup = L.FeatureGroup.extend({
     ...layerMixin,
 
-    initialize(options = {}) {
+    initialize(options) {
         L.FeatureGroup.prototype.initialize.call(this, null, options);
         options.data.forEach(feature => this.addLabel(feature));
     },
