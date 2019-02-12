@@ -1,8 +1,8 @@
 import L from 'leaflet';
-import {GeoJson} from './GeoJson';
-import {FeatureGroup} from './FeatureGroup';
-import {LabelGroup} from './LabelGroup';
-import {Circles} from './Circles';
+import { GeoJson } from './GeoJson';
+import { FeatureGroup } from './FeatureGroup';
+import { LabelGroup } from './LabelGroup';
+import { Circles } from './Circles';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
