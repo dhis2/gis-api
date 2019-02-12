@@ -83,7 +83,7 @@ export const MarkersGroup = FeatureGroup.extend({
         if (options.buffer) {
             this.addLayer(new Circles({
                 pane: `${options.pane}-buffer`,
-                radius: 5000,
+                radius: options.buffer,
                 highlightStyle: false,
                 data: options.data,
             }));

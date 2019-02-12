@@ -10,6 +10,7 @@ export const Circles = GeoJson.extend({
             color: '#95c8fb',
             weight: 1,
         },
+        opacityFactor: 0.2,
     },
 
     initialize(options = {}) {
@@ -24,6 +25,13 @@ export const Circles = GeoJson.extend({
         return L.circle(latlng, {
             radius: this.options.radius,
             pane: this.options.pane,
+        });
+    },
+
+    setOpacity(opacity) {
+        this.setStyle({
+            opacity,
+            fillOpacity: opacity * this.options.opacityFactor,
         });
     },
 
