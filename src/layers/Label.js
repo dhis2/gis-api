@@ -34,7 +34,6 @@ export const Label = L.Marker.extend({
             iconDiv.style.marginTop = '-' + (iconDiv.offsetHeight / 2) + 'px';
         }
     },
-
 });
 
 export default function label(latlng, options) {

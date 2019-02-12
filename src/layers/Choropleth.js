@@ -1,7 +1,9 @@
-// Thematic layer
-// import L from 'leaflet';
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
+import { FeatureGroup } from './FeatureGroup';
+import { LabelGroup } from './LabelGroup';
 
+// Thematic layer
 export const Choropleth = GeoJson.extend({
 
     options: {
@@ -76,6 +78,27 @@ export const Choropleth = GeoJson.extend({
 
 });
 
+export const ChoroplethGroup = FeatureGroup.extend({
+
+    initialize(options = {}) {
+        FeatureGroup.prototype.initialize.call(this, null, options);
+
+        const { data, pane, label, labelStyle } = options;
+
+        this.addLayer(new Choropleth(options));
+
+        if (label) {
+            this.addLayer(new LabelGroup({
+                pane: `${pane}-label`,
+                style: labelStyle,
+                label,
+                data,
+            }));
+        }
+    },
+
+});
+
 export default function choropleth(options) {
-    return new Choropleth(options);
+    return new ChoroplethGroup(options);
 }

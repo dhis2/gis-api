@@ -1,6 +1,7 @@
-// Facility layer circular area
+import L from 'leaflet';
 import {GeoJson} from './GeoJson';
 
+// Circular buffer areas
 export const Circles = GeoJson.extend({
 
     options: {
@@ -10,6 +11,7 @@ export const Circles = GeoJson.extend({
             weight: 1,
         },
         opacityFactor: 0.2,
+        highlightStyle: false,
     },
 
     initialize(options = {}) {

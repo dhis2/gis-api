@@ -82,7 +82,6 @@ export const MarkersGroup = FeatureGroup.extend({
             this.addLayer(new Circles({
                 pane: `${pane}-buffer`,
                 radius: buffer,
-                highlightStyle: false,
                 data,
             }));
         }
@@ -92,9 +91,9 @@ export const MarkersGroup = FeatureGroup.extend({
         if (label) {
             this.addLayer(new LabelGroup({
                 pane: `${pane}-label`,
+                style: labelStyle,
                 label,
                 data,
-                ...labelStyle,
             }));
         }
     },

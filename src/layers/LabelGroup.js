@@ -20,7 +20,7 @@ export const LabelGroup = L.FeatureGroup.extend({
         const { properties, geometry } = feature;
         const { style } = properties;
         const text = L.Util.template(options.label, properties);
-        const labelStyle = { ...properties.labelStyle, ...options };
+        const labelStyle = { ...properties.labelStyle, ...options.style };
         const latlng = this._getLabelLatlng(geometry);
 
 
@@ -65,6 +65,10 @@ export const LabelGroup = L.FeatureGroup.extend({
 
         // Returns pole of inaccessibility, the most distant internal point from the polygon outline
         return polylabel(biggestRing, 2).reverse();
+    },
+
+    setOpacity(opacity) {
+        this.invoke('setOpacity', opacity);
     },
 
 });
