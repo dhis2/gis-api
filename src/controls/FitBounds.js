@@ -59,7 +59,7 @@ export const FitBounds = L.Control.extend({
     },
 
     _onLayerChange(evt) {
-        if (evt.layer instanceof L.FeatureGroup) {
+        if (evt.layer.options.index) {
             this._toggleControl(this._getLayersBounds().isValid());
         }
     },
