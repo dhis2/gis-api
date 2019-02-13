@@ -29,16 +29,16 @@
   },
   "homepage": "https://github.com/dhis2/gis-api#readme",
   "dependencies": {
+    "@mapbox/geojson-area": "^0.2.2",
+    "@mapbox/polylabel": "^1.0.2",
     "@turf/buffer": "^5.1.5",
     "d3-color": "^1.2.3",
-    "d3-scale": "^2.1.2",
-    "geojson-area": "^0.2.1",
+    "d3-scale": "^2.2.2",
     "leaflet": "^1.4.0",
     "leaflet-control-geocoder": "^1.6.0",
     "leaflet-measure": "3.1.0",
-    "leaflet.gridlayer.googlemutant": "^0.7.0",
+    "leaflet.gridlayer.googlemutant": "^0.8.0",
     "leaflet.markercluster": "^1.4.1",
-    "polylabel": "^1.0.2",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {

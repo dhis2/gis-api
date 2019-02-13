@@ -103,6 +103,20 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@mapbox/geojson-area@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz#18d7814aa36bf23fbbcc379f8e26a22927debf10"
+  integrity sha1-GNeBSqNr8j+7zDefjiaiKSfevxA=
+  dependencies:
+    wgs84 "0.0.0"
+
+"@mapbox/polylabel@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@mapbox/polylabel/-/polylabel-1.0.2.tgz#c5714619b65add082638ea06027e69b14500efa6"
+  integrity sha1-xXFGGbZa3QgmOOoGAn5psUUA76Y=
+  dependencies:
+    tinyqueue "^1.1.0"
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
@@ -2793,7 +2807,7 @@ d3-interpolate@1:
   dependencies:
     d3-color "1"
 
-d3-scale@^2.1.2:
+d3-scale@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.2.2.tgz#4e880e0b2745acaaddd3ede26a9e908a9e17b81f"
   integrity sha512-LbeEvGgIb8UMcAa0EATLNX0lelKWGYDQiPdHj+gLblGVhGLyNbaCn3EvrJf0A3Y/uOOU5aD6MTh5ZFCdEwGiCw==
@@ -4550,13 +4564,6 @@ gaze@^1.0.0:
   integrity sha512-BRdNm8hbWzFzWHERTrejLqwHDfS4GibPoq5wjTPIoJHoBtKGPg3xAFfxmM+9ztbXelxcf2hwQcaz1PtmFeue8g==
   dependencies:
     globule "^1.0.0"
-
-geojson-area@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/geojson-area/-/geojson-area-0.2.1.tgz#2537b0982db86309f21d2c428a4257c7a6282cc6"
-  integrity sha1-JTewmC24YwnyHSxCikJXx6YoLMY=
-  dependencies:
-    wgs84 "0.0.0"
 
 get-caller-file@^1.0.1:
   version "1.0.3"
@@ -6528,10 +6535,10 @@ leaflet-measure@3.1.0:
     "@turf/length" "^5.1.5"
     lodash "^4.17.5"
 
-leaflet.gridlayer.googlemutant@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/leaflet.gridlayer.googlemutant/-/leaflet.gridlayer.googlemutant-0.7.1.tgz#c178d5fab9b88edbc01f2903d2fc309fac8e562f"
-  integrity sha512-j1IGrXOQ9A+QiOjaX4XiaIVzrABhPq61x/AfJtf1NhK2DT/dL/hWlEO6r5f3zKBPcXD3BWmkk96fiPiWqvElvA==
+leaflet.gridlayer.googlemutant@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/leaflet.gridlayer.googlemutant/-/leaflet.gridlayer.googlemutant-0.8.0.tgz#9636630cb669577f5bc55ff171dd0a3cc44ece1e"
+  integrity sha512-Ain+jgDKRhlM6qNDDj2QFJa9vXUqV096N0PmpHO3DoNLS4I7EynTQCJXN+9qY4C51ZpV4Q4CI+apNv5XiP5aUA==
 
 leaflet.markercluster@^1.4.1:
   version "1.4.1"
@@ -8048,13 +8055,6 @@ pngquant-bin@^5.0.0:
     bin-wrapper "^4.0.1"
     execa "^0.10.0"
     logalot "^2.0.0"
-
-polylabel@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/polylabel/-/polylabel-1.0.2.tgz#90c11602fb217a65b78ac2110ac5fcb00b652560"
-  integrity sha1-kMEWAvshemW3isIRCsX8sAtlJWA=
-  dependencies:
-    tinyqueue "^1.1.0"
 
 portfinder@^1.0.9:
   version "1.0.19"

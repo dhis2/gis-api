@@ -1,9 +1,9 @@
 import L from "leaflet";
 import label from "./Label";
-import polylabel from "polylabel";
+import polylabel from "@mapbox/polylabel";
 import layerMixin from "./layerMixin";
 
-const geojsonArea = require("geojson-area");
+const geojsonArea = require("@mapbox/geojson-area");
 
 export const LabelGroup = L.FeatureGroup.extend({
   ...layerMixin,
