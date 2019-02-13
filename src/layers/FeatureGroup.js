@@ -70,7 +70,10 @@ export const FeatureGroup = L.FeatureGroup.extend({
   // Convert bounds before returning
   getBounds() {
     const bounds = L.FeatureGroup.prototype.getBounds.call(this);
-    return toLngLatBounds(bounds);
+
+    if (bounds.isValid()) {
+      return toLngLatBounds(bounds);
+    }
   }
 });
 
