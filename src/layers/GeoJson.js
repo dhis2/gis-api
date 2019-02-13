@@ -72,9 +72,18 @@ export const GeoJson = L.GeoJSON.extend({
   },
 
   onAdd(map) {
-    const { onClick, onRightClick, highlightStyle } = this.options;
+    const {
+      opacity,
+      isVisible,
+      onClick,
+      onRightClick,
+      highlightStyle
+    } = this.options;
 
     L.GeoJSON.prototype.onAdd.call(this, map);
+
+    this.setOpacity(opacity);
+    this.setVisibility(isVisible);
 
     if (onClick) {
       this.on("click", this.onClick, this);
