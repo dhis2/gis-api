@@ -1,148 +1,152 @@
-import L from 'leaflet';
-import layerMixin from './layerMixin';
+import L from "leaflet";
+import layerMixin from "./layerMixin";
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
-    ...layerMixin,
+  ...layerMixin,
 
-    options: {
-        style: {
-            weight: 1,
-        },
-        highlightStyle: {
-            weight: 3,
-        },
-        resetStyle: {
-            weight: 1,
-        },
+  options: {
+    style: {
+      weight: 1
     },
-
-    initialize(options) {
-        L.GeoJSON.prototype.initialize.call(this, options.data, {
-            pane: options.id,
-            pointToLayer: this.pointToLayer.bind(this),
-            ...options,
-        });
+    highlightStyle: {
+      weight: 3
     },
+    resetStyle: {
+      weight: 1
+    }
+  },
 
-    addLayer(layer) { // eslint-disable-line
-        const options = this.options;
-        const feature = layer.feature;
+  initialize(options) {
+    L.GeoJSON.prototype.initialize.call(this, options.data, {
+      pane: options.id,
+      pointToLayer: this.pointToLayer.bind(this),
+      ...options
+    });
+  },
 
-        if (options.hoverLabel || options.label) {
-            const tooltip = L.Util.template(options.hoverLabel || options.label, feature.properties);
-            layer.bindTooltip(tooltip, {
-                sticky: true,
-            });
-        }
+  addLayer(layer) {
+    // eslint-disable-line
+    const options = this.options;
+    const feature = layer.feature;
 
-        if (options.popup && !(options.popup instanceof Function)) {
-            layer.bindPopup(L.Util.template(options.popup, feature.properties));
-        }
+    if (options.hoverLabel || options.label) {
+      const tooltip = L.Util.template(
+        options.hoverLabel || options.label,
+        feature.properties
+      );
+      layer.bindTooltip(tooltip, {
+        sticky: true
+      });
+    }
 
-        L.GeoJSON.prototype.addLayer.call(this, layer);
-    },
+    if (options.popup && !(options.popup instanceof Function)) {
+      layer.bindPopup(L.Util.template(options.popup, feature.properties));
+    }
 
-    // Use circle markers for point features
-    pointToLayer(geojson, latlng) {
-        this.options.style.pane = this.options.pane;
-        return new L.CircleMarker(latlng, this.options.style);
-    },
+    L.GeoJSON.prototype.addLayer.call(this, layer);
+  },
 
-    setOpacity(opacity) {
-        this.setStyle({
-            opacity,
-            fillOpacity: opacity,
-        });
-    },
+  // Use circle markers for point features
+  pointToLayer(geojson, latlng) {
+    this.options.style.pane = this.options.pane;
+    return new L.CircleMarker(latlng, this.options.style);
+  },
 
-    findById(id) {
-        for (const i in this._layers) { // eslint-disable-line
-            if (this._layers[i].feature.id === id) {
-                return this._layers[i];
-            }
-        }
+  setOpacity(opacity) {
+    this.setStyle({
+      opacity,
+      fillOpacity: opacity
+    });
+  },
 
-        return null;
-    },
+  findById(id) {
+    for (const i in this._layers) {
+      // eslint-disable-line
+      if (this._layers[i].feature.id === id) {
+        return this._layers[i];
+      }
+    }
 
-    onAdd(map) {
-        const { onClick, onRightClick, highlightStyle } = this.options;
+    return null;
+  },
 
-        L.GeoJSON.prototype.onAdd.call(this, map);
+  onAdd(map) {
+    const { onClick, onRightClick, highlightStyle } = this.options;
 
-        if (onClick) {
-            this.on('click', this.onClick, this);
-        }
+    L.GeoJSON.prototype.onAdd.call(this, map);
 
-        if (onRightClick) {
-            this.on('contextmenu', this.onRightClick, this);
-        }
+    if (onClick) {
+      this.on("click", this.onClick, this);
+    }
 
-        if (highlightStyle) {
-            this.on('mouseover', this.onMouseOver, this);
-            this.on('mouseout', this.onMouseOut, this);
-        }
+    if (onRightClick) {
+      this.on("contextmenu", this.onRightClick, this);
+    }
 
-        this.fire('ready');
-    },
+    if (highlightStyle) {
+      this.on("mouseover", this.onMouseOver, this);
+      this.on("mouseout", this.onMouseOut, this);
+    }
 
-    onRemove(map) {
-        const { onClick, onRightClick, highlightStyle } = this.options;
+    this.fire("ready");
+  },
 
-        L.GeoJSON.prototype.onRemove.call(this, map);
+  onRemove(map) {
+    const { onClick, onRightClick, highlightStyle } = this.options;
 
-        if (onClick) {
-            this.off('click', this.onClick, this);
-        }
+    L.GeoJSON.prototype.onRemove.call(this, map);
 
-        if (onRightClick) {
-            this.off('contextmenu', this.onRightClick, this);
-        }
+    if (onClick) {
+      this.off("click", this.onClick, this);
+    }
 
-        if (highlightStyle) {
-            this.off('mouseover', this.onMouseOver, this);
-            this.off('mouseout', this.onMouseOut, this);
-        }
-    },
+    if (onRightClick) {
+      this.off("contextmenu", this.onRightClick, this);
+    }
 
-    // Set highlight style
-    onMouseOver(evt) {
-        evt.layer.setStyle(this.options.highlightStyle);
-    },
+    if (highlightStyle) {
+      this.off("mouseover", this.onMouseOver, this);
+      this.off("mouseout", this.onMouseOut, this);
+    }
+  },
 
-    // Reset style
-    onMouseOut(evt) {
-        if (!evt.layer.feature.isSelected) {
-            evt.layer.setStyle(this.options.resetStyle);
-        }
-    },
+  // Set highlight style
+  onMouseOver(evt) {
+    evt.layer.setStyle(this.options.highlightStyle);
+  },
 
-    // "Normalise" event before passing back to app
-    onClick(evt) {
-        L.DomEvent.stopPropagation(evt);
+  // Reset style
+  onMouseOut(evt) {
+    if (!evt.layer.feature.isSelected) {
+      evt.layer.setStyle(this.options.resetStyle);
+    }
+  },
 
-        const { type, layer, latlng } = evt;
-        const coordinates = [latlng.lng, latlng.lat]; 
-        const feature = layer.feature;
+  // "Normalise" event before passing back to app
+  onClick(evt) {
+    L.DomEvent.stopPropagation(evt);
 
-        this.options.onClick({ type, coordinates, feature });
-    },
+    const { type, layer, latlng } = evt;
+    const coordinates = [latlng.lng, latlng.lat];
+    const feature = layer.feature;
 
-    // "Normalise" event before passing back to app
-    onRightClick(evt) {
-        L.DomEvent.stopPropagation(evt);
+    this.options.onClick({ type, coordinates, feature });
+  },
 
-        const { type, layer, latlng, originalEvent } = evt;
-        const coordinates = [latlng.lng, latlng.lat]; 
-        const position = [originalEvent.x, originalEvent.pageY || originalEvent.y];
-        const feature = layer.feature;
+  // "Normalise" event before passing back to app
+  onRightClick(evt) {
+    L.DomEvent.stopPropagation(evt);
 
-        this.options.onRightClick({ type, coordinates, position, feature });
-    },
+    const { type, layer, latlng, originalEvent } = evt;
+    const coordinates = [latlng.lng, latlng.lat];
+    const position = [originalEvent.x, originalEvent.pageY || originalEvent.y];
+    const feature = layer.feature;
 
+    this.options.onRightClick({ type, coordinates, position, feature });
+  }
 });
 
 export default function geoJson(options) {
-    return new GeoJson(options);
+  return new GeoJson(options);
 }

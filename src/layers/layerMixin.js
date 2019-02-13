@@ -1,32 +1,34 @@
 const layerMixin = {
-    createPane(map) {
-        const { pane } = this.options;
+  createPane(map) {
+    const { pane } = this.options;
 
-        if (pane && !map.getPane(pane)) {
-            map.createPane(pane);
-        }
-    },
+    if (pane && !map.getPane(pane)) {
+      map.createPane(pane);
+    }
+  },
 
-    setIndex(index) {
-        const zIndex = 200 + (index * 10);
+  setIndex(index) {
+    const zIndex = 200 + index * 10;
 
-        this.getPane().style.zIndex = zIndex;
+    this.getPane().style.zIndex = zIndex;
 
-        this.options.index = index;
-    },
+    this.options.index = index;
+  },
 
-    setVisibility(isVisible) {
-        if (this._map) {
-            const pane = this._map.getPane(this.options.pane);
+  setVisibility(isVisible) {
+    if (this._map) {
+      const pane = this._map.getPane(this.options.pane);
 
-            if (isVisible) {
-                pane.style.display = 'block';
-                this._map.addLayer(this);
-            } else {
-                pane.style.display = 'none';
-            }
-        }
-    },
+      if (isVisible) {
+        pane.style.display = "block";
+        this._map.addLayer(this);
+      } else {
+        pane.style.display = "none";
+      }
+    }
+
+    this.options.isVisible = isVisible;
+  }
 };
 
 export default layerMixin;
