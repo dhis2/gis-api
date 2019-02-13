@@ -37,10 +37,8 @@
     "leaflet-control-geocoder": "^1.6.0",
     "leaflet-measure": "3.1.0",
     "leaflet.gridlayer.googlemutant": "^0.7.0",
-    "leaflet.layergroup.collision": "^0.3.1",
     "leaflet.markercluster": "^1.4.1",
     "polylabel": "^1.0.2",
-    "rbush": "^2.0.2",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
