@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/dhis2/gis-api#readme",
   "dependencies": {
+    "@google/earthengine": "^0.1.167",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/polylabel": "^1.0.2",
     "@turf/buffer": "^5.1.5",

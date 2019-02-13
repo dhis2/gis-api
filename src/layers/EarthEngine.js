@@ -1,5 +1,8 @@
 import L from "leaflet";
+import ee from "@google/earthengine";
 import layerMixin from "./layerMixin";
+
+window.ee = ee; // Required to initalize the ee api
 
 // Leaflet plugin to add map layers from Google Earth Engine
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer
@@ -47,28 +50,22 @@ export const EarthEngine = L.LayerGroup.extend({
 
   // Configures client-side authentication of EE API calls by providing a OAuth2 token to use.
   onValidAuthToken(token) {
-    ee.data.setAuthToken(
-      token.client_id,
-      this.options.tokenType,
-      token.access_token,
-      token.expires_in,
-      null,
-      null,
-      false
-    ); // eslint-disable-line
-    ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this)); // eslint-disable-line
-    ee.initialize(null, null, () => {
-      this.createImage();
-      this.fire("initialized");
-    }); // eslint-disable-line
+    const { access_token, client_id, expires_in } = token;
+    const { tokenType } = this.options;
+    console.log("expires_in", expires_in);
+
+    ee.data.setAuthToken(client_id, tokenType, access_token, expires_in);
+    ee.data.setAuthTokenRefresher(this.refreshAccessToken.bind(this));
+    ee.initialize(null, null, this.createImage.bind(this));
   },
 
   // Refresh OAuth2 token when expired
   refreshAccessToken(authArgs, callback) {
-    const self = this;
+    const { tokenType } = this.options;
+
     this.getAuthToken(token => {
       callback({
-        token_type: self.options.tokenType,
+        token_type: tokenType,
         access_token: token.access_token,
         state: authArgs.scope,
         expires_in: token.expires_in
@@ -78,6 +75,8 @@ export const EarthEngine = L.LayerGroup.extend({
 
   // Create EE tile layer from params (override for each layer type)
   createImage() {
+    console.log("createImage");
+
     // eslint-disable-line
     const options = this.options;
 
@@ -85,6 +84,7 @@ export const EarthEngine = L.LayerGroup.extend({
     let eeImage;
 
     if (options.filter) {
+      console.log("A");
       // Image collection
       eeCollection = ee.ImageCollection(options.datasetId); // eslint-disable-line
 
@@ -97,6 +97,7 @@ export const EarthEngine = L.LayerGroup.extend({
         eeImage = ee.Image(eeCollection.first()); // eslint-disable-line
       }
     } else {
+      console.log("B", options.datasetId);
       // Single image
       eeImage = ee.Image(options.datasetId); // eslint-disable-line
     }
