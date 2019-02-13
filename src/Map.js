@@ -136,6 +136,7 @@ export class Map extends L.Evented {
 
   fitBounds(bounds) {
     if (bounds) {
+      console.log("fitBounds", bounds);
       this._map.fitBounds(toLatLngBounds(bounds));
     }
   }
