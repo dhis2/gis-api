@@ -121,13 +121,23 @@ export class Map extends L.Evented {
   }
 
   addControl(control) {
-    const controlTypes = this.options.controlTypes;
+    const { position, type } = control;
+    const { controlTypes } = this.options;
+
+    if (position) {
+      control.position = position.replace(/-/, "");
+    }
+
     let newControl = control;
 
-    if (control.type && controlTypes[control.type]) {
-      newControl = controlTypes[control.type](control);
-    } else if (control.type && L.control[control.type]) {
-      newControl = L.control[control.type](control);
+    if (type && controlTypes[type]) {
+      newControl = controlTypes[type](control);
+    } else if (type && L.control[type]) {
+      newControl = L.control[type](control);
+    }
+
+    if (position) {
+      newControl.position = position.replace(/-/, "");
     }
 
     this._map.addControl(newControl);
