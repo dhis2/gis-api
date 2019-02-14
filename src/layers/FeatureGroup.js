@@ -50,7 +50,7 @@ export const FeatureGroup = L.FeatureGroup.extend({
     },
 
     setIndex(index) {
-        const zIndex = 200 + index * 10;
+        const zIndex = 200 + (index * 10);
 
         this.getLayers().forEach((layer, i) => {
             layer.getPane().style.zIndex = zIndex + i;
@@ -74,6 +74,11 @@ export const FeatureGroup = L.FeatureGroup.extend({
         if (bounds.isValid()) {
             return toLngLatBounds(bounds);
         }
+    },
+
+    onAdd(map) {
+        L.FeatureGroup.prototype.onAdd.call(this, map);
+        this.setIndex(this.options.index);
     },
 });
 

@@ -92,7 +92,7 @@ export const FitBounds = L.Control.extend({
     // Only show control when map contains 'fittable' content
     _toggleControl(hasBounds) {
         this._container.style.display = hasBounds ? 'block' : 'none';
-    }
+    },
 });
 
 export default function fitBounds(options) {

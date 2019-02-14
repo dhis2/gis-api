@@ -1,3 +1,5 @@
+const getZIndex = index => 200 + (index * 10);
+
 const layerMixin = {
     createPane(map) {
         const { pane } = this.options;
@@ -8,11 +10,10 @@ const layerMixin = {
     },
 
     setIndex(index) {
-        const zIndex = 200 + index * 10;
-
-        this.getPane().style.zIndex = zIndex;
-
-        this.options.index = index;
+        if (index) {
+            this.getPane().style.zIndex = getZIndex(index);
+            this.options.index = index;
+        }
     },
 
     setVisibility(isVisible) {
@@ -28,7 +29,7 @@ const layerMixin = {
         }
 
         this.options.isVisible = isVisible;
-    }
+    },
 };
 
 export default layerMixin;
