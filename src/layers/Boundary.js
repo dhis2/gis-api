@@ -1,7 +1,6 @@
 import L from 'leaflet';
 import { GeoJson } from './GeoJson';
 import { FeatureGroup } from './FeatureGroup';
-import { LabelGroup } from './LabelGroup';
 
 // Boundary layer
 export const Boundary = GeoJson.extend({

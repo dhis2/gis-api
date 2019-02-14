@@ -1,80 +1,80 @@
-import L from "leaflet";
-import layerMixin from "./layerMixin";
-import { Circles } from "./Circles";
-import { LabelGroup } from "./LabelGroup";
-import { toLngLatBounds } from "../utils/geometry";
+import L from 'leaflet';
+import layerMixin from './layerMixin';
+import { Circles } from './Circles';
+import { LabelGroup } from './LabelGroup';
+import { toLngLatBounds } from '../utils/geometry';
 
 // Layer group with support for labels and buffers
 export const FeatureGroup = L.FeatureGroup.extend({
-  ...layerMixin,
+    ...layerMixin,
 
-  initialize(options) {
-    L.FeatureGroup.prototype.initialize.call(this, null, {
-      ...options,
-      pane: options.id
-    });
-  },
+    initialize(options) {
+        L.FeatureGroup.prototype.initialize.call(this, null, {
+            ...options,
+            pane: options.id,
+        });
+    },
 
-  addBuffers() {
-    const { buffer, bufferStyle, data, pane } = this.options;
+    addBuffers() {
+        const { buffer, bufferStyle, data, pane } = this.options;
 
-    if (buffer) {
-      this.addLayer(
-        new Circles({
-          pane: `${pane}-buffer`,
-          radius: buffer,
-          ...(bufferStyle && { style: bufferStyle }),
-          data
-        })
-      );
-    }
-  },
+        if (buffer) {
+            this.addLayer(
+                new Circles({
+                    pane: `${pane}-buffer`,
+                    radius: buffer,
+                    ...(bufferStyle && { style: bufferStyle }),
+                    data,
+                })
+            );
+        }
+    },
 
-  addLabels() {
-    const { data, label, labelStyle, pane } = this.options;
+    addLabels() {
+        const { data, label, labelStyle, pane } = this.options;
 
-    if (label) {
-      this.addLayer(
-        new LabelGroup({
-          pane: `${pane}-label`,
-          style: labelStyle,
-          label,
-          data
-        })
-      );
-    }
-  },
+        if (label) {
+            this.addLayer(
+                new LabelGroup({
+                    pane: `${pane}-label`,
+                    style: labelStyle,
+                    label,
+                    data,
+                })
+            );
+        }
+    },
 
-  createPane(map) {
-    this.invoke("createPane", map);
-  },
+    createPane(map) {
+        this.invoke('createPane', map);
+    },
 
-  setIndex(index) {
-    const zIndex = 200 + index * 10;
+    setIndex(index) {
+        const zIndex = 200 + index * 10;
 
-    this.getLayers().forEach((layer, i) => {
-      layer.getPane().style.zIndex = zIndex + i;
-    });
+        this.getLayers().forEach((layer, i) => {
+            layer.getPane().style.zIndex = zIndex + i;
+        });
 
-    this.options.index = index;
-  },
+        this.options.index = index;
+    },
 
-  setOpacity(opacity) {
-    this.invoke("setOpacity", opacity);
-  },
+    setOpacity(opacity) {
+        this.invoke('setOpacity', opacity);
+    },
 
-  setVisibility(isVisible) {
-    this.invoke("setVisibility", isVisible);
-  },
+    setVisibility(isVisible) {
+        this.invoke('setVisibility', isVisible);
+    },
 
-  // Convert bounds before returning
-  getBounds() {
-    const bounds = L.FeatureGroup.prototype.getBounds.call(this);
+    // Convert bounds before returning
+    getBounds() {
+        const bounds = L.FeatureGroup.prototype.getBounds.call(this);
 
-    if (bounds.isValid()) {
-      return toLngLatBounds(bounds);
-    }
-  }
+        if (bounds.isValid()) {
+            return toLngLatBounds(bounds);
+        }
+    },
 });
 
 export default FeatureGroup;

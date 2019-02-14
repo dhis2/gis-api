@@ -1,4 +1,4 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 import 'leaflet-measure';
 
 // Wrapper for the leaflet-measure control: https://github.com/ljagis/leaflet-measure
