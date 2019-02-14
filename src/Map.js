@@ -49,8 +49,6 @@ export class Map extends L.Evented {
 
         const options = L.setOptions(this, opts);
 
-        this._baseLayers = {};
-        this._overlays = {};
         this._layers = [];
 
         this._map = L.map(el, options);
@@ -65,11 +63,10 @@ export class Map extends L.Evented {
         this._map.on('mousedown', evt => evt.originalEvent.stopPropagation());
 
         if (options.bounds) {
-            this.fitBounds(toLatLngBounds(options.bounds));
+            this.fitBounds(options.bounds);
         }
 
         for (const control in options.controls) {
-            // eslint-disable-line
             if (options.controls.hasOwnProperty(control)) {
                 this.addControl(control);
             }
@@ -89,7 +86,7 @@ export class Map extends L.Evented {
 
     // Accept layer as config object
     addLayer(layer) {
-        const layerTypes = this.options.layerTypes;
+        const { layerTypes } = this.options;
         let newLayer = layer;
 
         if (layer.type && layerTypes[layer.type]) {
