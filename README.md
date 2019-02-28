@@ -1,4 +1,7 @@
 # DHIS 2 GIS API
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/dhis2/gis-api.svg)](https://greenkeeper.io/)
+
 Various Leaflet extensions to meet the mapping needs of the DHIS 2 platform. 
 
 Leaflet documentation:
