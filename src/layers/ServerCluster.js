@@ -3,6 +3,7 @@ import { scaleLog } from 'd3-scale';
 import clusterMarker from './ClusterMarker';
 import circleMarker from './CircleMarker';
 import layerMixin from './layerMixin';
+import { toLngLatBounds } from '../utils/geometry';
 
 export const ServerCluster = L.GridLayer.extend({
     ...layerMixin,
@@ -144,7 +145,11 @@ export const ServerCluster = L.GridLayer.extend({
 
     // Returns bounds for all clusters
     getBounds() {
-        return this._bounds ? L.latLngBounds(this._bounds) : this._clusters.getBounds();
+        const bounds = this._bounds ? L.latLngBounds(this._bounds) : this._clusters.getBounds();
+
+        if (bounds.isValid()) {
+            return toLngLatBounds(bounds);
+        }
     },
 
     // Set opacity for all clusters and circle markers
