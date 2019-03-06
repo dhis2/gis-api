@@ -1,10 +1,13 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
-import circleMarker from '../CircleMarker';
-import {scaleLog} from 'd3-scale';
-import '../../node_modules/leaflet.markercluster/dist/leaflet.markercluster-src'; // Extends L above
+import circleMarker from './CircleMarker';
+import { scaleLog } from 'd3-scale';
+import 'leaflet.markercluster'; // Extends L above
+import layerMixin from './layerMixin';
+import { toLngLatBounds } from '../utils/geometry';
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
+    ...layerMixin,
 
     options: {
         maxClusterRadius: 40,
@@ -27,7 +30,10 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     },
 
     initialize(opts) {
-        const options = L.setOptions(this, opts);
+        const options = L.setOptions(this, {
+            ...opts,
+            pane: opts.id,
+        });
 
         L.MarkerClusterGroup.prototype.initialize.call(this, options);
 
@@ -58,6 +64,14 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
     },
 
+    // Convert bounds before returning
+    getBounds() {
+        const bounds = L.MarkerClusterGroup.prototype.getBounds.call(this);
+
+        if (bounds.isValid()) {
+            return toLngLatBounds(bounds);
+        }
+    },
 });
 
 export default function clientCluster(options) {

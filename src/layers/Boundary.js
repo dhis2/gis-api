@@ -1,7 +1,8 @@
-// Boundary layer
-// import L from 'leaflet';
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
+import { FeatureGroup } from './FeatureGroup';
 
+// Boundary layer
 export const Boundary = GeoJson.extend({
 
     options: {
@@ -15,15 +16,6 @@ export const Boundary = GeoJson.extend({
             weight: 3,
         },
     },
-
-    /*
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-        GeoJson.prototype.initialize.call(this, options);
-    },
-    */
 
     addLayer(layer) {
         const prop = layer.feature.properties;
@@ -73,6 +65,16 @@ export const Boundary = GeoJson.extend({
 
 });
 
+// Boundary layer with labels
+export const BoundaryGroup = FeatureGroup.extend({
+    initialize(options) {
+        FeatureGroup.prototype.initialize.call(this, options);
+
+        this.addLayer(new Boundary(options));
+        this.addLabels();
+    },
+});
+
 export default function boundary(options) {
-    return new Boundary(options);
+    return new BoundaryGroup(options);
 }

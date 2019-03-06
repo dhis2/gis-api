@@ -1,5 +1,5 @@
-// import L from 'leaflet';
-import '../node_modules/leaflet-measure/dist/leaflet-measure';
+import L from 'leaflet';
+import 'leaflet-measure';
 
 // Wrapper for the leaflet-measure control: https://github.com/ljagis/leaflet-measure
 export const Measure = L.Control.Measure.extend({

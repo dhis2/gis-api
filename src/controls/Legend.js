@@ -1,4 +1,4 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 
 // Map legend control
 export const Legend = L.Control.extend({

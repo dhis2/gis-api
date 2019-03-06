@@ -1,6 +1,8 @@
-// import L from 'leaflet';
+import L from 'leaflet';
+import layerMixin from './layerMixin';
 
 export const WmsLayer = L.TileLayer.WMS.extend({
+    ...layerMixin,
 
     initialize(opts) {
         const options = L.extend({ // Defaults
@@ -11,7 +13,6 @@ export const WmsLayer = L.TileLayer.WMS.extend({
 
         L.TileLayer.WMS.prototype.initialize.call(this, options.url, options);
     },
-
 });
 
 export default function wmsLayer(options) {

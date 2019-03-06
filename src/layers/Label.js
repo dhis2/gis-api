@@ -1,8 +1,6 @@
-// import L from 'leaflet';
+import L from 'leaflet';
 
-// Used in boundary layer, choropleth,
-
-// Text label
+// Text label, used in boundary layer, choropleth,
 export const Label = L.Marker.extend({
 
     options: {
@@ -34,7 +32,6 @@ export const Label = L.Marker.extend({
             iconDiv.style.marginTop = '-' + (iconDiv.offsetHeight / 2) + 'px';
         }
     },
-
 });
 
 export default function label(latlng, options) {

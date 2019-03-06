@@ -1,7 +1,7 @@
-// Facility layer circular area
-// import L from 'leaflet';
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
 
+// Circular buffer areas
 export const Circles = GeoJson.extend({
 
     options: {
@@ -10,20 +10,21 @@ export const Circles = GeoJson.extend({
             color: '#95c8fb',
             weight: 1,
         },
-    },
-
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-
-        GeoJson.prototype.initialize.call(this, options);
+        opacityFactor: 0.2,
+        highlightStyle: false,
     },
 
     pointToLayer(feature, latlng) {
         return L.circle(latlng, {
             radius: this.options.radius,
             pane: this.options.pane,
+        });
+    },
+
+    setOpacity(opacity) {
+        this.setStyle({
+            opacity,
+            fillOpacity: opacity * this.options.opacityFactor,
         });
     },
 

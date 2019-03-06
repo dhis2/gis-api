@@ -1,5 +1,6 @@
-// import L from 'leaflet';
-import {GeoJson} from './GeoJson';
+import L from 'leaflet';
+import { GeoJson } from './GeoJson';
+import { FeatureGroup } from './FeatureGroup';
 
 // Markers with label support
 export const Markers = GeoJson.extend({
@@ -12,25 +13,12 @@ export const Markers = GeoJson.extend({
         iconProperty: 'icon',
     },
 
-    initialize(options = {}) {
-        if (!options.pointToLayer) {
-            options.pointToLayer = this.pointToLayer.bind(this);
-        }
-
-        GeoJson.prototype.initialize.call(this, options);
-    },
-
     pointToLayer(feature, latlng) {
         const iconProperty = this.options.iconProperty;
         const markerOptions = L.extend({}, this.options.markerOptions);
 
         if (this.options.pane) {
             markerOptions.pane = this.options.pane;
-        }
-
-        if (this.options.label) {
-            markerOptions.label = L.Util.template(this.options.label, feature.properties);
-            markerOptions.labelStyle = this.options.labelStyle;
         }
 
         if (iconProperty && feature.properties[iconProperty]) {
@@ -73,6 +61,17 @@ export const Markers = GeoJson.extend({
 
 });
 
+// Markers layer with labels and buffers
+export const MarkersGroup = FeatureGroup.extend({
+    initialize(options) {
+        FeatureGroup.prototype.initialize.call(this, options);
+
+        this.addBuffers();
+        this.addLayer(new Markers(options));
+        this.addLabels();
+    },
+});
+
 export default function markers(options) {
-    return new Markers(options);
+    return new MarkersGroup(options);
 }

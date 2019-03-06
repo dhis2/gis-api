@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { D2Map } from '../Map';
+import { Map } from '../Map';
 
 describe('DHIS2 map', () => {
     /*
@@ -14,9 +14,9 @@ describe('DHIS2 map', () => {
     });
     */
 
-    it('should export the Leaflet instance', () => {
-        const map = new D2Map(document.createElement('div'));
-        expect(map).toBeInstanceOf(D2Map);
+    it('should export the Map instance', () => {
+        const map = new Map(document.createElement('div'));
+        expect(map).toBeInstanceOf(Map);
     });
 
     /*
