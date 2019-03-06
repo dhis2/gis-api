@@ -67,7 +67,10 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     // Convert bounds before returning
     getBounds() {
         const bounds = L.MarkerClusterGroup.prototype.getBounds.call(this);
-        return toLngLatBounds(bounds);
+
+        if (bounds.isValid()) {
+            return toLngLatBounds(bounds);
+        }
     },
 });
 
