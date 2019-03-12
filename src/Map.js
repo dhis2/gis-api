@@ -179,8 +179,12 @@ export class Map extends L.Evented {
         return !!this.options.layerTypes[type];
     }
 
-    openPopup(content, lnglat) {
+    openPopup(content, lnglat, onClose) {
         this._map.openPopup(content, toLatLng(lnglat));
+
+        if (typeof onClose === 'function') {
+            this._map.once('popupclose', onClose);
+        }
     }
 
     resize() {
