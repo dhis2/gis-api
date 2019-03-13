@@ -16,7 +16,7 @@ export default function search(options) {
 
             map.fitBounds(bbox);
 
-            L.popup()
+            L.popup({ closeOnClick: false })
                 .setLatLng(center)
                 .setContent(html || name)
                 .openOn(map);
