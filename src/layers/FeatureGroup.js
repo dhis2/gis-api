@@ -16,17 +16,19 @@ export const FeatureGroup = L.FeatureGroup.extend({
     },
 
     addBuffers() {
-        const { buffer, bufferStyle, data, pane } = this.options;
+        const { buffer, bufferStyle, data, pane, opacity, isVisible } = this.options;
 
         if (buffer) {
-            this.addLayer(
-                new Circles({
-                    pane: `${pane}-buffer`,
-                    radius: buffer,
-                    ...(bufferStyle && { style: bufferStyle }),
-                    data,
-                })
-            );
+            const bufferLayer = new Circles({
+                pane: `${pane}-buffer`,
+                radius: buffer,
+                isVisible,
+                opacity,
+                ...(bufferStyle && { style: bufferStyle }),
+                data,
+            });
+
+            this.addLayer(bufferLayer);
         }
     },
 

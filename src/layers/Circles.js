@@ -3,7 +3,6 @@ import { GeoJson } from './GeoJson';
 
 // Circular buffer areas
 export const Circles = GeoJson.extend({
-
     options: {
         radius: 1000,
         style: {
@@ -15,9 +14,11 @@ export const Circles = GeoJson.extend({
     },
 
     pointToLayer(feature, latlng) {
+        const { pane, radius } = this.options;
+
         return L.circle(latlng, {
-            radius: this.options.radius,
-            pane: this.options.pane,
+            radius,
+            pane,
         });
     },
 

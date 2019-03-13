@@ -161,10 +161,13 @@ export class Map extends L.Evented {
         const bounds = new L.LatLngBounds();
 
         this._map.eachLayer(layer => {
-            if (layer.options.index && !layer.feature) {
+            if (layer.options.index && !layer.feature && layer.getBounds) {
                 const layerBounds = layer.getBounds();
-                if (layerBounds.extend) {
-                    bounds.extend(layerBounds);
+
+                if (layerBounds.extend) { 
+                    bounds.extend(layerBounds); // lat,lng format
+                } else if (Array.isArray(layerBounds)) {
+                    bounds.extend(toLatLngBounds(layerBounds)); // lng,lat format
                 }
             }
         });
