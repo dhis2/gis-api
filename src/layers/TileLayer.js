@@ -12,7 +12,10 @@ export const TileLayer = L.TileLayer.extend({
     initialize(opts = {}) {
         const options = L.setOptions(this, opts);
 
-        L.TileLayer.prototype.initialize.call(this, options.url, options);
+        L.TileLayer.prototype.initialize.call(this, options.url, {
+            ...options,
+            pane: options.id,
+        });
 
         this.on('load', this.onLoad, this);
     },
@@ -20,6 +23,7 @@ export const TileLayer = L.TileLayer.extend({
     onAdd(map) {
         L.TileLayer.prototype.onAdd.call(this, map);
         this.setVisibility(this.options.isVisible);
+        this.setIndex(this.options.index);
     },
 
     // Fire ready event when all tiles are loaded

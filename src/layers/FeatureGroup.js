@@ -29,9 +29,6 @@ export const FeatureGroup = L.FeatureGroup.extend({
             });
 
             this.addLayer(bufferLayer);
-
-            // Don't capture clicks for buffers
-            bufferLayer.getPane().style.pointerEvents = 'none';
         }
     },
 

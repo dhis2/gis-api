@@ -10,7 +10,7 @@ const layerMixin = {
     },
 
     setIndex(index) {
-        if (index) {
+        if (typeof index === 'number') {
             this.getPane().style.zIndex = getZIndex(index);
             this.options.index = index;
         }

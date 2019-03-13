@@ -8,6 +8,7 @@ export const Circles = GeoJson.extend({
         style: {
             color: '#95c8fb',
             weight: 1,
+            pointerEvents: 'none',
         },
         opacityFactor: 0.2,
         highlightStyle: false,
