@@ -162,9 +162,10 @@ export class Map extends L.Evented {
 
         this._map.eachLayer(layer => {
             if (layer.options.index && !layer.feature && layer.getBounds) {
+
                 const layerBounds = layer.getBounds();
 
-                if (layerBounds.extend) { 
+                if (layerBounds && layerBounds.extend) { 
                     bounds.extend(layerBounds); // lat,lng format
                 } else if (Array.isArray(layerBounds)) {
                     bounds.extend(toLatLngBounds(layerBounds)); // lng,lat format
