@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import layerMixin from './layerMixin';
-import { Circles } from './Circles';
+// import { Circles } from './Circles';
 import { LabelGroup } from './LabelGroup';
 import { toLngLatBounds } from '../utils/geometry';
 
@@ -19,6 +19,7 @@ export const FeatureGroup = L.FeatureGroup.extend({
         const { buffer, bufferStyle, data, pane, opacity, isVisible } = this.options;
 
         if (buffer) {
+            /*
             const bufferLayer = new Circles({
                 pane: `${pane}-buffer`,
                 radius: buffer,
@@ -29,6 +30,7 @@ export const FeatureGroup = L.FeatureGroup.extend({
             });
 
             this.addLayer(bufferLayer);
+        */
         }
     },
 
