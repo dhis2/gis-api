@@ -1,8 +1,8 @@
 import L from 'leaflet';
 import layerMixin from './layerMixin';
-import { FeatureGroup } from './FeatureGroup';
+// import { FeatureGroup } from './FeatureGroup';
 
-console.log('FeatureGroup', FeatureGroup);
+// console.log('FeatureGroup', FeatureGroup);
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
