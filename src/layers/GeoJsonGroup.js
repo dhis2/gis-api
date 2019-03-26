@@ -1,7 +1,7 @@
 import { FeatureGroup } from './FeatureGroup';
 import { GeoJson } from './GeoJson';
 
-// Markers layer with labels and buffers
+// GeoJSON layer with labels and buffers
 export const GeoJsonGroup = FeatureGroup.extend({
     initialize(options) {
         FeatureGroup.prototype.initialize.call(this, options);
