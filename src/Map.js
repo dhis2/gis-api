@@ -2,7 +2,7 @@ import L from 'leaflet';
 import tileLayer from './layers/TileLayer';
 import wmsLayer from './layers/WmsLayer';
 import googleLayer from './layers/GoogleLayer';
-import geoJson from './layers/GeoJson';
+import geoJson from './layers/GeoJsonGroup';
 import boundary from './layers/Boundary';
 import dots from './layers/Dots';
 import markers from './layers/Markers';

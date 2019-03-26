@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {GeoJson} from '../GeoJson';
+import { GeoJson } from '../GeoJson';
 
 
 describe('DHIS2 GeoJSON layer', () => {
