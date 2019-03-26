@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import layerMixin from './layerMixin';
+// import { FeatureGroup } from './FeatureGroup';
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
@@ -151,6 +152,19 @@ export const GeoJson = L.GeoJSON.extend({
         this.options.onRightClick({ type, coordinates, position, feature });
     },
 });
+
+// Markers layer with labels and buffers
+/*
+export const GeoJsonGroup = FeatureGroup.extend({
+    initialize(options) {
+        FeatureGroup.prototype.initialize.call(this, options);
+
+        this.addBuffers();
+        this.addLayer(new GeoJson(options));
+        this.addLabels();
+    },
+});
+*/
 
 export default function geoJson(options) {
     return new GeoJson(options);
