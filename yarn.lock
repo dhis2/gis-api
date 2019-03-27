@@ -103,10 +103,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@google/earthengine@^0.1.167":
-  version "0.1.167"
-  resolved "https://registry.yarnpkg.com/@google/earthengine/-/earthengine-0.1.167.tgz#8789b209c187bff662717f9cc093fe2a3c63c5f8"
-  integrity sha512-ZN/HKfFT/u6+rQfDwBecKT0ELsgw6T8AyT5RcbuyO6HUpvcjsCKvMdy7o+yiwHEnfQf52AS/Hx/aUlA3pRqJKw==
+"@google/earthengine@^0.1.172":
+  version "0.1.172"
+  resolved "https://registry.yarnpkg.com/@google/earthengine/-/earthengine-0.1.172.tgz#407e4273efc395d4b24bb4e33efaf4249a280314"
+  integrity sha512-QnQR2jUMlboWXHQfdTW0BdHxJ51GHv4E7ijUdtKCotCAlGU6kWnPk49XKxeT9N07m8gnvxxMedKhNm0U4tUh4g==
   dependencies:
     googleapis "^16.1.0"
     xmlhttprequest "^1.8.0"
