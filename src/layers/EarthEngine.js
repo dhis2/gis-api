@@ -1,8 +1,9 @@
 import L from 'leaflet';
-import ee from '@google/earthengine';
+// import ee from '@google/earthengine';
+// import ee from 'imports-loader?@google/earthengine';
 import layerMixin from './layerMixin';
 
-window.ee = ee; // Required to initalize the ee api
+// window.ee = ee; // Required to initalize the ee api
 
 // Leaflet plugin to add map layers from Google Earth Engine
 // LayerGroup is used as a Google Earth Engine visualization can consists of more than one tilelayer

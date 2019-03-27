@@ -1,6 +1,6 @@
 {
   "name": "@dhis2/gis-api",
-  "version": "32.0.11",
+  "version": "32.0.12",
   "description": "Maps API for DHIS2 based on Leaflet",
   "main": "lib/main/index.js",
   "scripts": {
@@ -60,7 +60,7 @@
     "expose-loader": "^0.7.4",
     "file-loader": "^1.1.6",
     "image-webpack-loader": "^4.1.0",
-    "imports-loader": "^0.7.1",
+    "imports-loader": "^0.8.0",
     "isparta-loader": "^2.0.0",
     "jest": "^22.2.2",
     "jest-enzyme": "^4.2.0",

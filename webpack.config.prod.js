@@ -5,7 +5,9 @@ webpackBaseConfig.entry = './src/index.js';
 webpackBaseConfig.output.libraryTarget = 'commonjs2';
 
 webpackBaseConfig.plugins = [
-
+    new webpack.ProvidePlugin({
+        'ee': '@google/earthengine',
+    }),
     // Replace any occurance of process.env.NODE_ENV with the string 'production'
     new webpack.DefinePlugin({
         'process.env': {
