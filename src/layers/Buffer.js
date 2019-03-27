@@ -4,7 +4,7 @@ import { GeoJson } from './GeoJson';
 
 export const Buffer = GeoJson.extend({
     options: {
-        radius: 1000,
+        buffer: 1000,
         style: {
             color: '#95c8fb',
             weight: 1,
@@ -12,6 +12,7 @@ export const Buffer = GeoJson.extend({
         },
         opacityFactor: 0.2,
         highlightStyle: false,
+        pane: 'buffers',
     },
 
     initialize(options = {}) {
