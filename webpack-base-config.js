@@ -45,6 +45,10 @@ module.exports = {
                 test: require.resolve('leaflet'),
                 loader: 'expose-loader?L',
             },
+            {  
+                test: require.resolve('@google/earthengine'),
+                loader: 'imports-loader?this=>window',
+            },
             /*
             {   // https://github.com/ljagis/leaflet-measure/issues/30
                 test: /leaflet-measure.+\.js$/,
