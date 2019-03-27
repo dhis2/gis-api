@@ -45,23 +45,12 @@ module.exports = {
                 test: require.resolve('leaflet'),
                 loader: 'expose-loader?L',
             },
-            {  
-                test: require.resolve('@google/earthengine'),
-                loader: 'imports-loader?this=>window',
-            },
-            /*
-            {   // https://github.com/ljagis/leaflet-measure/issues/30
-                test: /leaflet-measure.+\.js$/,
-                loader: 'transform/cacheable?brfs',
-            },
-            */
         ],
     },
     plugins: [
         new webpack.ProvidePlugin({
             'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch',
             'L': 'leaflet',
-            'ee': '@google/earthengine',
         }),
     ],
 };
