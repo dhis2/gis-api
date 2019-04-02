@@ -11,7 +11,16 @@ export const WmsLayer = L.TileLayer.WMS.extend({
             transparent: true,
         }, opts);
 
-        L.TileLayer.WMS.prototype.initialize.call(this, options.url, options);
+        L.TileLayer.WMS.prototype.initialize.call(this, options.url, {
+            ...options,
+            pane: options.id,
+        });
+    },
+
+    onAdd(map) {
+        L.TileLayer.WMS.prototype.onAdd.call(this, map);
+        this.setVisibility(this.options.isVisible);
+        this.setIndex(this.options.index);
     },
 });
 
