@@ -4,8 +4,8 @@ import wmsLayer from './layers/WmsLayer';
 import googleLayer from './layers/GoogleLayer';
 import geoJson from './layers/GeoJsonGroup';
 import boundary from './layers/Boundary';
-import dots from './layers/Dots';
 import markers from './layers/Markers';
+import events from './layers/Events';
 import choropleth from './layers/Choropleth';
 import clientCluster from './layers/ClientCluster';
 import serverCluster from './layers/ServerCluster';
@@ -27,10 +27,10 @@ export class Map extends L.Evented {
             tileLayer, // CartoDB basemap
             wmsLayer, // WMS layer
             googleLayer, // Google basemap
-            geoJson, // GeoJSON layer
+            geoJson, // GeoJSON layer 
             boundary, // Boundary layer
-            dots, // Event layer without clustering
             markers, // Facility layer
+            events, // Events and Tracked Entities layer 
             choropleth, // Thematic layer
             clientCluster, // Event layer
             serverCluster, // Event layer
