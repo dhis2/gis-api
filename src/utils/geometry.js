@@ -23,3 +23,14 @@ export const toLngLatBounds = (bounds) => {
         return [toLngLat(bounds.getSouthWest()), toLngLat(bounds.getNorthEast())];
     }
 };
+
+// Convert from GeoJSON coordinates to arrays of [lng,lat]
+export const coordsToLatLngs = (coords, levelsDeep) => {
+    const latlngs = [];
+
+    for (let i = 0, len = coords.length; i < len; i++) {
+        latlngs.push(levelsDeep ? coordsToLatLngs(coords[i], levelsDeep - 1) : [coords[i][1], coords[i][0]]);
+    }
+
+    return latlngs;
+};
