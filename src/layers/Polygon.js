@@ -6,7 +6,10 @@ export const Polygon = L.Polygon.extend({
     initialize(feature, options) {
         const { type, coordinates } = feature.geometry;
         const latlngs = coordsToLatLngs(coordinates, type === 'Polygon' ? 1 : 2);
+
         L.Polygon.prototype.initialize.call(this, latlngs, options);
+        
+        this.feature = feature;
         this._latlng = this.getBounds().getCenter();
     },
 

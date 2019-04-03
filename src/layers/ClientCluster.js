@@ -46,7 +46,13 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     },
 
     onMarkerClick(evt) {
-        // evt.layer.showPopup(); // TODO
+        L.DomEvent.stopPropagation(evt);
+
+        const { type, layer, latlng } = evt;
+        const coordinates = [latlng.lng, latlng.lat];
+        const feature = layer.feature;
+
+        this.options.onClick({ type, coordinates, feature });
     },
 
     addData(data) {

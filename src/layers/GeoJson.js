@@ -19,7 +19,6 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     initialize(options) {
-
         L.GeoJSON.prototype.initialize.call(this, options.data, {
             pane: options.id,
             pointToLayer: this.pointToLayer.bind(this),
@@ -28,7 +27,7 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     addLayer(layer) {
-        const { label, hoverLabel, popup } = this.options;
+        const { label, hoverLabel } = this.options;
         const { properties } = layer.feature;
 
         if (hoverLabel || label) {
