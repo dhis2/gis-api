@@ -2,7 +2,20 @@ import { GeoJson } from './GeoJson';
 import { FeatureGroup } from './FeatureGroup';
 
 // Events and Tracked Entities layer
-export const Events = GeoJson.extend({});
+export const Events = GeoJson.extend({
+    addLayer(layer) {
+        const { geometry, properties } = layer.feature;
+
+        if (geometry.type !== 'Point' && properties.color) {
+            layer.setStyle({
+                color: properties.color,
+            });
+            // console.log('#', geometry, properties, this.options);
+        }
+
+        GeoJson.prototype.addLayer.call(this, layer);
+    },
+});
 
 // Choropleth layer with labels
 export const EventsGroup = FeatureGroup.extend({
