@@ -104,8 +104,12 @@ export const ServerCluster = L.GridLayer.extend({
                 }
                 this._spider = marker.spiderify();
             }
-        } else if (this.options.popup) { // Is single marker
-            marker.showPopup();
+        } else if (this.options.onClick) { // Is single marker
+            const { type, latlng } = evt;
+            const coordinates = [latlng.lng, latlng.lat];
+            const { feature } = marker;
+
+            this.options.onClick({ type, coordinates, feature });
         }
     },
 

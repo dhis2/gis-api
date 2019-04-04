@@ -6,18 +6,16 @@ export const Events = GeoJson.extend({
     addLayer(layer) {
         const { geometry, properties } = layer.feature;
 
+        // Set color from feature itself (points are handled CircleMarker.js)
         if (geometry.type !== 'Point' && properties.color) {
-            layer.setStyle({
-                color: properties.color,
-            });
-            // console.log('#', geometry, properties, this.options);
+            layer.setStyle({ color: properties.color });
         }
 
         GeoJson.prototype.addLayer.call(this, layer);
     },
 });
 
-// Choropleth layer with labels
+// Event layer with buffers
 export const EventsGroup = FeatureGroup.extend({
     initialize(options) {
         FeatureGroup.prototype.initialize.call(this, options);

@@ -28,7 +28,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     addLayer(layer) {
         const { label, hoverLabel } = this.options;
-        const { properties } = layer.feature;
+        const { geometry, properties } = layer.feature;
 
         if (hoverLabel || label) {
             const tooltip = L.Util.template(hoverLabel || label, properties);
@@ -37,13 +37,16 @@ export const GeoJson = L.GeoJSON.extend({
             });
         }
 
+        if (geometry.type !== 'Point' && properties.color) {
+            layer.setStyle({ color: properties.color });
+        }
+
         L.GeoJSON.prototype.addLayer.call(this, layer);
     },
 
     // Use circle markers for point features
     pointToLayer(feature) {
-        this.options.style.pane = this.options.pane;
-        return circleMarker(feature, this.options.style);
+        return circleMarker(feature, this.options);
     },
 
     setOpacity(opacity) {
