@@ -1,6 +1,9 @@
 import L from 'leaflet';
 import { coordsToLatLngs } from '../utils/geometry';
 
+// Polygon created from a GeoJSON feature
+// Includes the required methods to support polygons in client clusters
+// When clustered, the center of the polygon bounds is used
 export const Polygon = L.Polygon.extend({
 
     initialize(feature, options) {

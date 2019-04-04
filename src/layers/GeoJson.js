@@ -28,17 +28,13 @@ export const GeoJson = L.GeoJSON.extend({
 
     addLayer(layer) {
         const { label, hoverLabel } = this.options;
-        const { geometry, properties } = layer.feature;
+        const { properties } = layer.feature;
 
         if (hoverLabel || label) {
             const tooltip = L.Util.template(hoverLabel || label, properties);
             layer.bindTooltip(tooltip, {
                 sticky: true,
             });
-        }
-
-        if (geometry.type !== 'Point' && properties.color) {
-            layer.setStyle({ color: properties.color });
         }
 
         L.GeoJSON.prototype.addLayer.call(this, layer);

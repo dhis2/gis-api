@@ -50,7 +50,7 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
 
         const { type, layer, latlng } = evt;
         const coordinates = [latlng.lng, latlng.lat];
-        const feature = layer.feature;
+        const { feature } = layer;
 
         this.options.onClick({ type, coordinates, feature });
     },
