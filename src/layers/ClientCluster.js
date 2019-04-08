@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import clusterIcon from './ClusterIcon';
 import circleMarker from './CircleMarker';
+import polygon from './Polygon';
 import { scaleLog } from 'd3-scale';
 import 'leaflet.markercluster'; // Extends L above
 import layerMixin from './layerMixin';
@@ -45,7 +46,13 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
     },
 
     onMarkerClick(evt) {
-        evt.layer.showPopup();
+        L.DomEvent.stopPropagation(evt);
+
+        const { type, layer, latlng } = evt;
+        const coordinates = [latlng.lng, latlng.lat];
+        const { feature } = layer;
+
+        this.options.onClick({ type, coordinates, feature });
     },
 
     addData(data) {
@@ -54,7 +61,9 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         if (data.length) {
             options.domain = [1, data.length];
             options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
-            this.addLayers(data.map(d => circleMarker(d, options)));
+            this.addLayers(data.map(f => 
+                f.geometry.type === 'Point' ? circleMarker(f, options) : polygon(f, options)
+            ));
         }
     },
 

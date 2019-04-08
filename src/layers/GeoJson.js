@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import circleMarker from './CircleMarker';
 import layerMixin from './layerMixin';
 
 // Base class for most vector layers
@@ -7,7 +8,7 @@ export const GeoJson = L.GeoJSON.extend({
 
     options: {
         style: {
-            weight: 1
+            weight: 1,
         },
         highlightStyle: {
             weight: 3,
@@ -26,7 +27,7 @@ export const GeoJson = L.GeoJSON.extend({
     },
 
     addLayer(layer) {
-        const { label, hoverLabel, popup } = this.options;
+        const { label, hoverLabel } = this.options;
         const { properties } = layer.feature;
 
         if (hoverLabel || label) {
@@ -36,17 +37,12 @@ export const GeoJson = L.GeoJSON.extend({
             });
         }
 
-        if (popup && !(popup instanceof Function)) {
-            layer.bindPopup(L.Util.template(popup, properties));
-        }
-
         L.GeoJSON.prototype.addLayer.call(this, layer);
     },
 
     // Use circle markers for point features
-    pointToLayer(geojson, latlng) {
-        this.options.style.pane = this.options.pane;
-        return new L.CircleMarker(latlng, this.options.style);
+    pointToLayer(feature) {
+        return circleMarker(feature, this.options);
     },
 
     setOpacity(opacity) {

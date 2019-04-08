@@ -1,11 +1,10 @@
 import L from 'leaflet';
 
 // Creates a circle marker from a GeoJSON feature
-// Used for dots, client and server cluster
+// Used for GeoJSON, client and server cluster
 export const CircleMarker = L.CircleMarker.extend({
 
     options: {
-        strokeColor: '#fff',
         weight: 0.5,
         radius: 6,
     },
@@ -13,28 +12,12 @@ export const CircleMarker = L.CircleMarker.extend({
     initialize(feature, opts) {
         const options = L.setOptions(this, opts);
 
-        options.fillColor = feature.properties.color || options.color;
+        options.color = feature.properties.color || options.color;
         options.fillOpacity = options.opacity;
-        options.color = options.strokeColor;
 
-        this._feature = feature;
+        this.feature = feature;
         this._latlng = L.GeoJSON.coordsToLatLng(feature.geometry.coordinates);
         this._radius = this.options.radius;
-    },
-
-    getFeature() {
-        return this._feature;
-    },
-
-    showPopup(content) {
-        const popup = content || this.options.popup;
-        if (typeof popup === 'string') { // Template string
-            this.bindPopup(L.Util.template(popup, this._feature.properties)).openPopup();
-        } else if (popup instanceof Function) { // Function returning string
-            popup(this._feature, L.bind(function show(response) {
-                this.bindPopup(response).openPopup();
-            }, this));
-        }
     },
 
     setOpacity(opacity) {

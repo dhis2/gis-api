@@ -27,6 +27,18 @@ export const Buffer = GeoJson.extend({
         GeoJson.prototype.initialize.call(this, options);
     },
 
+    // Set color from feature
+    addLayer(layer) {
+        const { feature } = layer;
+        const { color } = feature.properties;
+
+        if (color && layer.setStyle) {
+            layer.setStyle({ color });
+        }
+
+        GeoJson.prototype.addLayer.call(this, layer);
+    },
+
     pointToLayer(geojson, latlng) {
         this.options.style.pane = this.options.pane;
 
