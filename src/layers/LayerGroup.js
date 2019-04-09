@@ -21,15 +21,15 @@ export const LayerGroup = L.LayerGroup.extend({
   },
 
   addLayer(options) {
-    const { pane, opacity, isVisible } = this.options;
+    const { id, opacity, isVisible } = this.options;
 
     const layerType = layerTypes[options.type];
     if (layerType) {
       const layer = layerType({
         ...options,
+        id: `${id}-${this._current_index}`,
         opacity,
-        isVisible,
-        pane: `${pane}-${this._current_index}`
+        isVisible
       });
       L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -68,6 +68,7 @@ export const LayerGroup = L.LayerGroup.extend({
 
   onAdd(map) {
     L.LayerGroup.prototype.onAdd.call(this, map);
+    this._map = map;
     this.setIndex(this.options.index);
   }
 });
