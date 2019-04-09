@@ -1,5 +1,6 @@
 import L from "leaflet";
 import layerMixin from "./layerMixin";
+import circleMarker from "./CircleMarker";
 
 // Base class for most vector layers
 export const GeoJson = L.GeoJSON.extend({
@@ -36,17 +37,12 @@ export const GeoJson = L.GeoJSON.extend({
       });
     }
 
-    if (popup && !(popup instanceof Function)) {
-      layer.bindPopup(L.Util.template(popup, properties));
-    }
-
     L.GeoJSON.prototype.addLayer.call(this, layer);
   },
 
   // Use circle markers for point features
-  pointToLayer(geojson, latlng) {
-    this.options.style.pane = this.options.pane;
-    return new L.CircleMarker(latlng, this.options.style);
+  pointToLayer(feature) {
+    return circleMarker(feature, this.options);
   },
 
   setOpacity(opacity) {

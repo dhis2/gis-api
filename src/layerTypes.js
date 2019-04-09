@@ -3,7 +3,7 @@ import wmsLayer from "./layers/WmsLayer";
 import googleLayer from "./layers/GoogleLayer";
 import geoJson from "./layers/GeoJsonGroup";
 import boundary from "./layers/Boundary";
-import dots from "./layers/Dots";
+import events from "./layers/Events";
 import markers from "./layers/Markers";
 import choropleth from "./layers/Choropleth";
 import clientCluster from "./layers/ClientCluster";
@@ -17,7 +17,7 @@ export default {
   googleLayer, // Google basemap
   geoJson, // GeoJSON layer
   boundary, // Boundary layer
-  dots, // Event layer without clustering
+  events, // Event layer without clustering
   markers, // Facility layer
   choropleth, // Thematic layer
   clientCluster, // Event layer

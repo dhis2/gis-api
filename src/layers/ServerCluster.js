@@ -2,6 +2,7 @@ import L from 'leaflet';
 import { scaleLog } from 'd3-scale';
 import clusterMarker from './ClusterMarker';
 import circleMarker from './CircleMarker';
+import polygon from './Polygon';
 import layerMixin from './layerMixin';
 import { toLngLatBounds } from '../utils/geometry';
 
@@ -104,8 +105,12 @@ export const ServerCluster = L.GridLayer.extend({
                 }
                 this._spider = marker.spiderify();
             }
-        } else if (this.options.popup) { // Is single marker
-            marker.showPopup();
+        } else if (this.options.onClick) { // Is single marker
+            const { type, latlng } = evt;
+            const coordinates = [latlng.lng, latlng.lat];
+            const { feature } = marker;
+
+            this.options.onClick({ type, coordinates, feature });
         }
     },
 
@@ -126,10 +131,11 @@ export const ServerCluster = L.GridLayer.extend({
 
     // Create cluster or circle marker
     createCluster(feature) {
+        const { options } = this;
         let marker;
 
         if (feature.properties.count === 1) {
-            marker = circleMarker(feature, this.options);
+            marker = feature.geometry.type === 'Point' ? circleMarker(feature, options) : polygon(feature, options);
         } else {
             feature.properties.size = this._scale(feature.properties.count);
             marker = clusterMarker(feature, this.options);
