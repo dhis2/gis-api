@@ -7,6 +7,7 @@ import measure from "./controls/Measure";
 import {
   toLatLng,
   toLatLngBounds,
+  toLngLatBounds,
   getBoundsFromLayers
 } from "./utils/geometry";
 
@@ -140,7 +141,7 @@ export class Map extends L.Evented {
 
   // Returns the combined bounds for all vector layers
   getLayersBounds() {
-    return getBoundsFromLayers(this.getLayers());
+    return toLngLatBounds(getBoundsFromLayers(this.getLayers()));
   }
 
   // Returns true if the layer type is supported

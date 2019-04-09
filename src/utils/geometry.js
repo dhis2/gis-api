@@ -42,6 +42,6 @@ export const getBoundsFromLayers = layers => {
   });
 
   if (bounds.isValid()) {
-    return toLngLatBounds(bounds);
+    return bounds;
   }
 };

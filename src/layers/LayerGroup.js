@@ -1,7 +1,7 @@
 import L from "leaflet";
 import layerMixin from "./layerMixin";
 import layerTypes from "../layerTypes";
-import { getBoundsFromLayers } from "../utils/geometry";
+import { getBoundsFromLayers, toLngLatBounds } from "../utils/geometry";
 
 export const LayerGroup = L.LayerGroup.extend({
   ...layerMixin,
@@ -46,7 +46,6 @@ export const LayerGroup = L.LayerGroup.extend({
 
     this.getLayers().forEach((layer, i) => {
       if (layer.getPane()) {
-        // TODO: This might not work!
         layer.getPane().style.zIndex = zIndex + i;
       }
     });
@@ -63,7 +62,7 @@ export const LayerGroup = L.LayerGroup.extend({
   },
 
   getBounds() {
-    return getBoundsFromLayers(this.getLayers());
+    return toLngLatBounds(getBoundsFromLayers(this.getLayers()));
   },
 
   onAdd(map) {

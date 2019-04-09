@@ -54,11 +54,10 @@ export const FitBounds = L.Control.extend({
   _getLayersBounds() {
     const layers = [];
     this._map.eachLayer(layer => {
-      if (this._isMainLayer) {
+      if (this._isMainLayer(layer)) {
         layers.push(layer);
       }
     });
-    console.log(layers);
     return getBoundsFromLayers(layers);
   },
 
