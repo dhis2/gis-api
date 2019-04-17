@@ -9,6 +9,7 @@ export const GeoJson = L.GeoJSON.extend({
     options: {
         style: {
             weight: 1,
+            color: '#fff',
         },
         highlightStyle: {
             weight: 3,

@@ -1,11 +1,11 @@
-import L from 'leaflet';
-import clusterIcon from './ClusterIcon';
-import circleMarker from './CircleMarker';
-import polygon from './Polygon';
-import { scaleLog } from 'd3-scale';
-import 'leaflet.markercluster'; // Extends L above
-import layerMixin from './layerMixin';
-import { toLngLatBounds } from '../utils/geometry';
+import L from 'leaflet'
+import clusterIcon from './ClusterIcon'
+import circleMarker from './CircleMarker'
+import polygon from './Polygon'
+import { scaleLog } from 'd3-scale'
+import 'leaflet.markercluster' // Extends L above
+import layerMixin from './layerMixin'
+import { toLngLatBounds } from '../utils/geometry'
 
 export const ClientCluster = L.MarkerClusterGroup.extend({
     ...layerMixin,
@@ -14,16 +14,16 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         maxClusterRadius: 40,
         showCoverageOnHover: false,
         iconCreateFunction(cluster) {
-            const count = cluster.getChildCount();
+            const count = cluster.getChildCount()
 
-            cluster.options.opacity = this.opacity;
+            cluster.options.opacity = this.opacity
 
             return clusterIcon({
-                color: this.color,
+                color: this.fillColor,
                 opacity: this.opacity,
                 size: this.scale(count),
                 count,
-            });
+            })
         },
         domain: [1, 1000],
         range: [16, 40],
@@ -34,55 +34,62 @@ export const ClientCluster = L.MarkerClusterGroup.extend({
         const options = L.setOptions(this, {
             ...opts,
             pane: opts.id,
-        });
+        })
 
-        L.MarkerClusterGroup.prototype.initialize.call(this, options);
+        L.MarkerClusterGroup.prototype.initialize.call(this, options)
 
         if (options.data) {
-            this.addData(options.data);
+            this.addData(options.data)
         }
 
-        this.on('click', this.onMarkerClick, this);
+        this.on('click', this.onMarkerClick, this)
     },
 
     onMarkerClick(evt) {
-        L.DomEvent.stopPropagation(evt);
+        L.DomEvent.stopPropagation(evt)
 
-        const { type, layer, latlng } = evt;
-        const coordinates = [latlng.lng, latlng.lat];
-        const { feature } = layer;
+        const { type, layer, latlng } = evt
+        const coordinates = [latlng.lng, latlng.lat]
+        const { feature } = layer
 
-        this.options.onClick({ type, coordinates, feature });
+        this.options.onClick({ type, coordinates, feature })
     },
 
     addData(data) {
-        const options = this.options;
+        const options = this.options
 
         if (data.length) {
-            options.domain = [1, data.length];
-            options.scale = scaleLog().domain(options.domain).range(options.range).clamp(true);
-            this.addLayers(data.map(f => 
-                f.geometry.type === 'Point' ? circleMarker(f, options) : polygon(f, options)
-            ));
+            options.domain = [1, data.length]
+            options.scale = scaleLog()
+                .domain(options.domain)
+                .range(options.range)
+                .clamp(true)
+            this.addLayers(
+                data.map(f =>
+                    f.geometry.type === 'Point'
+                        ? circleMarker(f, options)
+                        : polygon(f, options)
+                )
+            )
         }
     },
 
     setOpacity(opacity) {
-        this.options.opacity = opacity;
-        this.eachLayer(layer => layer.setOpacity(opacity)); // Circle markers
-        this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)); // Cluster markers
+        this.options.opacity = opacity
+        this.eachLayer(layer => layer.setOpacity(opacity)) // Circle markers
+        this._featureGroup.eachLayer(layer => layer.setOpacity(opacity)) // Cluster markers
     },
 
     // Convert bounds before returning
     getBounds() {
-        const bounds = L.MarkerClusterGroup.prototype.getBounds.call(this);
+        const bounds = L.MarkerClusterGroup.prototype.getBounds.call(this)
 
         if (bounds.isValid()) {
-            return toLngLatBounds(bounds);
+            return toLngLatBounds(bounds)
         }
     },
-});
+})
 
 export default function clientCluster(options) {
-    return new ClientCluster(options);
+    return new ClientCluster(options)
 }

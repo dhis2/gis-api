@@ -1,113 +1,121 @@
 // Custom cluster marker used for server clusters
-import L from 'leaflet';
-import clusterIcon from './ClusterIcon';
-import circleMarker from './CircleMarker';
+import L from 'leaflet'
+import clusterIcon from './ClusterIcon'
+import circleMarker from './CircleMarker'
 
 export const ClusterMarker = L.Marker.extend({
-
     initialize(feature, options) {
-        this._feature = feature;
-        this._latlng = L.GeoJSON.coordsToLatLng(feature.geometry.coordinates);
+        this._feature = feature
+        this._latlng = L.GeoJSON.coordsToLatLng(feature.geometry.coordinates)
 
         options.icon = clusterIcon({
             size: feature.properties.size,
             count: feature.properties.count,
-            color: options.color,
-        });
+            color: options.fillColor,
+        })
 
-        L.setOptions(this, options);
+        L.setOptions(this, options)
     },
 
     getFeature() {
-        return this._feature;
+        return this._feature
     },
 
     getBounds() {
-        return this._feature.properties.bounds;
+        return this._feature.properties.bounds
     },
 
     spiderify() {
         if (!this._spiderified) {
-            const feature = this._feature;
-            const options = this.options;
-            const map = this._map;
-            const latlng = this.getLatLng();
-            const center = map.latLngToLayerPoint(latlng);
-            const ids = (this._feature.id || '').split(',');
-            const count = feature.properties.count;
-            const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 };
-            const _2PI = Math.PI * 2;
-            const circumference = 13 * (2 + count);
-            const startAngle = Math.PI / 6;
-            const legLength = circumference / _2PI;
-            const angleStep = _2PI / count;
+            const feature = this._feature
+            const options = this.options
+            const map = this._map
+            const latlng = this.getLatLng()
+            const center = map.latLngToLayerPoint(latlng)
+            const ids = (this._feature.id || '').split(',')
+            const count = feature.properties.count
+            const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 }
+            const _2PI = Math.PI * 2
+            const circumference = 13 * (2 + count)
+            const startAngle = Math.PI / 6
+            const legLength = circumference / _2PI
+            const angleStep = _2PI / count
 
-            this._spiderLegs = L.featureGroup();
-            this._spiderMarkers = L.featureGroup();
+            this._spiderLegs = L.featureGroup()
+            this._spiderMarkers = L.featureGroup()
 
-            this._spiderMarkers.on('click', this.onSpiderMarkerClick, this);
+            this._spiderMarkers.on('click', this.onSpiderMarkerClick, this)
 
             for (let i = count - 1, angle, point, id, newPos; i >= 0; i--) {
-                angle = startAngle + (i * angleStep);
-                point = L.point(center.x + (legLength * Math.cos(angle)), center.y + (legLength * Math.sin(angle)))._round(); // eslint-disable-line
-                id = ids[i];
-                newPos = map.layerPointToLatLng(point);
+                angle = startAngle + i * angleStep
+                point = L.point(
+                    center.x + legLength * Math.cos(angle),
+                    center.y + legLength * Math.sin(angle)
+                )._round() // eslint-disable-line
+                id = ids[i]
+                newPos = map.layerPointToLatLng(point)
 
-                this._spiderLegs.addLayer(L.polyline([latlng, newPos], legOptions));
+                this._spiderLegs.addLayer(
+                    L.polyline([latlng, newPos], legOptions)
+                )
 
-                this._spiderMarkers.addLayer(circleMarker({
-                    id,
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [newPos.lng, newPos.lat],
-                    },
-                }, this.options));
+                this._spiderMarkers.addLayer(
+                    circleMarker(
+                        {
+                            id,
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [newPos.lng, newPos.lat],
+                            },
+                        },
+                        this.options
+                    )
+                )
             }
 
-            this._spiderLegs.addTo(map);
-            this._spiderMarkers.addTo(map);
+            this._spiderLegs.addTo(map)
+            this._spiderMarkers.addTo(map)
 
-            this._originalOpacity = options.opacity;
-            this.setOpacity(0.1);
-            this._spiderified = true;
+            this._originalOpacity = options.opacity
+            this.setOpacity(0.1)
+            this._spiderified = true
         }
 
-        return this;
+        return this
     },
 
     unspiderify() {
-        const map = this._map;
+        const map = this._map
 
-        this.setOpacity(this._originalOpacity);
+        this.setOpacity(this._originalOpacity)
 
         if (this._spiderLegs && map.hasLayer(this._spiderLegs)) {
-            map.removeLayer(this._spiderLegs);
+            map.removeLayer(this._spiderLegs)
         }
 
         if (this._spiderMarkers && map.hasLayer(this._spiderMarkers)) {
-            map.removeLayer(this._spiderMarkers);
-            this._spiderMarkers.off('click', this.onSpiderMarkerClick, this);
+            map.removeLayer(this._spiderMarkers)
+            this._spiderMarkers.off('click', this.onSpiderMarkerClick, this)
         }
 
-        this._spiderified = false;
+        this._spiderified = false
 
-        return this;
+        return this
     },
 
     onSpiderMarkerClick(evt) {
-        evt.layer.showPopup();
+        evt.layer.showPopup()
     },
 
     onRemove(map) {
         if (this._spiderified) {
-            this.unspiderify();
+            this.unspiderify()
         }
-        L.Marker.prototype.onRemove.call(this, map);
+        L.Marker.prototype.onRemove.call(this, map)
     },
-
-});
+})
 
 export default function clusterMarker(feature, options) {
-    return new ClusterMarker(feature, options);
+    return new ClusterMarker(feature, options)
 }
