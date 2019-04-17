@@ -1,81 +1,81 @@
 {
-  "name": "@dhis2/gis-api",
-  "version": "32.0.19",
-  "description": "Maps API for DHIS2 based on Leaflet",
-  "main": "lib/main/index.js",
-  "scripts": {
-    "start": "webpack-dev-server",
-    "coverage": "npm test -- --coverage",
-    "test": "jest",
-    "test:watch": "yarn test -- --watch",
-    "prebuild": "yarn test",
-    "build": "webpack --config webpack.config.prod.js && cp ./package.json ./build/package.json",
-    "validate": "npm ls --depth 0 || yarn list",
-    "lint": "eslint ./src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dhis2/gis-api.git"
-  },
-  "keywords": [
-    "DHIS2",
-    "HISP",
-    "GIS"
-  ],
-  "author": "Bjørn Sandvik",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/dhis2/gis-api/issues"
-  },
-  "homepage": "https://github.com/dhis2/gis-api#readme",
-  "dependencies": {
-    "@google/earthengine": "^0.1.172",
-    "@mapbox/geojson-area": "^0.2.2",
-    "@mapbox/polylabel": "^1.0.2",
-    "@turf/buffer": "^5.1.5",
-    "d3-color": "^1.2.3",
-    "d3-scale": "^2.2.2",
-    "leaflet": "^1.4.0",
-    "leaflet-control-geocoder": "^1.6.0",
-    "leaflet-measure": "3.1.0",
-    "leaflet.gridlayer.googlemutant": "^0.8.0",
-    "leaflet.markercluster": "^1.4.1",
-    "whatwg-fetch": "^3.0.0"
-  },
-  "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.1",
-    "babel-loader": "^7.1.2",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^0.28.9",
-    "enzyme": "3.3.0",
-    "eslint": "^4.17.0",
-    "eslint-config-dhis2": "^3.0.7",
-    "eslint-plugin-react": "^7.6.1",
-    "exports-loader": "^0.7.0",
-    "expose-loader": "^0.7.4",
-    "file-loader": "^1.1.6",
-    "image-webpack-loader": "^4.1.0",
-    "imports-loader": "^0.8.0",
-    "isparta-loader": "^2.0.0",
-    "jest": "^22.2.2",
-    "jest-enzyme": "^4.2.0",
-    "node-sass": "^4.7.2",
-    "precommit-hook": "3.0.0",
-    "sass-loader": "^6.0.6",
-    "script-loader": "^0.7.2",
-    "style-loader": "^0.20.1",
-    "susy": "^3.0.3",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.1"
-  },
-  "pre-commit": [
-    "validate",
-    "test"
-  ]
+    "name": "@dhis2/gis-api",
+    "version": "32.0.20",
+    "description": "Maps API for DHIS2 based on Leaflet",
+    "main": "lib/main/index.js",
+    "scripts": {
+        "start": "webpack-dev-server",
+        "coverage": "npm test -- --coverage",
+        "test": "jest",
+        "test:watch": "yarn test -- --watch",
+        "prebuild": "yarn test",
+        "build": "webpack --config webpack.config.prod.js && cp ./package.json ./build/package.json",
+        "validate": "npm ls --depth 0 || yarn list",
+        "lint": "eslint ./src"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dhis2/gis-api.git"
+    },
+    "keywords": [
+        "DHIS2",
+        "HISP",
+        "GIS"
+    ],
+    "author": "Bjørn Sandvik",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/dhis2/gis-api/issues"
+    },
+    "homepage": "https://github.com/dhis2/gis-api#readme",
+    "dependencies": {
+        "@google/earthengine": "^0.1.172",
+        "@mapbox/geojson-area": "^0.2.2",
+        "@mapbox/polylabel": "^1.0.2",
+        "@turf/buffer": "^5.1.5",
+        "d3-color": "^1.2.3",
+        "d3-scale": "^2.2.2",
+        "leaflet": "^1.4.0",
+        "leaflet-control-geocoder": "^1.6.0",
+        "leaflet-measure": "3.1.0",
+        "leaflet.gridlayer.googlemutant": "^0.8.0",
+        "leaflet.markercluster": "^1.4.1",
+        "whatwg-fetch": "^3.0.0"
+    },
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-core": "^6.26.0",
+        "babel-eslint": "^8.2.1",
+        "babel-loader": "^7.1.2",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",
+        "css-loader": "^0.28.9",
+        "enzyme": "3.3.0",
+        "eslint": "^4.17.0",
+        "eslint-config-dhis2": "^3.0.7",
+        "eslint-plugin-react": "^7.6.1",
+        "exports-loader": "^0.7.0",
+        "expose-loader": "^0.7.4",
+        "file-loader": "^1.1.6",
+        "image-webpack-loader": "^4.1.0",
+        "imports-loader": "^0.8.0",
+        "isparta-loader": "^2.0.0",
+        "jest": "^22.2.2",
+        "jest-enzyme": "^4.2.0",
+        "node-sass": "^4.7.2",
+        "precommit-hook": "3.0.0",
+        "sass-loader": "^6.0.6",
+        "script-loader": "^0.7.2",
+        "style-loader": "^0.20.1",
+        "susy": "^3.0.3",
+        "url-loader": "^0.6.2",
+        "webpack": "^3.11.0",
+        "webpack-dev-server": "^2.11.1"
+    },
+    "pre-commit": [
+        "validate",
+        "test"
+    ]
 }
