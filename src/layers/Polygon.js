@@ -5,16 +5,21 @@ import { coordsToLatLngs } from '../utils/geometry';
 // Includes the required methods to support polygons in client clusters
 // When clustered, the center of the polygon bounds is used
 export const Polygon = L.Polygon.extend({
+    options: {
+        color: '#fff',
+        weight: 0.5,
+    },
 
-    initialize(feature, options) {
+    initialize(feature, opts) {
+        const options = L.setOptions(this, opts)
+
         const { type, coordinates } = feature.geometry;
         const latlngs = coordsToLatLngs(coordinates, type === 'Polygon' ? 1 : 2);
 
-        L.Polygon.prototype.initialize.call(this, latlngs, {
-            ...options,
-            color: feature.properties.color || options.color,
-            fillOpacity: options.opacity,
-        });
+        options.fillColor = feature.properties.color || options.fillColor
+        options.fillOpacity = options.opacity
+
+        L.Polygon.prototype.initialize.call(this, latlngs, options);
 
         this.feature = feature;
         this._latlng = this.getBounds().getCenter();
