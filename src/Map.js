@@ -162,8 +162,14 @@ export class Map extends L.Evented {
         this._map.invalidateSize()
     }
 
+    // Synchronize the view of two maps
     sync(map) {
-        this._map.sync(map.getLeafletMap())
+        this.getLeafletMap().sync(map.getLeafletMap())
+    }
+
+    // Remove synchronize between two maps
+    unsync(map) {
+        this.getLeafletMap().sync(map.getLeafletMap())
     }
 
     onClick(evt) {
