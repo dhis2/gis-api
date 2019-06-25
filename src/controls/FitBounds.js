@@ -21,7 +21,6 @@ export const FitBounds = L.Control.extend({
     onRemove(map) {
         map.off('layeradd', this._onLayerChange, this)
         map.off('layerremove', this._onLayerChange, this)
-        L.Control.prototype.onRemove.call(this, map)
     },
 
     _initLayout() {

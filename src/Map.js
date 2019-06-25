@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import 'leaflet.sync';
+import 'leaflet.sync'
 import layerTypes from './layerTypes'
 import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
