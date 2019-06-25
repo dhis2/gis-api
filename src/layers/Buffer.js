@@ -1,4 +1,3 @@
-import L from 'leaflet'
 import turfBuffer from '@turf/buffer'
 import { GeoJson } from './GeoJson'
 import { Circle } from './Circle'
