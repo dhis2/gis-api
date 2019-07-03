@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import 'leaflet.sync'
+import './utils/L.Map.Sync'
 import layerTypes from './layerTypes'
 import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
@@ -162,14 +162,14 @@ export class Map extends L.Evented {
         this._map.invalidateSize()
     }
 
-    // Synchronize the view of two maps
-    sync(map) {
-        this.getLeafletMap().sync(map.getLeafletMap())
+    // Synchronize this map with other maps with the same id
+    sync(id) {
+        this._map.sync(id)
     }
 
-    // Remove synchronize between two maps
-    unsync(map) {
-        this.getLeafletMap().sync(map.getLeafletMap())
+    // Remove synchronize of this map
+    unsync(id) {
+        this._map.unsync(id)
     }
 
     onClick(evt) {
