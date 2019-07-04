@@ -1,6 +1,6 @@
 import L from 'leaflet'
 import './utils/L.Map.Sync'
-import './controls/L.Control.Zoom'
+// import './controls/L.Control.Zoom'
 import layerTypes from './layerTypes'
 import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
@@ -35,6 +35,7 @@ export class Map extends L.Evented {
         const options = L.setOptions(this, opts)
 
         this._layers = []
+        this._controls = {}
 
         const map = L.map(el, options)
         this._map = map
@@ -123,6 +124,11 @@ export class Map extends L.Evented {
         }
 
         this._map.addControl(newControl)
+
+        if (type) {
+            this._controls[type] = newControl
+        }
+
         return newControl
     }
 
@@ -149,17 +155,10 @@ export class Map extends L.Evented {
         return toLngLatBounds(getBoundsFromLayers(this.getLayers()))
     }
 
-    // Returns the attribution element
-    getAttribution() {
-        if (this._map.attributionControl) {
-            return this._map.attributionControl._container
-        }
-    }
-
-    // Returns the zoom control element
-    getZoomControl() {
-        if (this._map.zoomControl) {
-            return this._map.zoomControl._container
+    // Returns the dom element of the control
+    getControlContainer(type) {
+        if (this._controls[type]) {
+            return this._controls[type]._container
         }
     }
 
