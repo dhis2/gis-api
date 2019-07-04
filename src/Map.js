@@ -1,6 +1,5 @@
 import L from 'leaflet'
 import './utils/L.Map.Sync'
-// import './controls/L.Control.Zoom'
 import layerTypes from './layerTypes'
 import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
