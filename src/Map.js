@@ -1,5 +1,6 @@
 import L from 'leaflet'
 import './utils/L.Map.Sync'
+import './controls/L.Control.Zoom'
 import layerTypes from './layerTypes'
 import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
@@ -35,16 +36,19 @@ export class Map extends L.Evented {
 
         this._layers = []
 
-        this._map = L.map(el, options)
+        const map = L.map(el, options)
+        this._map = map
 
-        this._map.attributionControl.setPrefix('')
+        if (map.attributionControl) {
+            map.attributionControl.setPrefix('')
+        }
 
         L.DomUtil.addClass(this.getContainer(), options.className)
 
         L.Icon.Default.imagePath = '/images/'
 
         // Stop propagation to prevent dashboard dragging
-        this._map.on('mousedown', evt => evt.originalEvent.stopPropagation())
+        map.on('mousedown', evt => evt.originalEvent.stopPropagation())
 
         if (options.bounds) {
             this.fitBounds(options.bounds)
@@ -56,8 +60,8 @@ export class Map extends L.Evented {
             }
         }
 
-        this._map.on('click', evt => this.onClick(evt))
-        this._map.on('contextmenu', evt => this.onContextMenu(evt))
+        map.on('click', evt => this.onClick(evt))
+        map.on('contextmenu', evt => this.onContextMenu(evt))
     }
 
     getContainer() {
@@ -143,6 +147,20 @@ export class Map extends L.Evented {
     // Returns the combined bounds for all vector layers
     getLayersBounds() {
         return toLngLatBounds(getBoundsFromLayers(this.getLayers()))
+    }
+
+    // Returns the attribution element
+    getAttribution() {
+        if (this._map.attributionControl) {
+            return this._map.attributionControl._container
+        }
+    }
+
+    // Returns the zoom control element
+    getZoomControl() {
+        if (this._map.zoomControl) {
+            return this._map.zoomControl._container
+        }
     }
 
     // Returns true if the layer type is supported
