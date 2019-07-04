@@ -1,11 +1,12 @@
 // Place search control
-.leaflet-dhis2 {
+.leaflet-dhis2,
+.dhis2-map-split-view {
     &.leaflet-touch {
         .leaflet-control-geocoder {
             border: 0;
             min-width: 26px;
             min-height: 26px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
         }
 
         .leaflet-control-geocoder-icon {
