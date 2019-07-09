@@ -1,7 +1,6 @@
 import L from 'leaflet'
 import './utils/L.Map.Sync'
 import layerTypes from './layerTypes'
-import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
 import search from './controls/Search'
 import measure from './controls/Measure'
@@ -21,7 +20,6 @@ export class Map extends L.Evented {
         maxZoom: 18,
         layerTypes,
         controlTypes: {
-            legend,
             fitBounds,
             search,
             measure,

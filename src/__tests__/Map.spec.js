@@ -1,5 +1,5 @@
-import L from 'leaflet';
-import { Map } from '../Map';
+import L from 'leaflet'
+import { Map } from '../Map'
 
 describe('DHIS2 map', () => {
     /*
@@ -15,9 +15,9 @@ describe('DHIS2 map', () => {
     */
 
     it('should export the Map instance', () => {
-        const map = new Map(document.createElement('div'));
-        expect(map).toBeInstanceOf(Map);
-    });
+        const map = new Map(document.createElement('div'))
+        expect(map).toBeInstanceOf(Map)
+    })
 
     /*
     it('should have an addLayer method', () => {
@@ -102,11 +102,6 @@ describe('DHIS2 map', () => {
         expect(map.addControl).to.be.a('function');
     });
 
-    it('should create a L.Control from a legend config object', () => {
-        const layer = map.addControl({ type: 'legend' });
-        expect(layer).to.be.instanceOf(L.Control);
-    });
-
     it('should create a L.Control from a fit bounds config object', () => {
         const layer = map.addControl({ type: 'fitBounds' });
         expect(layer).to.be.instanceOf(L.Control);
@@ -128,6 +123,4 @@ describe('DHIS2 map', () => {
         expect(map.hasLayer('mapquest')).to.be.true;
     });
     */
-
-});
-
+})
