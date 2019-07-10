@@ -36,7 +36,7 @@ L.Map.include({
                 const changePos = oldPos.subtract(newPos)
 
                 syncedMaps.forEach(map => {
-                    if (map === origin) {
+                    if (map !== origin) {
                         const mapPos = getPosition(
                             map.dragging._draggable._element
                         )
