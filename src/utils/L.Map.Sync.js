@@ -9,12 +9,11 @@ L.Map.include({
     sync: function(id) {
         const { setView } = L.Map.prototype
         const origin = this
-        let syncedMaps = this._syncedMaps[id]
 
-        if (!syncedMaps) {
-            syncedMaps = []
-            this._syncedMaps[id] = syncedMaps
+        if (!this._syncedMaps[id]) {
+            this._syncedMaps[id] = []
         }
+        const syncedMaps = this._syncedMaps[id]
 
         if (!syncedMaps.includes(this)) {
             syncedMaps.push(this)
@@ -24,7 +23,6 @@ L.Map.include({
                     syncedMaps.forEach(map => {
                         setView.call(map, center, zoom, options)
                     }),
-                _onResize: evt => console.log,
             })
 
             // Override method to drag all synced maps at the same time
@@ -37,9 +35,8 @@ L.Map.include({
                 const newPos = getPosition(this._element)
                 const changePos = oldPos.subtract(newPos)
 
-                syncedMaps
-                    .filter(map => map !== origin)
-                    .forEach(map => {
+                syncedMaps.forEach(map => {
+                    if (map === origin) {
                         const mapPos = getPosition(
                             map.dragging._draggable._element
                         )
@@ -47,17 +44,20 @@ L.Map.include({
                             map.dragging._draggable._element,
                             mapPos.subtract(changePos)
                         )
-                    })
+                    }
+                })
             }
 
             this._onDragEndSync[id] = evt => {
-                const origin = evt.target
-                const center = origin.getCenter()
-                const zoom = origin.getZoom()
+                const { target } = evt
+                const center = target.getCenter()
+                const zoom = target.getZoom()
 
-                syncedMaps
-                    .filter(map => map !== origin)
-                    .forEach(map => setView.call(map, center, zoom, noAnimate))
+                syncedMaps.forEach(map => {
+                    if (map !== target) {
+                        setView.call(map, center, zoom, noAnimate)
+                    }
+                })
             }
 
             this.on('dragend', this._onDragEndSync[id])
@@ -68,11 +68,9 @@ L.Map.include({
         const syncedMaps = this._syncedMaps[id]
 
         if (syncedMaps) {
-            for (let i = 0; i < syncedMaps.length; i++) {
-                if (syncedMaps[i] === this) {
-                    syncedMaps.splice(i, 1)
-                    i--
-                }
+            const idx = syncedMaps.indexOf(this)
+            if (idx !== -1) {
+                syncedMaps.splice(idx, 1)
             }
 
             // Reset methods
