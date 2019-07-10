@@ -1,19 +1,19 @@
 .leaflet-dhis2 {
-  .leaflet-popup-content-wrapper {
-    border-radius: 0;
+    .leaflet-popup-content-wrapper {
+        border-radius: 0;
 
-    .leaflet-popup-content {
+        .leaflet-popup-content {
+            em {
+                font-style: normal;
+                font-weight: bold;
+            }
 
-      em {
-        font-style: normal;
-        font-weight: bold;
-      }
-
-      th {
-        white-space: nowrap;
-        vertical-align: top;
-      }
-
+            th {
+                white-space: nowrap;
+                vertical-align: top;
+                font-weight: bold;
+                padding-right: 5px;
+            }
+        }
     }
-  }
 }

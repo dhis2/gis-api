@@ -75,7 +75,7 @@ export const FitBounds = L.Control.extend({
     },
 
     _isMainLayer(layer) {
-        return Boolean(layer.options.index && !layer.feature)
+        return !layer.feature
     },
 
     // Only show control when map contains 'fittable' content

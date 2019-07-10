@@ -1,7 +1,6 @@
 import L from 'leaflet'
-import 'leaflet.sync'
+import './utils/L.Map.Sync'
 import layerTypes from './layerTypes'
-import legend from './controls/Legend'
 import fitBounds from './controls/FitBounds'
 import search from './controls/Search'
 import measure from './controls/Measure'
@@ -21,7 +20,6 @@ export class Map extends L.Evented {
         maxZoom: 18,
         layerTypes,
         controlTypes: {
-            legend,
             fitBounds,
             search,
             measure,
@@ -34,17 +32,21 @@ export class Map extends L.Evented {
         const options = L.setOptions(this, opts)
 
         this._layers = []
+        this._controls = {}
 
-        this._map = L.map(el, options)
+        const map = L.map(el, options)
+        this._map = map
 
-        this._map.attributionControl.setPrefix('')
+        if (map.attributionControl) {
+            map.attributionControl.setPrefix('')
+        }
 
         L.DomUtil.addClass(this.getContainer(), options.className)
 
         L.Icon.Default.imagePath = '/images/'
 
         // Stop propagation to prevent dashboard dragging
-        this._map.on('mousedown', evt => evt.originalEvent.stopPropagation())
+        map.on('mousedown', evt => evt.originalEvent.stopPropagation())
 
         if (options.bounds) {
             this.fitBounds(options.bounds)
@@ -56,8 +58,8 @@ export class Map extends L.Evented {
             }
         }
 
-        this._map.on('click', evt => this.onClick(evt))
-        this._map.on('contextmenu', evt => this.onContextMenu(evt))
+        map.on('click', evt => this.onClick(evt))
+        map.on('contextmenu', evt => this.onContextMenu(evt))
     }
 
     getContainer() {
@@ -119,6 +121,11 @@ export class Map extends L.Evented {
         }
 
         this._map.addControl(newControl)
+
+        if (type) {
+            this._controls[type] = newControl
+        }
+
         return newControl
     }
 
@@ -145,6 +152,13 @@ export class Map extends L.Evented {
         return toLngLatBounds(getBoundsFromLayers(this.getLayers()))
     }
 
+    // Returns the dom element of the control
+    getControlContainer(type) {
+        if (this._controls[type]) {
+            return this._controls[type]._container
+        }
+    }
+
     // Returns true if the layer type is supported
     hasLayerSupport(type) {
         return !!this.options.layerTypes[type]
@@ -162,14 +176,14 @@ export class Map extends L.Evented {
         this._map.invalidateSize()
     }
 
-    // Synchronize the view of two maps
-    sync(map) {
-        this.getLeafletMap().sync(map.getLeafletMap())
+    // Synchronize this map with other maps with the same id
+    sync(id) {
+        this._map.sync(id)
     }
 
-    // Remove synchronize between two maps
-    unsync(map) {
-        this.getLeafletMap().sync(map.getLeafletMap())
+    // Remove synchronize of this map
+    unsync(id) {
+        this._map.unsync(id)
     }
 
     onClick(evt) {
