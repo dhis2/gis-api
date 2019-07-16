@@ -159,6 +159,11 @@ export class Map extends L.Evented {
         }
     }
 
+    // Returns the map zoom level
+    getZoom() {
+        return this._map.getZoom()
+    }
+
     // Returns true if the layer type is supported
     hasLayerSupport(type) {
         return !!this.options.layerTypes[type]
