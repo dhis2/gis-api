@@ -35,6 +35,11 @@
         border-radius: 0;
     }
 
+    .leaflet-control-scale {
+        margin-bottom: 4px;
+        margin-left: 10px;
+    }
+
     .leaflet-control-scale-line {
         padding: 2px 2px 1px;
     }
