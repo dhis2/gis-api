@@ -58,8 +58,9 @@ export class Map extends L.Evented {
             }
         }
 
-        map.on('click', evt => this.onClick(evt))
-        map.on('contextmenu', evt => this.onContextMenu(evt))
+        map.on('click', this.onClick)
+        map.on('contextmenu', this.onContextMenu)
+        map.on('resize', this.onResize)
     }
 
     getContainer() {
@@ -97,6 +98,9 @@ export class Map extends L.Evented {
     }
 
     remove() {
+        this._map.off('click', this.onClick)
+        this._map.off('contextmenu', this.onContextMenu)
+        this._map.off('resize', this.onResize)
         this._map.remove()
     }
 
@@ -191,12 +195,16 @@ export class Map extends L.Evented {
         this._map.unsync(id)
     }
 
-    onClick(evt) {
+    onClick = evt => {
         this.fire('click', this._createClickEvent(evt))
     }
 
-    onContextMenu(evt) {
+    onContextMenu = evt => {
         this.fire('contextmenu', this._createClickEvent(evt))
+    }
+
+    onResize = evt => {
+        this.fire('resize', evt)
     }
 
     _createClickEvent(evt) {
