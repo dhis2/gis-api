@@ -15,7 +15,7 @@ export const EarthEngine = L.LayerGroup.extend({
     },
 
     initialize(options) {
-        L.setOptions(this, options)
+        L.setOptions(this, { ...options, pane: options.id })
         this._layers = {}
         this._legend = options.legend || this.createLegend()
     },

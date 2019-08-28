@@ -19,7 +19,7 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     initialize(opts) {
-        const options = L.setOptions(this, opts)
+        const options = L.setOptions(this, { ...opts, pane: opts.id })
         this._clusters = L.featureGroup() // Clusters shown on map
         this._tileClusters = {} // Cluster cache
         this._scale = scaleLog()
