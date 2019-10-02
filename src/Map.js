@@ -18,7 +18,6 @@ export class Map extends L.Evented {
         controls: [],
         worldCopyJump: true,
         maxZoom: 18,
-        layerTypes,
         controlTypes: {
             fitBounds,
             search,
@@ -73,19 +72,22 @@ export class Map extends L.Evented {
 
     // Accept layer as config object
     addLayer(layer) {
-        const { layerTypes } = this.options
         let newLayer = layer
 
-        if (layer.type && layerTypes[layer.type]) {
+        if (layer.type) {
             newLayer = this.createLayer(layer)
         }
 
-        newLayer.createPane(this._map)
+        if (newLayer instanceof L.Layer) {
+            newLayer.createPane(this._map)
 
-        this._map.addLayer(newLayer)
-        this._layers.push(newLayer)
+            this._map.addLayer(newLayer)
+            this._layers.push(newLayer)
 
-        return newLayer
+            return newLayer
+        } 
+
+        return null;
     }
 
     removeLayer(layer) {
@@ -105,7 +107,13 @@ export class Map extends L.Evented {
     }
 
     createLayer(layer) {
-        return this.options.layerTypes[layer.type](layer)
+        const layerFactory = layerTypes[layer.type]
+
+        if (layerFactory) {
+            return layerFactory(layer)
+        }
+
+        return null
     }
 
     addControl(control) {
@@ -169,8 +177,8 @@ export class Map extends L.Evented {
     }
 
     // Returns true if the layer type is supported
-    hasLayerSupport(type) {
-        return !!this.options.layerTypes[type]
+    static hasLayerSupport(type) {
+        return !!layerTypes[type]
     }
 
     openPopup(content, lnglat, onClose) {
