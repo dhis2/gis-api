@@ -74,16 +74,20 @@ export class Map extends L.Evented {
     addLayer(layer) {
         let newLayer = layer
 
-        if (layer.type && layerTypes[layer.type]) {
+        if (layer.type) {
             newLayer = this.createLayer(layer)
         }
 
-        newLayer.createPane(this._map)
+        if (newLayer instanceof L.Layer) {
+            newLayer.createPane(this._map)
 
-        this._map.addLayer(newLayer)
-        this._layers.push(newLayer)
+            this._map.addLayer(newLayer)
+            this._layers.push(newLayer)
 
-        return newLayer
+            return newLayer
+        } 
+
+        return null;
     }
 
     removeLayer(layer) {
@@ -103,7 +107,13 @@ export class Map extends L.Evented {
     }
 
     createLayer(layer) {
-        return layerTypes[layer.type](layer)
+        const layerFactory = layerTypes[layer.type]
+
+        if (layerFactory) {
+            return layerFactory(layer)
+        }
+
+        return null
     }
 
     addControl(control) {
