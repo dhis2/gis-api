@@ -68,6 +68,7 @@ export const ClusterMarker = L.Marker.extend({
                                 type: 'Point',
                                 coordinates: [newPos.lng, newPos.lat],
                             },
+                            properties: {}
                         },
                         this.options
                     )
@@ -105,7 +106,20 @@ export const ClusterMarker = L.Marker.extend({
     },
 
     onSpiderMarkerClick(evt) {
-        evt.layer.showPopup()
+        if (this.options.onClick) {
+            const { type, latlng, layer } = evt
+            const coordinates = [latlng.lng, latlng.lat]
+            
+            // Show coordinates from the original feature, not the spider
+            const feature = {
+                ...layer.feature,
+                geometry: {
+                    ...this._feature.geometry
+                },
+            }
+
+            this.options.onClick({ type, coordinates, feature })
+        }
     },
 
     onRemove(map) {

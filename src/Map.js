@@ -181,12 +181,18 @@ export class Map extends L.Evented {
         return !!layerTypes[type]
     }
 
+    // Open a popup at lnglat
     openPopup(content, lnglat, onClose) {
         this._map.openPopup(content, toLatLng(lnglat))
 
         if (typeof onClose === 'function') {
             this._map.once('popupclose', onClose)
         }
+    }
+
+    // Closes the popup previously opened with openPopup
+    closePopup() {
+        this._map.closePopup();
     }
 
     resize() {
