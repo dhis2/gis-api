@@ -62,6 +62,7 @@ export const ClusterMarker = L.Marker.extend({
                         type: 'Point',
                         coordinates: [newPos.lng, newPos.lat],
                     },
+                    properties: {},
                 }, this.options));
             }
 
