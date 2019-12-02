@@ -224,7 +224,7 @@ export class Map extends L.Evented {
     }
 
     onLoad = () => {
-        this.fire('ready', evt)
+        this.fire('ready', this)
     }
 
     _createClickEvent(evt) {
