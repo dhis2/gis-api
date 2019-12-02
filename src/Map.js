@@ -36,6 +36,14 @@ export class Map extends L.Evented {
         const map = L.map(el, options)
         this._map = map
 
+        map.on('load', this.onLoad)
+        map.on('click', this.onClick)
+        map.on('contextmenu', this.onContextMenu)
+        map.on('resize', this.onResize)
+
+        // Stop propagation to prevent dashboard dragging
+        map.on('mousedown', evt => evt.originalEvent.stopPropagation())
+
         if (map.attributionControl) {
             map.attributionControl.setPrefix('')
         }
@@ -43,9 +51,6 @@ export class Map extends L.Evented {
         L.DomUtil.addClass(this.getContainer(), options.className)
 
         L.Icon.Default.imagePath = '/images/'
-
-        // Stop propagation to prevent dashboard dragging
-        map.on('mousedown', evt => evt.originalEvent.stopPropagation())
 
         if (options.bounds) {
             this.fitBounds(options.bounds)
@@ -56,13 +61,6 @@ export class Map extends L.Evented {
                 this.addControl(control)
             }
         }
-
-        map.on('click', this.onClick)
-        map.on('contextmenu', this.onContextMenu)
-        map.on('resize', this.onResize)
-
-        // Fire ready event when map is ready for layers
-        this.fire('ready', this)
     }
 
     getContainer() {
@@ -103,6 +101,7 @@ export class Map extends L.Evented {
     }
 
     remove() {
+        this._map.off('load', this.onLoad)
         this._map.off('click', this.onClick)
         this._map.off('contextmenu', this.onContextMenu)
         this._map.off('resize', this.onResize)
@@ -222,6 +221,10 @@ export class Map extends L.Evented {
 
     onResize = evt => {
         this.fire('resize', evt)
+    }
+
+    onLoad = () => {
+        this.fire('ready', evt)
     }
 
     _createClickEvent(evt) {
