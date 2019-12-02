@@ -60,6 +60,9 @@ export class Map extends L.Evented {
         map.on('click', this.onClick)
         map.on('contextmenu', this.onContextMenu)
         map.on('resize', this.onResize)
+
+        // Fire ready event when map is ready for layers
+        this.fire('ready', this)
     }
 
     getContainer() {
