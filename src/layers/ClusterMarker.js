@@ -10,7 +10,7 @@ export const ClusterMarker = L.Marker.extend({
 
         options.icon = clusterIcon({
             size: feature.properties.size,
-            count: feature.properties.count,
+            count: feature.properties.point_count,
             color: options.fillColor,
         })
 
@@ -32,8 +32,8 @@ export const ClusterMarker = L.Marker.extend({
             const map = this._map
             const latlng = this.getLatLng()
             const center = map.latLngToLayerPoint(latlng)
-            const ids = (this._feature.id || '').split(',')
-            const count = feature.properties.count
+            const ids = (this._feature.properties.id || '').split(',')
+            const count = feature.properties.point_count
             const legOptions = { weight: 1.5, color: '#222', opacity: 0.5 }
             const _2PI = Math.PI * 2
             const circumference = 13 * (2 + count)
@@ -62,13 +62,14 @@ export const ClusterMarker = L.Marker.extend({
                 this._spiderMarkers.addLayer(
                     circleMarker(
                         {
-                            id,
                             type: 'Feature',
                             geometry: {
                                 type: 'Point',
                                 coordinates: [newPos.lng, newPos.lat],
                             },
-                            properties: {}
+                            properties: {
+                                id
+                            }
                         },
                         this.options
                     )
