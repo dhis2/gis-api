@@ -21,6 +21,7 @@ export default {
     markers, // Facility layer
     choropleth, // Thematic layer
     clientCluster, // Event layer
+    donutCluster: clientCluster, // Event layer, not supported in GIS API, fallback to clientCluster
     serverCluster, // Event layer
     earthEngine, // Google Earth Engine layer
     group, // A collection of layers

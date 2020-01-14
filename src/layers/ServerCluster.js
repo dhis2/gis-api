@@ -4,7 +4,7 @@ import clusterMarker from './ClusterMarker'
 import circleMarker from './CircleMarker'
 import polygon from './Polygon'
 import layerMixin from './layerMixin'
-import { toLngLatBounds } from '../utils/geometry'
+import { toLatLngBounds, toLngLatBounds } from '../utils/geometry'
 
 export const ServerCluster = L.GridLayer.extend({
     ...layerMixin,
@@ -19,7 +19,12 @@ export const ServerCluster = L.GridLayer.extend({
     },
 
     initialize(opts) {
-        const options = L.setOptions(this, { ...opts, pane: opts.id })
+        const options = L.setOptions(this, { 
+            ...opts, 
+            pane: opts.id, 
+            ...(opts.bounds && {bounds: toLatLngBounds(opts.bounds)})
+        })
+
         this._clusters = L.featureGroup() // Clusters shown on map
         this._tileClusters = {} // Cluster cache
         this._scale = scaleLog()
@@ -28,7 +33,6 @@ export const ServerCluster = L.GridLayer.extend({
             .range(options.range)
             .clamp(true)
         this._clusters.on('click', this.onClusterClick, this)
-        this._bounds = options.bounds
     },
 
     onAdd(map) {
@@ -102,7 +106,7 @@ export const ServerCluster = L.GridLayer.extend({
             // Is cluster
             if (map.getZoom() !== map.getMaxZoom()) {
                 // Zoom to cluster bounds
-                map.fitBounds(marker.getBounds())
+                map.fitBounds(toLatLngBounds(marker.getBounds()))
             } else {
                 // Spiderify on last zoom
                 if (this._spider) {
@@ -141,13 +145,13 @@ export const ServerCluster = L.GridLayer.extend({
         const { options } = this
         let marker
 
-        if (feature.properties.count === 1) {
+        if (feature.properties.point_count === 1) {
             marker =
                 feature.geometry.type === 'Point'
                     ? circleMarker(feature, options)
                     : polygon(feature, options)
         } else {
-            feature.properties.size = this._scale(feature.properties.count)
+            feature.properties.size = this._scale(feature.properties.point_count)
             marker = clusterMarker(feature, this.options)
         }
 
@@ -165,8 +169,8 @@ export const ServerCluster = L.GridLayer.extend({
 
     // Returns bounds for all clusters
     getBounds() {
-        const bounds = this._bounds
-            ? L.latLngBounds(this._bounds)
+        const bounds = this.options.bounds
+            ? L.latLngBounds(this.options.bounds)
             : this._clusters.getBounds()
 
         if (bounds.isValid()) {
