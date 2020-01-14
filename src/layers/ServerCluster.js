@@ -22,7 +22,7 @@ export const ServerCluster = L.GridLayer.extend({
         const options = L.setOptions(this, { 
             ...opts, 
             pane: opts.id, 
-            bounds: toLatLngBounds(opts.bounds) 
+            ...(opts.bounds && {bounds: toLatLngBounds(opts.bounds)})
         })
 
         this._clusters = L.featureGroup() // Clusters shown on map
