@@ -17,7 +17,7 @@ export class Map extends L.Evented {
         zoomControl: false,
         controls: [],
         worldCopyJump: true,
-        maxZoom: 18, 
+        maxZoom: 18,
         controlTypes: {
             fitBounds,
             search,
