@@ -1,5 +1,5 @@
 import Map from "./Map";
-import types  from './layers/layerTypes'
+import types from './layerTypes';
 import "../scss/gis-api.scss";
 
 // When this file was included in EarthEngine.js it caused error when running tests
