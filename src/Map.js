@@ -1,9 +1,7 @@
 import L from 'leaflet'
 import './utils/L.Map.Sync'
-import layerTypes from './layerTypes'
-import fitBounds from './controls/FitBounds'
-import search from './controls/Search'
-import measure from './controls/Measure'
+import layerTypes from './layers/layerTypes'
+import controlTypes from './controls/controlTypes'
 import {
     toLatLng,
     toLatLngBounds,
@@ -18,11 +16,6 @@ export class Map extends L.Evented {
         controls: [],
         worldCopyJump: true,
         maxZoom: 18,
-        controlTypes: {
-            fitBounds,
-            search,
-            measure,
-        },
     }
 
     constructor(el, opts) {
@@ -120,7 +113,6 @@ export class Map extends L.Evented {
 
     addControl(control) {
         const { position, type } = control
-        const { controlTypes } = this.options
 
         if (position) {
             control.position = position.replace(/-/, '')

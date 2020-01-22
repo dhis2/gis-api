@@ -1,6 +1,6 @@
 import L from "leaflet";
 import layerMixin from "./layerMixin";
-import layerTypes from "../layerTypes";
+import layerTypes from "./layerTypes";
 import { getBoundsFromLayers, toLngLatBounds } from "../utils/geometry";
 
 export const LayerGroup = L.LayerGroup.extend({
