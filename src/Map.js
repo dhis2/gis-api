@@ -2,6 +2,7 @@ import L from 'leaflet'
 import './utils/L.Map.Sync'
 import layerTypes from './layers/layerTypes'
 import controlTypes from './controls/controlTypes'
+import translateOptions from './utils/options'
 import {
     toLatLng,
     toLatLngBounds,
@@ -21,7 +22,7 @@ export class Map extends L.Evented {
     constructor(el, opts) {
         super()
 
-        const options = L.setOptions(this, opts)
+        const options = L.setOptions(this, translateOptions(opts))
 
         this._layers = []
         this._controls = {}
@@ -79,9 +80,9 @@ export class Map extends L.Evented {
             this._layers.push(newLayer)
 
             return newLayer
-        } 
+        }
 
-        return null;
+        return null
     }
 
     removeLayer(layer) {
@@ -186,7 +187,7 @@ export class Map extends L.Evented {
 
     // Closes the popup previously opened with openPopup
     closePopup() {
-        this._map.closePopup();
+        this._map.closePopup()
     }
 
     resize() {
