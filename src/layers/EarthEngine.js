@@ -121,7 +121,7 @@ export const EarthEngine = L.LayerGroup.extend({
     addLayer(eeImage) {
         eeImage.getMap(null, eeMap => {
             const layer = L.tileLayer(
-                this.options.url,
+                eeMap.urlFormat,
                 L.extend(
                     {
                         token: eeMap.token,

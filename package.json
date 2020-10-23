@@ -1,6 +1,6 @@
 {
     "name": "@dhis2/gis-api",
-    "version": "33.0.10",
+    "version": "33.0.11",
     "description": "Maps API for DHIS2 based on Leaflet",
     "main": "lib/main/index.js",
     "scripts": {
@@ -29,7 +29,7 @@
     },
     "homepage": "https://github.com/dhis2/gis-api#readme",
     "dependencies": {
-        "@google/earthengine": "^0.1.172",
+        "@google/earthengine": "^0.1.239",
         "@mapbox/geojson-area": "^0.2.2",
         "@mapbox/polylabel": "^1.0.2",
         "@turf/buffer": "^5.1.5",
