@@ -307,18 +307,9 @@ export const EarthEngine = L.LayerGroup.extend({
         dictionary.getInfo(valueObj => {
             const band = options.band || Object.keys(valueObj)[0]
             let value = valueObj[band]
-            let index
 
-            if (options.params) {
-                index = options.params.min + value
-            }
-
-            if (
-                options.legend &&
-                index !== undefined &&
-                options.legend[index]
-            ) {
-                value = options.legend[index].name
+            if (options.legend && options.legend[value]) {
+                value = options.legend[value].name
             } else if (options.value) {
                 // Needs calculation
                 value = options.value(value)
